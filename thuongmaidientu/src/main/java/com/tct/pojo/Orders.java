@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findByIdOrders", query = "SELECT o FROM Orders o WHERE o.idOrders = :idOrders"),
+    @NamedQuery(name = "Orders.findByIdShopStore", query = "SELECT o FROM Orders o WHERE o.idShopStore = :idShopStore"),
     @NamedQuery(name = "Orders.findByTotalMoney", query = "SELECT o FROM Orders o WHERE o.totalMoney = :totalMoney"),
     @NamedQuery(name = "Orders.findByTimeBooked", query = "SELECT o FROM Orders o WHERE o.timeBooked = :timeBooked"),
     @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status")})
@@ -46,6 +47,9 @@ public class Orders implements Serializable {
     @NotNull
     @Column(name = "id_orders")
     private Long idOrders;
+    @Size(max = 10)
+    @Column(name = "id_shop_store")
+    private String idShopStore;
     @Column(name = "total_money")
     private Long totalMoney;
     @Column(name = "time_booked")
@@ -56,10 +60,7 @@ public class Orders implements Serializable {
     private String status;
     @JoinColumn(name = "id_customer", referencedColumnName = "id_customer")
     @ManyToOne
-    private Customers idCustomer;
-    @JoinColumn(name = "id_shop_store", referencedColumnName = "id_shop_store")
-    @ManyToOne
-    private ShopStore idShopStore;
+    private Customers customer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orders")
     private Set<OrderDetails> orderDetailsSet;
 
@@ -76,6 +77,14 @@ public class Orders implements Serializable {
 
     public void setIdOrders(Long idOrders) {
         this.idOrders = idOrders;
+    }
+
+    public String getIdShopStore() {
+        return idShopStore;
+    }
+
+    public void setIdShopStore(String idShopStore) {
+        this.idShopStore = idShopStore;
     }
 
     public Long getTotalMoney() {
@@ -102,20 +111,12 @@ public class Orders implements Serializable {
         this.status = status;
     }
 
-    public Customers getIdCustomer() {
-        return idCustomer;
+    public Customers getCustomer() {
+        return customer;
     }
 
-    public void setIdCustomer(Customers idCustomer) {
-        this.idCustomer = idCustomer;
-    }
-
-    public ShopStore getIdShopStore() {
-        return idShopStore;
-    }
-
-    public void setIdShopStore(ShopStore idShopStore) {
-        this.idShopStore = idShopStore;
+    public void setCustomer(Customers idCustomer) {
+        this.customer = idCustomer;
     }
 
     @XmlTransient

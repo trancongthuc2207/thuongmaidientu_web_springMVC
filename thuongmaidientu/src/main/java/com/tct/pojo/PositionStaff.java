@@ -49,10 +49,10 @@ public class PositionStaff implements Serializable {
     private String descriptions;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "positionStaff")
     private Administrator administrator;
-    @OneToMany(mappedBy = "idPos")
-    private Set<AccountShop> accountShopSet;
     @OneToMany(mappedBy = "vipPos")
     private Set<Customers> customersSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPos")
+    private Set<Account> accountSet;
 
     public PositionStaff() {
     }
@@ -94,21 +94,21 @@ public class PositionStaff implements Serializable {
     }
 
     @XmlTransient
-    public Set<AccountShop> getAccountShopSet() {
-        return accountShopSet;
-    }
-
-    public void setAccountShopSet(Set<AccountShop> accountShopSet) {
-        this.accountShopSet = accountShopSet;
-    }
-
-    @XmlTransient
     public Set<Customers> getCustomersSet() {
         return customersSet;
     }
 
     public void setCustomersSet(Set<Customers> customersSet) {
         this.customersSet = customersSet;
+    }
+
+    @XmlTransient
+    public Set<Account> getAccountSet() {
+        return accountSet;
+    }
+
+    public void setAccountSet(Set<Account> accountSet) {
+        this.accountSet = accountSet;
     }
 
     @Override

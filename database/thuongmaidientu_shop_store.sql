@@ -25,11 +25,11 @@ DROP TABLE IF EXISTS `shop_store`;
 CREATE TABLE `shop_store` (
   `id_shop_store` varchar(25) NOT NULL,
   `name_store` varchar(45) DEFAULT NULL,
-  `id_account_s` varchar(25) DEFAULT NULL,
+  `id_acc` int DEFAULT NULL,
   PRIMARY KEY (`id_shop_store`),
   UNIQUE KEY `id_shop_store_UNIQUE` (`id_shop_store`),
-  KEY `id_account_s_idx` (`id_account_s`),
-  CONSTRAINT `id_account_s` FOREIGN KEY (`id_account_s`) REFERENCES `account_shop` (`id_account_s`)
+  KEY `id_acc_shop_fk_idx` (`id_acc`),
+  CONSTRAINT `id_acc_shop_fk` FOREIGN KEY (`id_acc`) REFERENCES `account` (`id_account`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,7 +39,7 @@ CREATE TABLE `shop_store` (
 
 LOCK TABLES `shop_store` WRITE;
 /*!40000 ALTER TABLE `shop_store` DISABLE KEYS */;
-INSERT INTO `shop_store` VALUES ('TK','Thiên Khuyển',NULL),('TT','Tống Tiền',NULL);
+INSERT INTO `shop_store` VALUES ('NULL','NULL',1),('TK','Thiên Khuyển',5),('TT','Tống Tiền',3);
 /*!40000 ALTER TABLE `shop_store` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-04 15:51:50
+-- Dump completed on 2022-08-20 22:17:34

@@ -36,7 +36,6 @@ CREATE TABLE `product` (
   UNIQUE KEY `id_product_UNIQUE` (`id_product`),
   KEY `type_of_product_fk_idx` (`type_of_product`),
   KEY `id_shop_pro_fk_idx` (`id_shop`),
-  CONSTRAINT `id_shop` FOREIGN KEY (`id_shop`) REFERENCES `shop_store` (`id_shop_store`),
   CONSTRAINT `id_shop_pro_fk` FOREIGN KEY (`id_shop`) REFERENCES `shop_store` (`id_shop_store`),
   CONSTRAINT `type_of_product_fk` FOREIGN KEY (`type_of_product`) REFERENCES `type_product` (`id_type_product`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -48,7 +47,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Cơm',10000,'Dẻo thơm','Út nghiệp','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1),(2,'Điện thoại',2000000,'Điên nghe','Apple','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',1),(3,'Cá mập',5000000,'Ko giòn','Bình Thuỷ','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1);
+INSERT INTO `product` VALUES (1,'Cơm',10000,'Dẻo thơm','Út nghiệp','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1),(2,'Điện thoại',2000000,'Điên nghe','Apple','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',1),(3,'Cá mập',5000000,'Ko giòn','Bình Thuỷ','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1),(4,'Thịt Heo',10000,'Hôi','Chợ','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1),(5,'Laptop',2000000,'Chơi game','JJ','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',1),(6,'Vở Trắng',40000,'Học Tập','BM','/images/uploads/samsung-galaxy-tab-s6.png',7,'TT',1),(7,'Dây Chuyền',2000000,'Làm đẹp','SJC','/images/uploads/samsung-galaxy-tab-s6.png',5,'TK',1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -61,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-04 15:51:50
+-- Dump completed on 2022-08-20 22:17:34

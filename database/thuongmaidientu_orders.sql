@@ -25,16 +25,14 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id_orders` decimal(10,0) NOT NULL,
   `id_customer` varchar(10) DEFAULT NULL,
-  `id_shop_store` varchar(25) DEFAULT NULL,
+  `id_shop_store` varchar(10) DEFAULT NULL,
   `total_money` decimal(10,0) DEFAULT NULL,
   `time_booked` datetime DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_orders`),
   UNIQUE KEY `id_orders_UNIQUE` (`id_orders`),
-  KEY `id_shop_store_fk_idx` (`id_shop_store`),
   KEY `id_customer_fk_idx` (`id_customer`),
-  CONSTRAINT `id_customer_or_fk` FOREIGN KEY (`id_customer`) REFERENCES `customers` (`id_customer`),
-  CONSTRAINT `id_shop_store_fk` FOREIGN KEY (`id_shop_store`) REFERENCES `shop_store` (`id_shop_store`)
+  CONSTRAINT `id_customer_or_fk` FOREIGN KEY (`id_customer`) REFERENCES `customers` (`id_customer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -44,7 +42,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,'abc','TT',5000000,'2022-07-23 00:00:00','1'),(2,'abd','TK',2000000,'2022-07-24 00:00:00','1');
+INSERT INTO `orders` VALUES (1,'abc','TT',5000000,'2022-07-23 00:00:00','1'),(2,'abd','TK',2000000,'2022-07-24 00:00:00','1'),(3,'abc','NULL',5000000,'2022-07-23 00:00:00','WAITTING'),(4,'abd','NULL',NULL,NULL,'WAITTING');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-04 15:51:50
+-- Dump completed on 2022-08-20 22:17:34

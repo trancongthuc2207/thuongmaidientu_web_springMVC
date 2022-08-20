@@ -8,27 +8,40 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
     <definition name="baseLayout"
                 template="/WEB-INF/layout/base.jsp">
         <put-attribute name="title" value="" />
-        <put-attribute name="header"
-                       value="/WEB-INF/layout/header.jsp" />
+        <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
         <put-attribute name="content" value="" />
-        <put-attribute name="footer"
-                       value="/WEB-INF/layout/footer.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
     </definition>
     <definition name="index" extends="baseLayout">
         <put-attribute name="title" value="Trang chủ" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/index.jsp" />
     </definition>
+    <definition name="login" extends="baseLayout">
+        <put-attribute name="title" value="Dang nhap" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/login.jsp" />
+    </definition>
     <definition name="products" extends="baseLayout">
         <put-attribute name="title" value="Quan ly san pham" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/products.jsp" />
     </definition>
-    <definition name="login" extends="baseLayout">
-        <put-attribute name="title" value="Dang nhap" />
-        <put-attribute name="header"
-                       value="/WEB-INF/jsp/login.jsp" />
+    <definition name="user/customer-orders" extends="baseLayout">
+        <put-attribute name="title" value="Quan ly san pham khach hang" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/login.jsp" />
+                       value="/WEB-INF/jsp/customer-orders.jsp" />
     </definition>
+    <definition name="user/cus-orders-manager" extends="baseLayout">
+        <put-attribute name="title" value="Quan Ly Don Hang" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/cus-orders-manager.jsp" />
+    </definition>
+    <!--  SHOP  -->
+    <definition name="/shop-manager" extends="baseLayout">
+        <put-attribute name="title" value="Quản Lý Cửa Hàng" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/shop-manager.jsp" />
+    </definition>
+
 </tiles-definitions>

@@ -5,10 +5,11 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-08-04T15:43:25")
+@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-08-20T21:24:43")
 @StaticMetamodel(Administrator.class)
 public class Administrator_ { 
 
+    public static volatile SingularAttribute<Administrator, String> idAcc;
     public static volatile SingularAttribute<Administrator, Integer> idAdmin;
     public static volatile SingularAttribute<Administrator, String> usernameAd;
     public static volatile SingularAttribute<Administrator, PositionStaff> positionStaff;

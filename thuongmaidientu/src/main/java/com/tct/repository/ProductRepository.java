@@ -5,6 +5,7 @@
 package com.tct.repository;
 
 import com.tct.pojo.Product;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,4 +18,5 @@ public interface ProductRepository {
     int countProduct();
     List<Product> getProductsByType(Map<String, String> params, int page, int type);
     List<Product> getProductByID(Map<String, String> params, int id);
+
 }

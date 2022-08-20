@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Administrator.findByIdAdmin", query = "SELECT a FROM Administrator a WHERE a.idAdmin = :idAdmin"),
     @NamedQuery(name = "Administrator.findByUsernameAd", query = "SELECT a FROM Administrator a WHERE a.usernameAd = :usernameAd"),
     @NamedQuery(name = "Administrator.findByPasswordAd", query = "SELECT a FROM Administrator a WHERE a.passwordAd = :passwordAd"),
-    @NamedQuery(name = "Administrator.findByIdPos", query = "SELECT a FROM Administrator a WHERE a.idPos = :idPos")})
+    @NamedQuery(name = "Administrator.findByIdPos", query = "SELECT a FROM Administrator a WHERE a.idPos = :idPos"),
+    @NamedQuery(name = "Administrator.findByIdAcc", query = "SELECT a FROM Administrator a WHERE a.idAcc = :idAcc")})
 public class Administrator implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,11 +47,14 @@ public class Administrator implements Serializable {
     private String usernameAd;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 250)
     @Column(name = "password_ad")
     private String passwordAd;
     @Column(name = "id_pos")
     private Integer idPos;
+    @Size(max = 25)
+    @Column(name = "id_acc")
+    private String idAcc;
     @JoinColumn(name = "id_admin", referencedColumnName = "id_position", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private PositionStaff positionStaff;
@@ -98,6 +102,14 @@ public class Administrator implements Serializable {
 
     public void setIdPos(Integer idPos) {
         this.idPos = idPos;
+    }
+
+    public String getIdAcc() {
+        return idAcc;
+    }
+
+    public void setIdAcc(String idAcc) {
+        this.idAcc = idAcc;
     }
 
     public PositionStaff getPositionStaff() {

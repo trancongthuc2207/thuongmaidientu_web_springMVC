@@ -25,9 +25,11 @@ DROP TABLE IF EXISTS `administrator`;
 CREATE TABLE `administrator` (
   `id_admin` int NOT NULL,
   `username_ad` varchar(25) NOT NULL,
-  `password_ad` varchar(45) NOT NULL,
+  `password_ad` varchar(250) NOT NULL,
   `id_pos` int DEFAULT NULL,
+  `id_acc` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id_admin`),
+  KEY `id_acc_ad_idx` (`id_acc`),
   CONSTRAINT `id_pos_ad_fk` FOREIGN KEY (`id_admin`) REFERENCES `position_staff` (`id_position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,6 +40,7 @@ CREATE TABLE `administrator` (
 
 LOCK TABLES `administrator` WRITE;
 /*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
+INSERT INTO `administrator` VALUES (1,'admin','000000',1,'4');
 /*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-04 15:51:50
+-- Dump completed on 2022-08-20 22:17:34

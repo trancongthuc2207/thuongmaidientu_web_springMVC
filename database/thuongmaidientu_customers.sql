@@ -30,6 +30,7 @@ CREATE TABLE `customers` (
   `phone_number` varchar(10) DEFAULT NULL,
   `address` varchar(200) DEFAULT NULL,
   `vip_pos` int DEFAULT NULL,
+  `id_acc` int DEFAULT NULL,
   PRIMARY KEY (`id_customer`),
   UNIQUE KEY `id_customer_UNIQUE` (`id_customer`),
   KEY `vip_pos_idx` (`vip_pos`),
@@ -43,7 +44,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES ('abc','Trần Công Thức','Nam','072201000002','0792767777','Tây Ninh',1),('abd','Võ Văn Hưng','Nam','072239112312','0899009023','An Giang',2);
+INSERT INTO `customers` VALUES ('abc','Trần Công Thức','Nam','072201000002','0792767777','Tây Ninh',1,2),('abd','Võ Văn Hưng','Nam','072239112312','0899009023','An Giang',2,6);
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-04 15:51:50
+-- Dump completed on 2022-08-20 22:17:34

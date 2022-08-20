@@ -16,31 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account_cus`
+-- Table structure for table `account`
 --
 
-DROP TABLE IF EXISTS `account_cus`;
+DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account_cus` (
-  `id_account_cus` varchar(10) DEFAULT NULL,
+CREATE TABLE `account` (
+  `id_account` int NOT NULL,
   `username_c` varchar(25) NOT NULL,
-  `password_c` varchar(25) NOT NULL,
+  `password_c` varchar(250) NOT NULL,
   `id_pos` int NOT NULL,
-  KEY `id_account_cus_idx` (`id_account_cus`),
-  KEY `id_pos_idx` (`id_pos`),
-  CONSTRAINT `id_account_cus_fk` FOREIGN KEY (`id_account_cus`) REFERENCES `customers` (`id_customer`),
-  CONSTRAINT `id_pos_fk` FOREIGN KEY (`id_pos`) REFERENCES `position_staff` (`id_position`)
+  PRIMARY KEY (`id_account`),
+  KEY `id_pos_acc_fk_idx` (`id_pos`),
+  CONSTRAINT `id_pos_acc_fk` FOREIGN KEY (`id_pos`) REFERENCES `position_staff` (`id_position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `account_cus`
+-- Dumping data for table `account`
 --
 
-LOCK TABLES `account_cus` WRITE;
-/*!40000 ALTER TABLE `account_cus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `account_cus` ENABLE KEYS */;
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` VALUES (1,'NULL','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(2,'thuc','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(3,'tt','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(4,'ad','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(5,'tk','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(6,'hung','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',2);
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-04 15:51:50
+-- Dump completed on 2022-08-20 22:17:34

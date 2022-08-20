@@ -4,7 +4,6 @@
  */
 package com.tct.configs;
 
-
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -15,22 +14,23 @@ public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherSer
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {
+        return new Class[]{
             HibernateConfig.class,
-            TilesConfig.class
+            TilesConfig.class,
+            SpringSecurityConfig.class
         };
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] {
-            WebAppContextConfig.class
+        return new Class[]{
+            WebAppContextConfig.class,
         };
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {"/"};
+        return new String[]{"/"};
     }
-    
+
 }

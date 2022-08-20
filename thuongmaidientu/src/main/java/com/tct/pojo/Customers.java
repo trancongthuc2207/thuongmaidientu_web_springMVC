@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customers.findBySex", query = "SELECT c FROM Customers c WHERE c.sex = :sex"),
     @NamedQuery(name = "Customers.findBySerialNumberC", query = "SELECT c FROM Customers c WHERE c.serialNumberC = :serialNumberC"),
     @NamedQuery(name = "Customers.findByPhoneNumber", query = "SELECT c FROM Customers c WHERE c.phoneNumber = :phoneNumber"),
-    @NamedQuery(name = "Customers.findByAddress", query = "SELECT c FROM Customers c WHERE c.address = :address")})
+    @NamedQuery(name = "Customers.findByAddress", query = "SELECT c FROM Customers c WHERE c.address = :address"),
+    @NamedQuery(name = "Customers.findByIdAcc", query = "SELECT c FROM Customers c WHERE c.idAcc = :idAcc")})
 public class Customers implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,7 +61,9 @@ public class Customers implements Serializable {
     @Size(max = 200)
     @Column(name = "address")
     private String address;
-    @OneToMany(mappedBy = "idCustomer")
+    @Column(name = "id_acc")
+    private Integer idAcc;
+    @OneToMany(mappedBy = "customer")
     private Set<Orders> ordersSet;
     @JoinColumn(name = "vip_pos", referencedColumnName = "id_position")
     @ManyToOne
@@ -119,6 +122,14 @@ public class Customers implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Integer getIdAcc() {
+        return idAcc;
+    }
+
+    public void setIdAcc(Integer idAcc) {
+        this.idAcc = idAcc;
     }
 
     @XmlTransient

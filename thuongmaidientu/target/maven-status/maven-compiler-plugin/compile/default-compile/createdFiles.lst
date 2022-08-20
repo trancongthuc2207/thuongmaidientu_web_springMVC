@@ -21,9 +21,11 @@ com\tct\repository\impl\Type_ProductRepositoryImpl.class
 com\tct\pojo\Product.class
 com\tct\repository\impl\ProductRepositoryImpl.class
 com\tct\pojo\OrderDetailsPK_.class
+com\tct\pojo\AccountCus_.class
 com\tct\pojo\Orders_.class
 com\tct\service\impl\ProductServiceImpl.class
 com\tct\service\impl\Type_ProductServiceImpl.class
+com\tct\pojo\AccountCus.class
 com\tct\service\Type_ProductService.class
 com\tct\pojo\DiscountCode.class
 com\tct\pojo\TypeProduct.class

@@ -49,11 +49,9 @@ public class ShopStore implements Serializable {
     private Set<Product> productSet;
     @OneToMany(mappedBy = "idShopDeli")
     private Set<DiscountCode> discountCodeSet;
-    @JoinColumn(name = "id_account_s", referencedColumnName = "id_account_s")
+    @JoinColumn(name = "id_acc", referencedColumnName = "id_account")
     @ManyToOne
-    private AccountShop idAccountS;
-    @OneToMany(mappedBy = "idShopStore")
-    private Set<Orders> ordersSet;
+    private Account idAcc;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopStore")
     private Set<ShopProducts> shopProductsSet;
 
@@ -98,21 +96,12 @@ public class ShopStore implements Serializable {
         this.discountCodeSet = discountCodeSet;
     }
 
-    public AccountShop getIdAccountS() {
-        return idAccountS;
+    public Account getIdAcc() {
+        return idAcc;
     }
 
-    public void setIdAccountS(AccountShop idAccountS) {
-        this.idAccountS = idAccountS;
-    }
-
-    @XmlTransient
-    public Set<Orders> getOrdersSet() {
-        return ordersSet;
-    }
-
-    public void setOrdersSet(Set<Orders> ordersSet) {
-        this.ordersSet = ordersSet;
+    public void setIdAcc(Account idAcc) {
+        this.idAcc = idAcc;
     }
 
     @XmlTransient

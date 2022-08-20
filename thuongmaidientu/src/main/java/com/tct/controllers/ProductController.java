@@ -26,7 +26,6 @@ public class ProductController {
     
     @RequestMapping("/products")
     public String index(Model model, @RequestParam Map<String, String> params) {
-        
         int id = Integer.parseInt(params.getOrDefault("ID_Product", "1"));
         model.addAttribute("productByID", this.productService.getProductByID(params,id));
         return "products";

@@ -5,7 +5,6 @@
 package com.tct.repository.impl;
 
 import com.tct.pojo.Product;
-import com.tct.pojo.TypeProduct;
 import com.tct.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
