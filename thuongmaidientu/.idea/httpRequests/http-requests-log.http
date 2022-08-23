@@ -1,0 +1,12 @@
+GET http://localhost:8080/thuongmaidientu/user/update_prod_amount/1/10
+
+<> 2022-08-23T113039.200.html
+
+###
+
+GET http://localhost:8080/user/update_prod_amount/1/10
+
+<> 2022-08-23T112957.404.html
+
+###
+

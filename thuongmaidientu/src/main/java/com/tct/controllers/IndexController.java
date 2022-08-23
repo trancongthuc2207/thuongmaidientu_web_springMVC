@@ -5,12 +5,16 @@
 package com.tct.controllers;
 
 
+import com.tct.pojo.Account;
+import com.tct.pojo.Customers;
+import com.tct.pojo.Product;
 import com.tct.service.*;
 
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,16 +50,19 @@ public class IndexController {
         model.addAttribute("products", this.productService.getProductsByType(params, page, type));
         model.addAttribute("productCounter", this.productService.countProduct());
         model.addAttribute("cartCounter", session.getAttribute("cart"));
-//        if (authentication != null) {
-//            model.addAttribute("currentUser", this.accountService.getByUsername(authentication.getName()));
-//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//            AccountCus accCur = this.userDetailsService.getByUsername(authentication.getName());
-//            Customers customers = this.customerService.getCustomersByID(accCur.getIdAccountCus());
-//            long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
-//            int id_pro = Integer.parseInt(params.get("idPro"));
-//            Product pro = this.productService.getProductByID(params,id_pro).get(0);
-//            model.addAttribute("book_pro",this.orderDetailsService.addOrUpdateProdToOrderDetails_WAITTING(params,idOrderWaitting,pro,customers.getIdCustomer()));
-//        }
+
         return "index";
+    }
+    @GetMapping("/add_pro/{idPro}")
+    public String add_product(@PathVariable("idPro") Integer productID, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication){
+        if (authentication != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+            Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
+            long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
+            int id_pro = productID;
+            this.orderDetailsService.addOrUpdateProdToOrderDetails_WAITTING(params,idOrderWaitting,id_pro,customers.getIdCustomer());
+        }
+        return "redirect:/";
     }
 }

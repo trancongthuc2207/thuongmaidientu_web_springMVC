@@ -27,6 +27,7 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content"
                        value="/WEB-INF/jsp/products.jsp" />
     </definition>
+    <!--  USER  -->
     <definition name="user/customer-orders" extends="baseLayout">
         <put-attribute name="title" value="Quan ly san pham khach hang" />
         <put-attribute name="content"

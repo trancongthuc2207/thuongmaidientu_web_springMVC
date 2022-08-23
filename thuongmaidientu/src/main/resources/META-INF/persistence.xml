@@ -7,13 +7,11 @@
     <class>com.tct.pojo.Orders</class>
     <class>com.tct.pojo.ShopStore</class>
     <class>com.tct.pojo.Administrator</class>
-    <class>com.tct.pojo.AccountShop</class>
     <class>com.tct.pojo.DiscountCode</class>
     <class>com.tct.pojo.TypeProduct</class>
     <class>com.tct.pojo.Product</class>
     <class>com.tct.pojo.ShopProducts</class>
     <class>com.tct.pojo.OrderDetails</class>
-    <class>com.tct.pojo.AccountCus</class>
     <class>com.tct.pojo.Account</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

@@ -15,4 +15,6 @@ public interface OrdersService {
     List<Orders> getProductByID_Shop(Map<String, String> params, int id);
 
     Long getID_OrdersByID_WAITTING(Map<String, String> params,String idCus);
+
+    boolean saveOrderWaitting(long idOr, String idCus);
 }

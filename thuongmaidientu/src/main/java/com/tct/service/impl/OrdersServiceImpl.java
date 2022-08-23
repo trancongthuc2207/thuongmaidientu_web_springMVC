@@ -38,4 +38,9 @@ public class OrdersServiceImpl implements OrdersService {
     public Long getID_OrdersByID_WAITTING(Map<String, String> params, String idCus) {
         return this.ordersRepository.getID_OrdersByID_WAITTING(params,idCus);
     }
+
+    @Override
+    public boolean saveOrderWaitting(long idOr, String idCus) {
+        return this.ordersRepository.saveOrderWaitting(idOr,idCus);
+    }
 }

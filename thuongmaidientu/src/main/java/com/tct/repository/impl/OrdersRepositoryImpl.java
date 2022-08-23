@@ -16,6 +16,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +79,8 @@ public class OrdersRepositoryImpl implements OrdersRepository {
         predicates.add(p1);
         predicates.add(p2);
         query.where(predicates.toArray(new Predicate[predicates.size()]));
-        query.multiselect(rootOder.get("idOrders"),rootOder.get("totalMoney"),rootOder.get("timeBooked")
-                        ,rootOder.get("status"));
+        query.multiselect(rootOder.get("idOrders"), rootOder.get("totalMoney"), rootOder.get("timeBooked")
+                , rootOder.get("status"));
 
         Query q = session.createQuery(query);
         if (page > 0) {
@@ -120,5 +124,49 @@ public class OrdersRepositoryImpl implements OrdersRepository {
         Query q = session.createQuery(query);
 
         return Long.parseLong(q.getResultList().get(0).toString());
+    }
+
+    @Override
+    public boolean saveOrderWaitting(long idOr, String idCus) {
+        if (idOr != 0) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime localDateTime = LocalDateTime.now();
+            Session session = this.sessionFactory.getObject().getCurrentSession();
+            Orders ord = session.get(Orders.class, idOr);
+            String st = "WATTING";
+            try {
+                Query saveOr = session.createQuery("UPDATE Orders set status=:stt, timeBooked=:timeBook WHERE idOrders=:idOrd");
+                saveOr.setParameter("stt", "1");
+                saveOr.setParameter("idOrd", ord.getIdOrders());
+                saveOr.setParameter("timeBook", dtf.format(localDateTime));
+
+                Customers cus = session.get(Customers.class, idCus);
+                Orders ordersNew = new Orders();
+                ordersNew.setStatus(st);
+                ordersNew.setCustomer(cus);
+                ordersNew.setIdShopStore("NULL");
+                ordersNew.setOrderDetailsSet(null);
+                ordersNew.setTotalMoney(Long.parseLong("0"));
+                ordersNew.setTimeBooked(null);
+                ordersNew.setIdOrders(Long.parseLong("5"));
+
+                Query newOrd = session.createQuery("INSERT INTO Orders(idOrders,customer,idShopStore,totalMoney,timeBooked,status) " +
+                        "SELECT :idOrd,:idCus,:idShop,:total,:timeBook,:stt from Orders ");
+                newOrd.setParameter("idOrd",ordersNew.getIdOrders());
+                newOrd.setParameter("idCus",ordersNew.getCustomer());
+                newOrd.setParameter("idShop",ordersNew.getIdShopStore());
+                newOrd.setParameter("total",ordersNew.getTotalMoney());
+                newOrd.setParameter("timeBook",ordersNew.getCustomer());
+                newOrd.setParameter("stt",st);
+
+                saveOr.executeUpdate();
+                newOrd.executeUpdate();
+                return true;
+            } catch (Exception ex) {
+                session.getTransaction().rollback();
+                return false;
+            }
+        }
+        return false;
     }
 }

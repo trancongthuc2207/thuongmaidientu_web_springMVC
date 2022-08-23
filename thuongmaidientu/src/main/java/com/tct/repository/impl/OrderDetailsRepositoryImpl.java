@@ -11,6 +11,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -40,43 +41,98 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     }
 
     @Override
-    public OrderDetails getOrderDetailsByID_Order(long idOrder) {
+    public List<OrderDetails> getOrderDetailsByID_Order(long idOrder) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         Query q = session.createQuery("From OrderDetails WHERE orderDetailsPK.idOrderDetails=:idOr");
         q.setParameter("idOr", idOrder);
-        return (OrderDetails) q.getSingleResult();
+        return q.getResultList();
     }
 
     @Override
-    public boolean addOrUpdateProdToOrderDetails_WAITTING(Map<String, String> params, long idOrd, Product pro, String idCUs) {
+    @Transactional
+    public boolean addOrUpdateProdToOrderDetails_WAITTING(Map<String, String> params, long idOrd, int idPro, String idCUs) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        Long idOrderWaitting = this.ordersRepository.getID_OrdersByID_WAITTING(params, idCUs);
+        if (idOrd != 0) {
+            Product pr = session.get(Product.class, idPro);
+            Orders ord = session.get(Orders.class, idOrd);
+            //DiscountCode dis = session.get(DiscountCode.class, "1");
+            if (getOrderDetailByPK(ord.getIdOrders(), pr.getIdProduct()).size() == 0) {
+                OrderDetailsPK pk = new OrderDetailsPK();
+                pk.setIdProduct(pr.getIdProduct());
+                pk.setIdOrderDetails(ord.getIdOrders());
 
-        if (idOrderWaitting != 0) {
-            Product pr = session.get(Product.class,pro.getIdProduct());
-            OrderDetails ord = session.get(OrderDetails.class,idOrderWaitting);
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.setOrderDetailsPK(pk);
+                orderDetails.setAmount(1);
+                orderDetails.setProduct(pr);
+                orderDetails.setUnitPrice(pr.getUnitPrice());
+                orderDetails.setOrders(ord);
+                //orderDetails.setIdDiscount(dis);
+                try {
+//                session.getTransaction().begin();
+                    session.save(orderDetails);
+                    return true;
+                } catch (Exception ex) {
+                    session.getTransaction().rollback();
+                    ex.printStackTrace();
+                }
+            } else {
+                OrderDetailsPK pk = new OrderDetailsPK();
+                pk.setIdProduct(pr.getIdProduct());
+                pk.setIdOrderDetails(ord.getIdOrders());
 
-            OrderDetailsPK pk = new OrderDetailsPK();
-            pk.setIdProduct(pro.getIdProduct());
-            pk.setIdOrderDetails(idOrderWaitting);
-
-            OrderDetails orderDetails = new OrderDetails();
-            orderDetails.setOrderDetailsPK(pk);
-            orderDetails.setAmount(1);
-            orderDetails.setProduct(pro);
-            orderDetails.setUnitPrice(pro.getUnitPrice());
-            try {
-                session.getTransaction().begin();
-                session.save(pk);
-                session.save(orderDetails);
-                session.getTransaction().commit();
-                return true;
-            } catch (Exception ex) {
-                session.getTransaction().rollback();
-                ex.printStackTrace();
-            } finally {
-                session.close();
+                OrderDetails orderDetails = session.get(OrderDetails.class, pk);
+                int tamp = orderDetails.getAmount();
+                orderDetails.setAmount(tamp + 1);
+                try {
+                    session.save(orderDetails);
+                    return true;
+                } catch (Exception ex) {
+                    session.getTransaction().rollback();
+                    ex.printStackTrace();
+                    return false;
+                }
             }
+        }
+        return false;
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailByPK(long idOr, int idPro) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        ////
+        Product pr = session.get(Product.class, idPro);
+        Orders ord = session.get(Orders.class, idOr);
+        OrderDetailsPK pk = new OrderDetailsPK();
+        pk.setIdProduct(pr.getIdProduct());
+        pk.setIdOrderDetails(ord.getIdOrders());
+        ////
+        Query q = session.createQuery("From OrderDetails WHERE orderDetailsPK=:idPK");
+        q.setParameter("idPK", pk);
+        return q.getResultList();
+    }
+
+    @Override
+    public boolean updateAmout_Pro(long idDetail, int idProd, int amount) {
+        if(idDetail != 0)
+        {
+            Session session = this.sessionFactory.getObject().getCurrentSession();
+            ////
+            Product pr = session.get(Product.class, idProd);
+            Orders ord = session.get(Orders.class, idDetail);
+            OrderDetailsPK pk = new OrderDetailsPK();
+            pk.setIdProduct(pr.getIdProduct());
+            pk.setIdOrderDetails(ord.getIdOrders());
+
+            Query q = session.createQuery("UPDATE OrderDetails set amount=:amount WHERE orderDetailsPK=:idPK");
+            q.setParameter("idPK", pk);
+            q.setParameter("amount", amount);
+            try {
+                q.executeUpdate();
+            } catch (Exception ex){
+                return false;
+            }
+            return true;
         }
         return false;
     }

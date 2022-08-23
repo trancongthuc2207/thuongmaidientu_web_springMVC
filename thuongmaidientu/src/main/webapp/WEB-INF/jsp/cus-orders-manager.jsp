@@ -7,17 +7,17 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<ul class="pagination">
-    <c:forEach begin="1" end="${Math.ceil(orders_count/8)}" var="i">
-        <c:url value="/user/cus-orders-manager/" var="c">
-            <c:param value="${i}" name="pageOrder"/>
-        </c:url>
-        <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
-    </c:forEach>
-</ul>
 
 <c:url value="/user/cus-orders-manager" var="url"/>
-<div class="content">
+<div class="container">
+    <ul class="pagination">
+        <c:forEach begin="1" end="${Math.ceil(orders_count/8)}" var="i">
+            <c:url value="/user/cus-orders-manager/" var="c">
+                <c:param value="${i}" name="pageOrder"/>
+            </c:url>
+            <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
+        </c:forEach>
+    </ul>
     <nav class="nav nav-pills nav-justified">
         <div class="nav-item">
             <form action="${url}">
@@ -30,8 +30,8 @@
             </form>
         </div>
     </nav>
-    <div class="container-fluid">
-        <c:forEach items="${orders_cus}" var="order" begin="0" end="${Math.ceil(orders_count/2)}">
+    <div class="container-fluid" style="margin-top: 10px">
+        <c:forEach items="${orders_cus}" var="order" begin="0" >
             <div class="col-md-3 col-xs-12" style="padding: 5px;">
                 <div class="card">
                     <img class="card-img-top" class="img-fluid"

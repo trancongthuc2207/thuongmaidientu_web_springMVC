@@ -74,6 +74,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/").hasAnyRole("USER", "ADMIN","SHOP")
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/shop-manager/**").hasAnyRole("SHOP", "ADMIN")
+                .antMatchers("/add_pro/**").hasAnyRole("USER")
                 .anyRequest().authenticated()
                 .and().formLogin().successHandler(loginHandler)
                 .loginPage("/login").permitAll().and().logout().permitAll().and().addFilterAt(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

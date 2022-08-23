@@ -9,7 +9,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <%--<ul class="pagination">--%>
 <%--    <c:forEach begin="1" end="${Math.ceil(orders_count/8)}" var="i">--%>
 <%--        <c:url value="/user/customer-orders/" var="c">--%>
@@ -19,27 +19,196 @@
 <%--    </c:forEach>--%>
 <%--</ul>--%>
 
-<c:url value="/user/customer-orders" var="url"/>
-<div class="content">
+<%-------------- URL----------------%>
+<c:url value="/user/customer-orders/update_prod_amount/" var="update"/>
+<c:url value="/user/customer-orders/payment" var="payment"/>
+<%-------------- URL----------------%>
+
+<div class="container">
     <h1>GIỎ HÀNG HIỆN TẠI</h1>
-<%--        <c:forEach items="${order_details_waitting}" var="p" begin="0" end="${Math.ceil(order_details_waitting/2)}">--%>
-<%--            <div class="col-md-3 col-xs-12" style="padding: 5px;">--%>
-<%--                <div class="card">--%>
-<%--                    <img class="card-img-top" class="img-fluid"--%>
-<%--                         src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"--%>
-<%--                         alt="Card image">--%>
-<%--                    <div class="card-body">--%>
-<%--&lt;%&ndash;                        <h4 class="card-title">${p.orderDetailsPK[0]}</h4>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        <p class="card-text">Số lượng: ${p.orderDetailsPK[1]}</p>&ndash;%&gt;--%>
-<%--                        <p class="card-text">Số lượng: ${p.amount}</p>--%>
-<%--                        <p class="card-text">--%>
-<%--                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.unitPrice}"/> VND--%>
-<%--                        </p>--%>
-<%--                        <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </c:forEach>--%>
+    <table class="table" id="tbOrder">
+        <thead class="table-success">
+        <tr style="text-align: center">
+            <th>Image</th>
+            <th>Mã Sản Phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Phiếu giảm giá</th>
+            <th>Thành Tiền</th>
+        </tr>
+        </thead>
+        <tbody style="text-align: center">
+        <c:forEach items="${orderWaitting}" var="p">
+            <tr>
+                <td></td>
+                <td class="id_pro">${p.orderDetailsPK.idProduct}</td>
+                <td>
+                    <input onchange="clickSave()" style="width: 20%; text-align: center" type="number"
+                           name="quantity" class="sl" value="${p.amount}" min="1">
+                    <a onclick="clickSave()" class="btn btn-success btn-save" type="button">Lưu</a>
+                </td>
+                <td class="price" style="text-align: right">${p.unitPrice}</td>
+                <td class="discount">${p.idDiscount}</td>
+                <td style="margin-left: 5px;"><span class="sub-total"><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                                                       value="${p.amount * p.unitPrice}"/></span>
+                    <button style="float: right" class="btn btn-danger" type="button">Xóa</button>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
+    <div class="cart-total">
+        <strong class="cart-total-title">Tổng Cộng:</strong>
+        <span class="cart-total-price"><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                         value="${sumOrder}"/> VNĐ</span>
+    </div>
+    <div style="margin-bottom: 30px;margin-top: 15px">
+        <a onclick="clickPay()" class="btn btn-success btn-pay" style="float: right; font-size: 30px"> THANH TOÁN </a>
+    </div>
 </div>
+<style>
+    .cart-header {
+        font-weight: bold;
+        font-size: 1.25em;
+        color: #333;
+    }
 
+    .cart-column {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid black;
+        margin-right: 1.5em;
+        padding-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .cart-row {
+        display: flex;
+    }
+
+    .cart-item {
+        width: 45%;
+    }
+
+    .cart-price {
+        width: 20%;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .cart-quantity {
+        width: 35%;
+    }
+
+    .cart-item-title {
+        color: #333;
+        margin-left: .5em;
+        font-size: 1.2em;
+    }
+
+    .cart-item-image {
+        width: 75px;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .btn-danger {
+        color: white;
+        background-color: #EB5757;
+        border: none;
+        border-radius: .3em;
+        font-weight: bold;
+    }
+
+    .btn-danger:hover {
+        background-color: #CC4C4C;
+    }
+
+    .cart-quantity-input {
+        height: 34px;
+        width: 50px;
+        border-radius: 5px;
+        border: 1px solid #56CCF2;
+        background-color: #eee;
+        color: #333;
+        padding: 0;
+        text-align: center;
+        font-size: 1.2em;
+        margin-right: 25px;
+    }
+
+    .cart-row:last-child {
+        border-bottom: 1px solid black;
+    }
+
+    .cart-row:last-child .cart-column {
+        border: none;
+    }
+
+    .cart-total {
+        text-align: end;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+
+    .cart-total-title {
+        font-weight: bold;
+        font-size: 1.5em;
+        color: black;
+        margin-right: 20px;
+    }
+
+    .cart-total-price {
+        color: #333;
+        font-size: 1.1em;
+    }
+</style>
+<script>
+    var remove_cart = document.getElementsByClassName("btn-danger");
+    for (var i = 0; i < remove_cart.length; i++) {
+        var button = remove_cart[i]
+        button.addEventListener("click", function () {
+            var button_remove = event.target
+            button_remove.parentElement.parentElement.remove()
+        })
+    }
+
+    var luu_cart = document.getElementsByClassName("btn-save");
+    var input_amount = document.getElementsByClassName("sl");
+    var id_prod = document.getElementsByClassName("id_pro");
+    var sub_tol = document.getElementsByClassName("sub-total");
+    var price = document.getElementsByClassName("price");
+    var total = document.getElementsByClassName("cart-total-price");
+
+    function clickSave(){
+        var sum = 0;
+        for (var i = 0; i < luu_cart.length; i++) {
+            var button = luu_cart[i]
+            var amount = input_amount[i].value;
+            var id = id_prod[i].innerHTML;
+            var pric = price[i].innerHTML
+            var sub_total = parseInt(amount) * parseFloat(pric)
+            button.setAttribute("value", id + "/" + amount)
+            sub_tol[i].setAttribute("value",sub_total)
+            sub_tol[i].innerHTML = sub_total
+            sum += sub_total
+
+            button.setAttribute("href", "${update}" + id_prod[i].innerHTML + "/" + (input_amount[i].value))
+        }
+        total[0].setAttribute("value",sum)
+        total[0].innerHTML = sum
+    }
+
+
+    var btn_pay = document.getElementsByClassName("btn-pay");
+    function clickPay(){
+        var answer = window.confirm("Save data?");
+        if (answer) {
+            btn_pay[0].setAttribute("href", "${payment}")
+        }
+        else {
+            //some code
+        }
+    }
+</script>

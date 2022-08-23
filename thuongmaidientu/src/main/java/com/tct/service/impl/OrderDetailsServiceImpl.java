@@ -21,12 +21,17 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     }
 
     @Override
-    public OrderDetails getOrderDetailsByID_Order(long idOrder) {
+    public List<OrderDetails> getOrderDetailsByID_Order(long idOrder) {
         return this.orderDetailsRepository.getOrderDetailsByID_Order(idOrder);
     }
 
     @Override
-    public boolean addOrUpdateProdToOrderDetails_WAITTING(Map<String, String> params, long idOrd, Product pro, String idCUs) {
-        return this.orderDetailsRepository.addOrUpdateProdToOrderDetails_WAITTING(params,idOrd,pro,idCUs);
+    public boolean addOrUpdateProdToOrderDetails_WAITTING(Map<String, String> params, long idOrd, int idPro, String idCUs) {
+        return this.orderDetailsRepository.addOrUpdateProdToOrderDetails_WAITTING(params,idOrd,idPro,idCUs);
+    }
+
+    @Override
+    public boolean updateAmout_Pro(long idDetail, int idProd, int amount) {
+        return this.orderDetailsRepository.updateAmout_Pro(idDetail,idProd,amount);
     }
 }

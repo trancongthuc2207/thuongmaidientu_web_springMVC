@@ -67,8 +67,6 @@ public class LoginHandler implements AuthenticationSuccessHandler {
         } else {
             throw new IllegalStateException();
         }
-//        String redirectUrl = request.getContextPath();
-//        response.sendRedirect(redirectUrl);
     }
 
 }
