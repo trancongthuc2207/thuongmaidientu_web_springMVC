@@ -21,8 +21,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     }
 
     @Override
-    public List<OrderDetails> getOrderDetailsByID_Order(long idOrder) {
-        return this.orderDetailsRepository.getOrderDetailsByID_Order(idOrder);
+    public List<OrderDetails> getOrderDetailsByID_Order(Map<String, String> params, int page, long idOrder) {
+        return this.orderDetailsRepository.getOrderDetailsByID_Order(params,page,idOrder);
     }
 
     @Override
@@ -33,5 +33,20 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     @Override
     public boolean updateAmout_Pro(long idDetail, int idProd, int amount) {
         return this.orderDetailsRepository.updateAmout_Pro(idDetail,idProd,amount);
+    }
+
+    @Override
+    public boolean deletePro(long idDetail, int idProd) {
+        return this.orderDetailsRepository.deletePro(idDetail,idProd);
+    }
+
+    @Override
+    public int countOrderDetails(long idOr) {
+        return this.orderDetailsRepository.countOrderDetailsById_Order(idOr);
+    }
+
+    @Override
+    public long totalOfOrderWatting(long idOr) {
+        return this.orderDetailsRepository.totalOfOrderWatting(idOr);
     }
 }

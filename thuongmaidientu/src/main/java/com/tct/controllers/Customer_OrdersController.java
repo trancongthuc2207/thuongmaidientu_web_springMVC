@@ -40,13 +40,16 @@ public class Customer_OrdersController {
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
             Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
             long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
-            List<OrderDetails> orderWaitting = this.orderDetailsService.getOrderDetailsByID_Order(idOrderWaitting);
+            int page = Integer.parseInt(params.getOrDefault("page", "1"));
+            int countOrderDetails_pro = orderDetailsService.countOrderDetails(idOrderWaitting);
+            List<OrderDetails> orderWaitting = this.orderDetailsService.getOrderDetailsByID_Order(params,page,idOrderWaitting);
 
-            long sumOrder = 0;
-            for(OrderDetails c : orderWaitting)
-                sumOrder += (c.getAmount() * c.getUnitPrice());
+            if(orderWaitting.size() > 0){
+            long sumOrder = this.orderDetailsService.totalOfOrderWatting(idOrderWaitting);
+
             model.addAttribute("orderWaitting",orderWaitting);
-            model.addAttribute("sumOrder",sumOrder);
+            model.addAttribute("sumOrder",sumOrder);}
+            model.addAttribute("countPro_Order", countOrderDetails_pro);
         }
         return "user/customer-orders";
     }
@@ -65,16 +68,29 @@ public class Customer_OrdersController {
         return "redirect:/user/customer-orders";
     }
 
-    @GetMapping("/user/customer-orders/payment")
-    public String payment(@RequestParam Map<String, String> params, HttpSession session, Authentication authentication){
+    @GetMapping("/user/customer-orders/payment/{totalMoney}")
+    public String payment(@PathVariable("totalMoney") long totalMo,@RequestParam Map<String, String> params, HttpSession session, Authentication authentication){
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
             Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
             long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
-            this.ordersService.saveOrderWaitting(idOrderWaitting,customers.getIdCustomer());
+            long total = totalMo;
+            this.ordersService.saveOrderWaitting(idOrderWaitting,customers.getIdCustomer(),total);
         }
         return "redirect:/user/customer-orders";
     }
 
+    @GetMapping("/user/customer-orders/delete/{idPro}")
+    public String deletePro(@PathVariable("idPro") Integer productID,@RequestParam Map<String, String> params, HttpSession session, Authentication authentication){
+        if (authentication != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+            Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
+            long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
+            int idPr = productID;
+            this.orderDetailsService.deletePro(idOrderWaitting,idPr);
+        }
+        return "redirect:/user/customer-orders";
+    }
 }

@@ -3,6 +3,7 @@ package com.tct.repository.impl;
 import com.tct.pojo.*;
 import com.tct.repository.OrderDetailsRepository;
 import com.tct.repository.OrdersRepository;
+import com.tct.repository.ShopProductRepository;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -31,6 +32,8 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     private Environment env;
     @Autowired
     private OrdersRepository ordersRepository;
+    @Autowired
+    private ShopProductRepository shopProductRepository;
 
     @Override
     public List<OrderDetails> getOrdersDetailsByID_Order_Pro(Map<String, String> params, long idOrd) {
@@ -41,10 +44,17 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     }
 
     @Override
-    public List<OrderDetails> getOrderDetailsByID_Order(long idOrder) {
+    public List<OrderDetails> getOrderDetailsByID_Order(Map<String, String> params, int page, long idOrder) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         Query q = session.createQuery("From OrderDetails WHERE orderDetailsPK.idOrderDetails=:idOr");
         q.setParameter("idOr", idOrder);
+
+        if (page > 0) {
+            int size = Integer.parseInt(env.getProperty("page.size").toString());
+            int start = (page - 1) * size;
+            q.setFirstResult(start);
+            q.setMaxResults(size);
+        }
         return q.getResultList();
     }
 
@@ -69,9 +79,12 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                 orderDetails.setOrders(ord);
                 //orderDetails.setIdDiscount(dis);
                 try {
-//                session.getTransaction().begin();
-                    session.save(orderDetails);
-                    return true;
+                    if (this.shopProductRepository.checkAmount_book(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount())) {
+                        session.save(orderDetails);
+                        this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount());
+                        return true;
+                    } else
+                        return false;
                 } catch (Exception ex) {
                     session.getTransaction().rollback();
                     ex.printStackTrace();
@@ -85,8 +98,12 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                 int tamp = orderDetails.getAmount();
                 orderDetails.setAmount(tamp + 1);
                 try {
-                    session.save(orderDetails);
-                    return true;
+                    if (this.shopProductRepository.checkAmount_book(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount())) {
+                        session.save(orderDetails);
+                        this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount());
+                        return true;
+                    } else
+                        return false;
                 } catch (Exception ex) {
                     session.getTransaction().rollback();
                     ex.printStackTrace();
@@ -114,8 +131,7 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
 
     @Override
     public boolean updateAmout_Pro(long idDetail, int idProd, int amount) {
-        if(idDetail != 0)
-        {
+        if (idDetail != 0) {
             Session session = this.sessionFactory.getObject().getCurrentSession();
             ////
             Product pr = session.get(Product.class, idProd);
@@ -124,17 +140,85 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
             pk.setIdProduct(pr.getIdProduct());
             pk.setIdOrderDetails(ord.getIdOrders());
 
+            OrderDetails orderDetails = session.get(OrderDetails.class, pk);
+            int sl_stamp = orderDetails.getAmount();
+
             Query q = session.createQuery("UPDATE OrderDetails set amount=:amount WHERE orderDetailsPK=:idPK");
             q.setParameter("idPK", pk);
             q.setParameter("amount", amount);
             try {
-                q.executeUpdate();
-            } catch (Exception ex){
+                if (sl_stamp != amount) {
+                    if (amount > sl_stamp) {
+                        if (this.shopProductRepository.checkAmount_book(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), amount)) {
+                            q.executeUpdate();
+                            this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), amount - sl_stamp);
+                            return true;
+                        }
+                    } else if (amount < sl_stamp) {
+                            q.executeUpdate();
+                            this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), -(sl_stamp - amount));
+                            return true;
+                    }
+                }
+                return false;
+            } catch (Exception ex) {
                 return false;
             }
-            return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean deletePro(long idDetail, int idProd) {
+        if (idDetail != 0) {
+            Session session = this.sessionFactory.getObject().getCurrentSession();
+            ////
+            Product pr = session.get(Product.class, idProd);
+            Orders ord = session.get(Orders.class, idDetail);
+            OrderDetailsPK pk = new OrderDetailsPK();
+            pk.setIdProduct(pr.getIdProduct());
+            pk.setIdOrderDetails(ord.getIdOrders());
+
+            OrderDetails orderDetails = session.get(OrderDetails.class, pk);
+            this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), (-orderDetails.getAmount()));
+            try {
+                session.delete(orderDetails);
+            } catch (Exception ex) {
+                session.getTransaction().rollback();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int countOrderDetailsById_Order(long idOr) {
+        if (idOr != 0) {
+            Session session = this.sessionFactory.getObject().getCurrentSession();
+            ////
+            Query query = session.createQuery("from OrderDetails where orderDetailsPK.idOrderDetails=:id");
+            query.setParameter("id", idOr);
+
+            return query.getResultList().size();
+        }
+        return 0;
+    }
+
+    @Override
+    public long totalOfOrderWatting(long idOr) {
+        if (idOr != 0) {
+            Session session = this.sessionFactory.getObject().getCurrentSession();
+            ////
+            Query query = session.createQuery("from OrderDetails where orderDetailsPK.idOrderDetails=:id");
+            query.setParameter("id", idOr);
+            List<OrderDetails> lst = query.getResultList();
+            long sum = 0;
+            for (OrderDetails c : lst) {
+                sum += (c.getAmount() * c.getUnitPrice());
+            }
+            return sum;
+        }
+        return 0;
     }
 
 }

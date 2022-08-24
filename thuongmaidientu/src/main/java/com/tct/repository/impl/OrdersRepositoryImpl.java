@@ -16,11 +16,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +32,8 @@ public class OrdersRepositoryImpl implements OrdersRepository {
     private LocalSessionFactoryBean sessionFactory;
     @Autowired
     private Environment env;
-
+    @Autowired
+    private OrdersRepository ordersRepository;
 
     @Override
     public List<Orders> getOrders(Map<String, String> params, int page) {
@@ -81,6 +82,7 @@ public class OrdersRepositoryImpl implements OrdersRepository {
         query.where(predicates.toArray(new Predicate[predicates.size()]));
         query.multiselect(rootOder.get("idOrders"), rootOder.get("totalMoney"), rootOder.get("timeBooked")
                 , rootOder.get("status"));
+        query.orderBy(b.desc(rootOder.get("timeBooked")));
 
         Query q = session.createQuery(query);
         if (page > 0) {
@@ -127,18 +129,19 @@ public class OrdersRepositoryImpl implements OrdersRepository {
     }
 
     @Override
-    public boolean saveOrderWaitting(long idOr, String idCus) {
+    public boolean saveOrderWaitting(long idOr, String idCus, long totalMoney) {
         if (idOr != 0) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime localDateTime = LocalDateTime.now();
             Session session = this.sessionFactory.getObject().getCurrentSession();
-            Orders ord = session.get(Orders.class, idOr);
-            String st = "WATTING";
+
+            String st = "WAITTING";
             try {
-                Query saveOr = session.createQuery("UPDATE Orders set status=:stt, timeBooked=:timeBook WHERE idOrders=:idOrd");
-                saveOr.setParameter("stt", "1");
-                saveOr.setParameter("idOrd", ord.getIdOrders());
-                saveOr.setParameter("timeBook", dtf.format(localDateTime));
+                Orders ord = session.get(Orders.class, idOr);
+                ord.setStatus("1");
+                ord.setTimeBooked(new Date());
+                ord.setTotalMoney(totalMoney);
+                session.update(ord);
 
                 Customers cus = session.get(Customers.class, idCus);
                 Orders ordersNew = new Orders();
@@ -148,19 +151,10 @@ public class OrdersRepositoryImpl implements OrdersRepository {
                 ordersNew.setOrderDetailsSet(null);
                 ordersNew.setTotalMoney(Long.parseLong("0"));
                 ordersNew.setTimeBooked(null);
-                ordersNew.setIdOrders(Long.parseLong("5"));
+                ordersNew.setIdOrders(this.ordersRepository.getID_max() + 1);
 
-                Query newOrd = session.createQuery("INSERT INTO Orders(idOrders,customer,idShopStore,totalMoney,timeBooked,status) " +
-                        "SELECT :idOrd,:idCus,:idShop,:total,:timeBook,:stt from Orders ");
-                newOrd.setParameter("idOrd",ordersNew.getIdOrders());
-                newOrd.setParameter("idCus",ordersNew.getCustomer());
-                newOrd.setParameter("idShop",ordersNew.getIdShopStore());
-                newOrd.setParameter("total",ordersNew.getTotalMoney());
-                newOrd.setParameter("timeBook",ordersNew.getCustomer());
-                newOrd.setParameter("stt",st);
+                session.save(ordersNew);
 
-                saveOr.executeUpdate();
-                newOrd.executeUpdate();
                 return true;
             } catch (Exception ex) {
                 session.getTransaction().rollback();
@@ -168,5 +162,13 @@ public class OrdersRepositoryImpl implements OrdersRepository {
             }
         }
         return false;
+    }
+
+    @Override
+    public long getID_max() {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from Orders o ORDER BY o.idOrders DESC");
+        Orders ord = (Orders) query.getResultList().get(0);
+        return ord.getIdOrders();
     }
 }

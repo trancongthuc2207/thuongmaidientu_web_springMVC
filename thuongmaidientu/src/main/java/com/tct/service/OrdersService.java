@@ -16,5 +16,7 @@ public interface OrdersService {
 
     Long getID_OrdersByID_WAITTING(Map<String, String> params,String idCus);
 
-    boolean saveOrderWaitting(long idOr, String idCus);
+    boolean saveOrderWaitting(long idOr, String idCus,long totalMoney);
+
+    long getID_max();
 }

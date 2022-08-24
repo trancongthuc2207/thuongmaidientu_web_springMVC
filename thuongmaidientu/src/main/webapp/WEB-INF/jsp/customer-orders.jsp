@@ -22,10 +22,19 @@
 <%-------------- URL----------------%>
 <c:url value="/user/customer-orders/update_prod_amount/" var="update"/>
 <c:url value="/user/customer-orders/payment" var="payment"/>
+<c:url value="/user/customer-orders/delete/" var="delete"/>
 <%-------------- URL----------------%>
 
 <div class="container">
     <h1>GIỎ HÀNG HIỆN TẠI</h1>
+    <ul class="pagination">
+        <c:forEach begin="1" end="${Math.ceil(countPro_Order/8)}" var="i">
+            <c:url value="/user/customer-orders/" var="c">
+                <c:param value="${i}" name="page"/>
+            </c:url>
+            <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
+        </c:forEach>
+    </ul>
     <table class="table" id="tbOrder">
         <thead class="table-success">
         <tr style="text-align: center">
@@ -40,27 +49,27 @@
         <tbody style="text-align: center">
         <c:forEach items="${orderWaitting}" var="p">
             <tr>
-                <td></td>
-                <td class="id_pro">${p.orderDetailsPK.idProduct}</td>
-                <td>
-                    <input onchange="clickSave()" style="width: 20%; text-align: center" type="number"
-                           name="quantity" class="sl" value="${p.amount}" min="1">
-                    <a onclick="clickSave()" class="btn btn-success btn-save" type="button">Lưu</a>
-                </td>
-                <td class="price" style="text-align: right">${p.unitPrice}</td>
-                <td class="discount">${p.idDiscount}</td>
-                <td style="margin-left: 5px;"><span class="sub-total"><fmt:formatNumber type="number" maxFractionDigits="3"
-                                                                                       value="${p.amount * p.unitPrice}"/></span>
-                    <button style="float: right" class="btn btn-danger" type="button">Xóa</button>
-                </td>
-            </tr>
+            <td></td>
+            <td class="id_pro">${p.orderDetailsPK.idProduct}</td>
+            <td>
+                <input onchange="clickSave()" style="width: 20%; text-align: center" type="number"
+                       name="quantity" class="sl" value="${p.amount}" min="1">
+                <a onclick="clickSave()" class="btn btn-success btn-save" type="button">Lưu</a>
+            </td>
+            <td class="price" style="text-align: right">${p.unitPrice}</td>
+            <td class="discount">${p.idDiscount}</td>
+            <td style="margin-left: 5px;"><span class="sub-total"><fmt:formatNumber type="number" maxFractionDigits="3"
+                                                                                    value="${p.amount * p.unitPrice}"/></span>
+                <a onclick="clickDelete()" style="float: right" class="btn btn-danger btn-delete" type="button">Xóa</a>
+            </td>
+        </tr>
         </c:forEach>
         </tbody>
     </table>
 
     <div class="cart-total">
         <strong class="cart-total-title">Tổng Cộng:</strong>
-        <span class="cart-total-price"><fmt:formatNumber type="number" maxFractionDigits="3"
+        <span class="cart-total-price" ><fmt:formatNumber type="number" maxFractionDigits="3"
                                                          value="${sumOrder}"/> VNĐ</span>
     </div>
     <div style="margin-bottom: 30px;margin-top: 15px">
@@ -165,14 +174,14 @@
     }
 </style>
 <script>
-    var remove_cart = document.getElementsByClassName("btn-danger");
-    for (var i = 0; i < remove_cart.length; i++) {
-        var button = remove_cart[i]
-        button.addEventListener("click", function () {
-            var button_remove = event.target
-            button_remove.parentElement.parentElement.remove()
-        })
-    }
+    // var remove_cart = document.getElementsByClassName("btn-danger");
+    // for (var i = 0; i < remove_cart.length; i++) {
+    //     var button = remove_cart[i]
+    //     button.addEventListener("click", function () {
+    //         var button_remove = event.target
+    //         button_remove.parentElement.parentElement.remove()
+    //     })
+    // }
 
     var luu_cart = document.getElementsByClassName("btn-save");
     var input_amount = document.getElementsByClassName("sl");
@@ -180,7 +189,6 @@
     var sub_tol = document.getElementsByClassName("sub-total");
     var price = document.getElementsByClassName("price");
     var total = document.getElementsByClassName("cart-total-price");
-
     function clickSave(){
         var sum = 0;
         for (var i = 0; i < luu_cart.length; i++) {
@@ -205,7 +213,23 @@
     function clickPay(){
         var answer = window.confirm("Save data?");
         if (answer) {
-            btn_pay[0].setAttribute("href", "${payment}")
+            btn_pay[0].setAttribute("href", "${payment}" + "/" + "${sumOrder}")
+        }
+        else {
+            //some code
+        }
+    }
+
+    var xoa_cart = document.getElementsByClassName("btn-delete")
+    function clickDelete(){
+        var answer = window.confirm("Delete data?");
+        if (answer) {
+            for(var i = 0; i < xoa_cart.length; i++)
+            {
+                var btnXoa = xoa_cart[i]
+                var id = id_prod[i].innerHTML;
+                btnXoa.setAttribute("href", "${delete}" + id)
+            }
         }
         else {
             //some code

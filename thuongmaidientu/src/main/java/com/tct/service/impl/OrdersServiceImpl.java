@@ -40,7 +40,12 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public boolean saveOrderWaitting(long idOr, String idCus) {
-        return this.ordersRepository.saveOrderWaitting(idOr,idCus);
+    public boolean saveOrderWaitting(long idOr, String idCus,long totalMoney) {
+        return this.ordersRepository.saveOrderWaitting(idOr,idCus,totalMoney);
+    }
+
+    @Override
+    public long getID_max() {
+        return this.ordersRepository.getID_max();
     }
 }
