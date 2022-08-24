@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.tct.pojo;
 
 import java.io.Serializable;
@@ -21,7 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * @author vhung
+ *
+ * @author ADMIN
  */
 @Entity
 @Table(name = "type_product")
@@ -112,4 +112,5 @@ public class TypeProduct implements Serializable {
     public String toString() {
         return "com.tct.pojo.TypeProduct[ idTypeProduct=" + idTypeProduct + " ]";
     }
+    
 }

@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.tct.pojo;
 
 import java.io.Serializable;
@@ -12,7 +11,8 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author vhung
+ *
+ * @author ADMIN
  */
 @Embeddable
 public class OrderDetailsPK implements Serializable {
@@ -78,4 +78,5 @@ public class OrderDetailsPK implements Serializable {
     public String toString() {
         return "com.tct.pojo.OrderDetailsPK[ idOrderDetails=" + idOrderDetails + ", idProduct=" + idProduct + " ]";
     }
+    
 }
