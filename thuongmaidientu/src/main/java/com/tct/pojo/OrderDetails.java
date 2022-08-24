@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package com.tct.pojo;
 
 import java.io.Serializable;
@@ -16,8 +17,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author ADMIN
+ * @author vhung
  */
 @Entity
 @Table(name = "order_details")
@@ -130,5 +130,4 @@ public class OrderDetails implements Serializable {
     public String toString() {
         return "com.tct.pojo.OrderDetails[ orderDetailsPK=" + orderDetailsPK + " ]";
     }
-    
 }
