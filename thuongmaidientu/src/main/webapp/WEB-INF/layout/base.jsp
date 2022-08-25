@@ -4,230 +4,72 @@
     Author     : admin
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
         <title>
             <tiles:insertAttribute name="title" />
         </title>
-        <script src="https://kit.fontawesome.com/6f26e389c8.js" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+        <c:set var="gitRepo" value="https://cdn.jsdelivr.net/gh/huqedgar/ecommerceCDNRepository@" />
+        <c:set var="verRepo" value="ecf39d623b86b25246d92ad1974b85b345e9f594" />
+        <c:set var="urlRepo" value="${gitRepo}${verRepo}/" />
+
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <!-- Bootstrap 5 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+        <!-- Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="${urlRepo}lib/animate/animate.min.css" rel="stylesheet">
+        <link href="${urlRepo}lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="${urlRepo}css/style.css" rel="stylesheet">
     </head>
     <body>
         <tiles:insertAttribute name="header" />
-        <div class="container">
         <tiles:insertAttribute name="content" />
-        </div class="container">
         <tiles:insertAttribute name="footer" />
+
+        <!-- Bootstrap 4 -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+        <!-- Bootstrap 5 -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="${urlRepo}lib/easing/easing.min.js"></script>
+        <script src="${urlRepo}lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Contact Javascript File -->
+        <script src="${urlRepo}mail/jqBootstrapValidation.min.js"></script>
+        <script src="${urlRepo}mail/contact.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="${urlRepo}js/main.js"></script>
     </body>
 </html>
-<style>
-    /*  ------------------ HEADER ---------------------------  */
-    .header{
-        overflow: hidden;
-        background-color: #333;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        padding: 16px;
-    }
-
-    .navTask {
-        margin-right: 2%;
-    }
-    /* Dropdown Button */
-    .dropbtn {
-        background-color: #04AA6D;
-        color: white;
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 20px 20px;
-    }
-
-    /* The container <div> - needed to position the dropdown content */
-    .dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
-    /* Dropdown Content (Hidden by Default) */
-    .dropdown-content {
-        display: none;
-        position: fixed;
-        background-color: #f1f1f1;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-    }
-
-    /* Links inside the dropdown */
-    .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: flex;
-    }
-
-    /* Change color of dropdown links on hover */
-    .dropdown-content a:hover {
-        background-color: #ddd;
-    }
-
-    /* Show the dropdown menu on hover */
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    /* Change the background color of the dropdown button when the dropdown content is shown */
-    .dropdown:hover .dropbtn {
-        background-color: #3e8e41;
-    }
-
-    /*  ------------------ INDEX ---------------------------  */
-    .row {
-        padding-top: 10px;
-    }
-    .container {
-        padding: 16px;
-        margin-top: 30px;
-    }
-
-    <%--  BOX  --%>
-    .speech-bubble {
-        width: 150px;
-        /*height: 80px;*/
-        position: absolute;
-        background: #2997e8;
-        border-radius: 10px;
-        text-align: center;
-        color: white;
-    }
-
-    .speech-bubble::before {
-        width: 0;
-        height: 0;
-        margin: 13px 0 0 -25px;
-        position: absolute;
-        content: "";
-        border-top: 13px solid transparent;
-        border-bottom: 13px solid transparent;
-        border-right: 26px solid #2997e8;
-    }
-
-    .dropbtn-right-side {
-        background-color: #04AA6D;
-        color: white;
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 20px 20px;
-    }
-
-    /* The container <div> - needed to position the dropdown content */
-    .dropdown-right {
-        position: relative;
-        display: flex;
-    }
-
-    /* Dropdown Content (Hidden by Default) */
-    .dropdown-content-right {
-        margin-left: 115%;
-        display: none;
-        position: absolute;
-        background-color: #f1f1f1;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-    }
-
-    /* Links inside the dropdown */
-    .dropdown-content-right a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
-
-    /* Change color of dropdown links on hover */
-    .dropdown-content-right a:hover {
-        background-color: #ddd;
-    }
-
-    /* Show the dropdown menu on hover */
-    .dropdown-right:hover .dropdown-content-right {
-        display: block;
-    }
-
-    /* Change the background color of the dropdown button when the dropdown content is shown */
-    .dropdown-right:hover .dropbtn-right-side {
-        background-color: #3e8e41;
-    }
-
-    /*  ------------------ĐỘNG NGANG------------------ */
-    .sidenav {
-        height: 70%;
-        width: 10%;
-        position: fixed;
-        z-index: 0;
-        top: 120px;
-        left: 0px;
-        right: 50px;
-        background-color: #ff0000;
-        overflow-x: hidden;
-        padding-top: 0px;
-        transition: 0.5s;
-        margin-bottom: 20%;
-    }
-
-    /* ON HOVER */
-    .sidenav:hover {
-        width: 250px;
-    }
-
-    .sidenav normalb:hover {
-        background-color: #4F0909;
-    }
-
-    .buttonGroup {
-        align-content: baseline;
-    }
-
-    /* Darker background on mouse-over */
-    .btn:hover {
-        background-color: #4F0909;
-    }
-
-    .sidenav h1 {
-        background-color: #850101; /* Blue background */
-        border: thin; /* Remove borders */
-        color: white; /* White text */
-        font-size: 16px; /* Set a font size */
-        cursor: pointer; /* Mouse pointer on hover */
-        overflow: hidden;
-    }
-
-    .sidenav h1:hover {
-        background-color: #4F0909;
-    }
-
-    /* The navigation menu links */
-    .sidenav a {
-        padding-left: 10px;
-        text-decoration: none;
-        font-size: 18px;
-        color: #f1f1f1;
-        display: block;
-        transition: 0.3s
-    }
-
-    .sidenav a:hover, .offcanvas a:focus {
-        color: #f1f1f1;
-    }
-</style>

@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="thuongmaidientu" options="-endorseddirs D:\TAILIEU\Nam3\LapTrinhJava\ttt\thuongmaidientu\target/endorsed" />
+      <module name="thuongmaidientu" options="-endorseddirs C:\Users\vhung\Downloads\thuongmaidientu_web_springMVC\thuongmaidientu\target/endorsed" />
     </option>
   </component>
 </project>

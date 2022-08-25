@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="com.tct_thuongmaidientu_war_1.0PU/EclipseLink">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.41">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.43">
     <root id="1">
       <DefaultCasing>lower/lower</DefaultCasing>
       <DefaultEngine>InnoDB</DefaultEngine>
