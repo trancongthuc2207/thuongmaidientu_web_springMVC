@@ -35,7 +35,6 @@ public class Customer_OrdersController {
     @RequestMapping("/user/customer-orders")
     public String cus_bag(Model model, @RequestParam Map<String, String> params, Authentication authentication) {
         if (authentication != null) {
-            model.addAttribute("currentUser", this.accountService.getByUsername(authentication.getName()));
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
             Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
@@ -44,11 +43,11 @@ public class Customer_OrdersController {
             int countOrderDetails_pro = orderDetailsService.countOrderDetails(idOrderWaitting);
             List<OrderDetails> orderWaitting = this.orderDetailsService.getOrderDetailsByID_Order(params,page,idOrderWaitting);
 
-            if(orderWaitting.size() > 0){
+
             long sumOrder = this.orderDetailsService.totalOfOrderWatting(idOrderWaitting);
 
             model.addAttribute("orderWaitting",orderWaitting);
-            model.addAttribute("sumOrder",sumOrder);}
+            model.addAttribute("sumOrder",sumOrder);
             model.addAttribute("countPro_Order", countOrderDetails_pro);
         }
         return "user/customer-orders";

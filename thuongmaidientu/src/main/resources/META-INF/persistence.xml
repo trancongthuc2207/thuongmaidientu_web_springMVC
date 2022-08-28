@@ -5,7 +5,6 @@
     <class>com.tct.pojo.Customers</class>
     <class>com.tct.pojo.PositionStaff</class>
     <class>com.tct.pojo.Orders</class>
-    <class>com.tct.pojo.ShopStore</class>
     <class>com.tct.pojo.Administrator</class>
     <class>com.tct.pojo.DiscountCode</class>
     <class>com.tct.pojo.TypeProduct</class>
@@ -13,6 +12,9 @@
     <class>com.tct.pojo.ShopProducts</class>
     <class>com.tct.pojo.OrderDetails</class>
     <class>com.tct.pojo.Account</class>
+    <class>com.tct.pojo.Report</class>
+    <class>com.tct.pojo.ShopStore</class>
+    <class>com.tct.pojo.TypeReport</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

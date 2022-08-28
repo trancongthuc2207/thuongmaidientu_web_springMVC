@@ -47,6 +47,12 @@ public class TypeProduct implements Serializable {
     private String description;
     @OneToMany(mappedBy = "typeOfProduct")
     private Set<Product> productSet;
+    @OneToMany(mappedBy = "mainType")
+    private Set<ShopStore> shopStoreSet;
+    @OneToMany(mappedBy = "ortherType1")
+    private Set<ShopStore> shopStoreSet1;
+    @OneToMany(mappedBy = "ortherType2")
+    private Set<ShopStore> shopStoreSet2;
 
     public TypeProduct() {
     }
@@ -86,6 +92,33 @@ public class TypeProduct implements Serializable {
 
     public void setProductSet(Set<Product> productSet) {
         this.productSet = productSet;
+    }
+
+    @XmlTransient
+    public Set<ShopStore> getShopStoreSet() {
+        return shopStoreSet;
+    }
+
+    public void setShopStoreSet(Set<ShopStore> shopStoreSet) {
+        this.shopStoreSet = shopStoreSet;
+    }
+
+    @XmlTransient
+    public Set<ShopStore> getShopStoreSet1() {
+        return shopStoreSet1;
+    }
+
+    public void setShopStoreSet1(Set<ShopStore> shopStoreSet1) {
+        this.shopStoreSet1 = shopStoreSet1;
+    }
+
+    @XmlTransient
+    public Set<ShopStore> getShopStoreSet2() {
+        return shopStoreSet2;
+    }
+
+    public void setShopStoreSet2(Set<ShopStore> shopStoreSet2) {
+        this.shopStoreSet2 = shopStoreSet2;
     }
 
     @Override

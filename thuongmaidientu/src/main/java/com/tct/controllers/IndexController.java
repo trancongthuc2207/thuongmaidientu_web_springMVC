@@ -7,7 +7,6 @@ package com.tct.controllers;
 
 import com.tct.pojo.Account;
 import com.tct.pojo.Customers;
-import com.tct.pojo.Product;
 import com.tct.service.*;
 
 import java.util.Map;
@@ -41,6 +40,11 @@ public class IndexController {
     private UserService_Cus userDetailsService;
     @Autowired
     private OrderDetailsService orderDetailsService;
+
+    @ModelAttribute
+    public void commomAttrs(Model model, HttpSession session) {
+        model.addAttribute("currentUser", session.getAttribute("currentUser"));
+    }
 
     @RequestMapping("/")
     public String index(Model model, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {

@@ -5,6 +5,7 @@
 package com.tct.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,7 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ShopStore.findAll", query = "SELECT s FROM ShopStore s"),
     @NamedQuery(name = "ShopStore.findByIdShopStore", query = "SELECT s FROM ShopStore s WHERE s.idShopStore = :idShopStore"),
-    @NamedQuery(name = "ShopStore.findByNameStore", query = "SELECT s FROM ShopStore s WHERE s.nameStore = :nameStore")})
+    @NamedQuery(name = "ShopStore.findByNameStore", query = "SELECT s FROM ShopStore s WHERE s.nameStore = :nameStore"),
+    @NamedQuery(name = "ShopStore.findByImageS", query = "SELECT s FROM ShopStore s WHERE s.imageS = :imageS"),
+    @NamedQuery(name = "ShopStore.findByDateBegin", query = "SELECT s FROM ShopStore s WHERE s.dateBegin = :dateBegin")})
 public class ShopStore implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,15 +50,32 @@ public class ShopStore implements Serializable {
     @Size(max = 45)
     @Column(name = "name_store")
     private String nameStore;
+    @Size(max = 250)
+    @Column(name = "image_s")
+    private String imageS;
+    @Column(name = "date_begin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateBegin;
     @OneToMany(mappedBy = "idShop")
     private Set<Product> productSet;
     @OneToMany(mappedBy = "idShopDeli")
     private Set<DiscountCode> discountCodeSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopStore")
+    private Set<ShopProducts> shopProductsSet;
     @JoinColumn(name = "id_acc", referencedColumnName = "id_account")
     @ManyToOne
     private Account idAcc;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopStore")
-    private Set<ShopProducts> shopProductsSet;
+    @JoinColumn(name = "main_type", referencedColumnName = "id_type_product")
+    @ManyToOne
+    private TypeProduct mainType;
+    @JoinColumn(name = "orther_type1", referencedColumnName = "id_type_product")
+    @ManyToOne
+    private TypeProduct ortherType1;
+    @JoinColumn(name = "orther_type2", referencedColumnName = "id_type_product")
+    @ManyToOne
+    private TypeProduct ortherType2;
+    @OneToMany(mappedBy = "idShopStore")
+    private Set<Report> reportSet;
 
     public ShopStore() {
     }
@@ -78,6 +100,22 @@ public class ShopStore implements Serializable {
         this.nameStore = nameStore;
     }
 
+    public String getImageS() {
+        return imageS;
+    }
+
+    public void setImageS(String imageS) {
+        this.imageS = imageS;
+    }
+
+    public Date getDateBegin() {
+        return dateBegin;
+    }
+
+    public void setDateBegin(Date dateBegin) {
+        this.dateBegin = dateBegin;
+    }
+
     @XmlTransient
     public Set<Product> getProductSet() {
         return productSet;
@@ -96,6 +134,15 @@ public class ShopStore implements Serializable {
         this.discountCodeSet = discountCodeSet;
     }
 
+    @XmlTransient
+    public Set<ShopProducts> getShopProductsSet() {
+        return shopProductsSet;
+    }
+
+    public void setShopProductsSet(Set<ShopProducts> shopProductsSet) {
+        this.shopProductsSet = shopProductsSet;
+    }
+
     public Account getIdAcc() {
         return idAcc;
     }
@@ -104,13 +151,37 @@ public class ShopStore implements Serializable {
         this.idAcc = idAcc;
     }
 
-    @XmlTransient
-    public Set<ShopProducts> getShopProductsSet() {
-        return shopProductsSet;
+    public TypeProduct getMainType() {
+        return mainType;
     }
 
-    public void setShopProductsSet(Set<ShopProducts> shopProductsSet) {
-        this.shopProductsSet = shopProductsSet;
+    public void setMainType(TypeProduct mainType) {
+        this.mainType = mainType;
+    }
+
+    public TypeProduct getOrtherType1() {
+        return ortherType1;
+    }
+
+    public void setOrtherType1(TypeProduct ortherType1) {
+        this.ortherType1 = ortherType1;
+    }
+
+    public TypeProduct getOrtherType2() {
+        return ortherType2;
+    }
+
+    public void setOrtherType2(TypeProduct ortherType2) {
+        this.ortherType2 = ortherType2;
+    }
+
+    @XmlTransient
+    public Set<Report> getReportSet() {
+        return reportSet;
+    }
+
+    public void setReportSet(Set<Report> reportSet) {
+        this.reportSet = reportSet;
     }
 
     @Override

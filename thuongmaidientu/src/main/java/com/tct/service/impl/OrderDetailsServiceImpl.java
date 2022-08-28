@@ -1,7 +1,6 @@
 package com.tct.service.impl;
 
 import com.tct.pojo.OrderDetails;
-import com.tct.pojo.Product;
 import com.tct.repository.OrderDetailsRepository;
 import com.tct.service.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +47,25 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     @Override
     public long totalOfOrderWatting(long idOr) {
         return this.orderDetailsRepository.totalOfOrderWatting(idOr);
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_Shop(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getOrderDetailsForShopByID_Shop(params,page,idShop);
+    }
+
+    @Override
+    public int countOrderDetailsForShopById_Order(String idShop) {
+        return this.orderDetailsRepository.countOrderDetailsForShopById_Order(idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getOrderDetailsForShopByID_ShopKW(params,page,idShop);
+    }
+
+    @Override
+    public int countOrderDetailsForShopById_OrderToday(String idShop) {
+        return 0;
     }
 }

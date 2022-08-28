@@ -2,12 +2,13 @@ package com.tct.pojo;
 
 import com.tct.pojo.Orders;
 import com.tct.pojo.PositionStaff;
+import com.tct.pojo.Report;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-08-20T21:24:43")
+@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-08-27T18:48:05")
 @StaticMetamodel(Customers.class)
 public class Customers_ { 
 
@@ -19,6 +20,7 @@ public class Customers_ {
     public static volatile SingularAttribute<Customers, String> sex;
     public static volatile SingularAttribute<Customers, String> serialNumberC;
     public static volatile SetAttribute<Customers, Orders> ordersSet;
+    public static volatile SetAttribute<Customers, Report> reportSet;
     public static volatile SingularAttribute<Customers, String> idCustomer;
 
 }

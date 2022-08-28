@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @PropertySource("classpath:messages.properties")
@@ -72,5 +72,53 @@ public class ShopProductRepositoryImpl implements ShopProductRepository {
         q.setParameter("idPK", pk);
 
         return q.getResultList();
+    }
+
+    @Override
+    public List<ShopProducts> getShopProductByID_Shop(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        Query q = session.createQuery("from ShopProducts where shopProductsPK.idShop=:idPK");
+        q.setParameter("idPK", idShop);
+
+        if (page > 0) {
+            int size = Integer.parseInt(env.getProperty("page.size").toString());
+            int start = (page - 1) * size;
+            q.setFirstResult(start);
+            q.setMaxResults(size);
+        }
+
+        return q.getResultList();
+    }
+
+    @Override
+    public int countProduct_ShopByID_Shop(String idShop) {
+        if(idShop != null){
+            Session session = this.sessionFactory.getObject().getCurrentSession();
+
+            Query q = session.createQuery("from ShopProducts where shopProductsPK.idShop=:idPK");
+            q.setParameter("idPK", idShop);
+
+            return q.getResultList().size();
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean updateAmountPro_Shop(String idShop, int idProduct, int sl) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        try {
+            ShopProductsPK pk = new ShopProductsPK();
+            pk.setIdShop(idShop);
+            pk.setIdProduct(idProduct);
+
+            ShopProducts shopPro = session.get(ShopProducts.class, pk);
+            shopPro.setAmount(sl);
+            session.update(shopPro);
+            return true;
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        }
+        return false;
     }
 }

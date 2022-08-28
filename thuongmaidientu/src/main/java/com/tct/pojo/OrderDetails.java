@@ -5,6 +5,7 @@
 package com.tct.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,7 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrderDetails.findByIdOrderDetails", query = "SELECT o FROM OrderDetails o WHERE o.orderDetailsPK.idOrderDetails = :idOrderDetails"),
     @NamedQuery(name = "OrderDetails.findByIdProduct", query = "SELECT o FROM OrderDetails o WHERE o.orderDetailsPK.idProduct = :idProduct"),
     @NamedQuery(name = "OrderDetails.findByAmount", query = "SELECT o FROM OrderDetails o WHERE o.amount = :amount"),
-    @NamedQuery(name = "OrderDetails.findByUnitPrice", query = "SELECT o FROM OrderDetails o WHERE o.unitPrice = :unitPrice")})
+    @NamedQuery(name = "OrderDetails.findByUnitPrice", query = "SELECT o FROM OrderDetails o WHERE o.unitPrice = :unitPrice"),
+    @NamedQuery(name = "OrderDetails.findByDateCreated", query = "SELECT o FROM OrderDetails o WHERE o.dateCreated = :dateCreated"),
+    @NamedQuery(name = "OrderDetails.findByStt", query = "SELECT o FROM OrderDetails o WHERE o.stt = :stt")})
 public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +43,12 @@ public class OrderDetails implements Serializable {
     private Integer amount;
     @Column(name = "unit_price")
     private Long unitPrice;
+    @Column(name = "date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Size(max = 45)
+    @Column(name = "stt")
+    private String stt;
     @JoinColumn(name = "id_discount", referencedColumnName = "id_discount")
     @ManyToOne
     private DiscountCode idDiscount;
@@ -80,6 +92,22 @@ public class OrderDetails implements Serializable {
 
     public void setUnitPrice(Long unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getStt() {
+        return stt;
+    }
+
+    public void setStt(String stt) {
+        this.stt = stt;
     }
 
     public DiscountCode getIdDiscount() {

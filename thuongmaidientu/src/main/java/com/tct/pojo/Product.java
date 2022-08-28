@@ -5,6 +5,7 @@
 package com.tct.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByProductDescription", query = "SELECT p FROM Product p WHERE p.productDescription = :productDescription"),
     @NamedQuery(name = "Product.findByManufacturer", query = "SELECT p FROM Product p WHERE p.manufacturer = :manufacturer"),
     @NamedQuery(name = "Product.findByImage", query = "SELECT p FROM Product p WHERE p.image = :image"),
-    @NamedQuery(name = "Product.findByStatus", query = "SELECT p FROM Product p WHERE p.status = :status")})
+    @NamedQuery(name = "Product.findByStatus", query = "SELECT p FROM Product p WHERE p.status = :status"),
+    @NamedQuery(name = "Product.findByDateCreated", query = "SELECT p FROM Product p WHERE p.dateCreated = :dateCreated")})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,6 +66,9 @@ public class Product implements Serializable {
     private String image;
     @Column(name = "status")
     private Integer status;
+    @Column(name = "date_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
     @JoinColumn(name = "id_shop", referencedColumnName = "id_shop_store")
     @ManyToOne
     private ShopStore idShop;
@@ -72,6 +79,8 @@ public class Product implements Serializable {
     private Set<OrderDetails> orderDetailsSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private Set<ShopProducts> shopProductsSet;
+    @OneToMany(mappedBy = "idProduct")
+    private Set<Report> reportSet;
 
     public Product() {
     }
@@ -136,6 +145,14 @@ public class Product implements Serializable {
         this.status = status;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public ShopStore getIdShop() {
         return idShop;
     }
@@ -168,6 +185,15 @@ public class Product implements Serializable {
 
     public void setShopProductsSet(Set<ShopProducts> shopProductsSet) {
         this.shopProductsSet = shopProductsSet;
+    }
+
+    @XmlTransient
+    public Set<Report> getReportSet() {
+        return reportSet;
+    }
+
+    public void setReportSet(Set<Report> reportSet) {
+        this.reportSet = reportSet;
     }
 
     @Override

@@ -5,6 +5,8 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark header">
@@ -28,37 +30,81 @@
                     </li>
                 </c:forEach>
             </ul>
-            <%--            GIO HANG            --%>
+
             <ul class="nav nav-pills navTask">
-                <c:url value="/user/customer-orders" var="cus_bag"/>
-                <li class="nav-item dropdown">
-                    <div class="dropdown">
-                        <a type="submit" class="dropbtn" href="${cus_bag}"><i
-                                class='fas fa-shopping-cart'></i> My Bag
-                            <i class="badge badge-danger" id="cartCounter"></i>0
-                            <i class="fa fa-caret-down"></i>
-                        </a>
-                        <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>
-                        <div class="dropdown-content">
-                            <a href="${my_orders}">Đơn Hàng Của Tôi</a>
-                            <a href="#">Đơn Hàng Đang Giao</a>
+                <sec:authorize access="!isAuthenticated()">
+                    <c:url value="/login" var="log"/>
+                    <li class="nav-item dropdown">
+                        <div class="dropdown">
+                            <a type="submit" class="dropbtn" href="${log}"> <span
+                                    class="fas fa-user-circle"></span> Đăng Nhập</a>
+                            <div class="dropdown-content">
+                                <a href="#">Thông Tin Tài Khoản</a>
+                                <a href="<c:url value="/logout"/>">Đăng Xuất</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
-            <%--            LOGIN             --%>
-            <ul class="nav nav-pills navTask">
-                <c:url value="/login" var="log"/>
-                <li class="nav-item dropdown">
-                    <div class="dropdown">
-                        <a type="submit" class="dropbtn" href="${log}"> <span
-                                class="fas fa-user-circle"></span> Đăng Nhập</a>
-                        <div class="dropdown-content">
-                            <a href="#">Thông Tin Tài Khoản</a>
-                            <a href="#">Đăng Xuất</a>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <sec:authorize access="hasRole('ROLE_USER')">
+                        <li class="nav-item dropdown">
+                                <c:url value="/user/customer-orders" var="cus_bag"/>
+                        <li class="nav-item dropdown">
+                            <div class="dropdown">
+                                <a type="submit" class="dropbtn" href="${cus_bag}"><i
+                                        class="fas fa-shopping-cart"></i> My Bag
+                                    <i class="badge badge-danger" id="cartCounter"></i>0
+                                    <i class="fa fa-caret-down"></i>
+                                </a>
+                                <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>
+                                <div class="dropdown-content">
+                                    <a href="${my_orders}">Đơn Hàng Của Tôi</a>
+                                    <a href="#">Đơn Hàng Đang Giao</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="fas fa-user-circle dropbtn"/>
+                                    ${pageContext.session.getAttribute("currentUser").idAccount}
+                                (<sec:authentication property="principal.username"/>)
+                                </a>
+                                <div class="dropdown-content">
+                                    <a href="#">Thông Tin Tài Khoản</a>
+                                    <a href="<c:url value="/logout"/>">Đăng Xuất</a>
+                                </div>
+                            </div>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ROLE_SHOP')">
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="fas fa-user-circle dropbtn"/>
+                                    ${pageContext.session.getAttribute("currentUser").idAccount} Shopper
+                                (<sec:authentication property="principal.username"/>)
+                                </a>
+                                <div class="dropdown-content">
+                                    <a href="#">Thông Tin Tài Khoản</a>
+                                    <a href="<c:url value="/logout"/>">Đăng Xuất</a>
+                                </div>
+                            </div>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="fas fa-user-circle dropbtn"/>
+                                    ${pageContext.session.getAttribute("currentUser").idAccount} Administrator
+                                (<sec:authentication property="principal.username"/>)
+                                </a>
+                                <div class="dropdown-content">
+                                    <a href="#">Thông Tin Tài Khoản</a>
+                                    <a href="<c:url value="/logout"/>">Đăng Xuất</a>
+                                </div>
+                            </div>
+                        </li>
+                    </sec:authorize>
+                </sec:authorize>
             </ul>
 
             <%--            TIM KIEM             --%>

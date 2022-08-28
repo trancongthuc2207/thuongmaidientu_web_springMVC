@@ -58,11 +58,11 @@ public class Orders implements Serializable {
     @Size(max = 50)
     @Column(name = "status")
     private String status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orders")
+    private Set<OrderDetails> orderDetailsSet;
     @JoinColumn(name = "id_customer", referencedColumnName = "id_customer")
     @ManyToOne
     private Customers customer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orders")
-    private Set<OrderDetails> orderDetailsSet;
 
     public Orders() {
     }
@@ -111,14 +111,6 @@ public class Orders implements Serializable {
         this.status = status;
     }
 
-    public Customers getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customers idCustomer) {
-        this.customer = idCustomer;
-    }
-
     @XmlTransient
     public Set<OrderDetails> getOrderDetailsSet() {
         return orderDetailsSet;
@@ -126,6 +118,14 @@ public class Orders implements Serializable {
 
     public void setOrderDetailsSet(Set<OrderDetails> orderDetailsSet) {
         this.orderDetailsSet = orderDetailsSet;
+    }
+
+    public Customers getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customers idCustomer) {
+        this.customer = idCustomer;
     }
 
     @Override

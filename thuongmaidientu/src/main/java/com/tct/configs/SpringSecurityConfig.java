@@ -7,7 +7,6 @@ import com.cloudinary.utils.ObjectUtils;
 import com.tct.handlers.LoginHandler;
 import com.tct.handlers.LogoutHandler;
 import com.tct.handlers.MyAccessDenied;
-import com.tct.repository.impl.TokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -60,32 +59,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        http.formLogin().usernameParameter("username").passwordParameter("password");
 
-        http.formLogin().permitAll()
-                .loginPage("/")
-                .usernameParameter("username")
-                .passwordParameter("password");
         http.formLogin().successHandler(this.loginHandler);
 
         http.logout().logoutSuccessHandler(this.logoutHandler);
 //
         http.exceptionHandling().accessDeniedHandler(this.accessDenied);
 
-        http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/").hasAnyRole("USER", "ADMIN","SHOP")
+        http.authorizeRequests().antMatchers("/").permitAll()
+                .antMatchers("/").hasAnyRole("USER", "ADMIN","SHOP")
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/shop-manager/**").hasAnyRole("SHOP", "ADMIN")
                 .antMatchers("/add_pro/**").hasAnyRole("USER")
+                .antMatchers("/api/**").hasAnyRole("USER", "ADMIN","SHOP")
                 .anyRequest().authenticated()
-                .and().formLogin().successHandler(loginHandler)
-                .loginPage("/login").permitAll().and().logout().permitAll().and().addFilterAt(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and().formLogin()
+                .loginPage("/login").permitAll().and().logout().permitAll();
         http.csrf().disable();
-    }
-    @Bean
-    public TokenAuthenticationFilter tokenAuthenticationFilter() throws Exception {
-        TokenAuthenticationFilter authenticationFilter = new TokenAuthenticationFilter();
-        authenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        authenticationFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/login?error"));
-
-        return authenticationFilter;
+        http.headers().httpStrictTransportSecurity().disable();
     }
 }

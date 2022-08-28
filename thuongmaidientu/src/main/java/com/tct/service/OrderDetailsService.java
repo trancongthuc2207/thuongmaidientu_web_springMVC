@@ -1,7 +1,6 @@
 package com.tct.service;
 
 import com.tct.pojo.OrderDetails;
-import com.tct.pojo.Product;
 
 import java.util.List;
 import java.util.Map;
@@ -17,4 +16,12 @@ public interface OrderDetailsService {
     int countOrderDetails(long idOr);
 
     long totalOfOrderWatting(long idOr);
+
+    List<OrderDetails> getOrderDetailsForShopByID_Shop(Map<String, String> params, int page, String idShop);
+
+    int countOrderDetailsForShopById_Order(String idShop);
+
+    List<OrderDetails> getOrderDetailsForShopByID_ShopKW(Map<String, String> params, int page, String idShop);
+
+    int countOrderDetailsForShopById_OrderToday(String idShop);
 }

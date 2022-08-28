@@ -36,7 +36,7 @@ CREATE TABLE `type_product` (
 
 LOCK TABLES `type_product` WRITE;
 /*!40000 ALTER TABLE `type_product` DISABLE KEYS */;
-INSERT INTO `type_product` VALUES (1,'Thực Phẩm','Sức khoẻ'),(2,'Điện Tử','Thông minh'),(3,'Thú Cưng','Các loại động vật '),(4,'Y Tế','Dụng cụ và thuốc '),(5,'Trang Sức','Làm đẹp'),(6,'Mỹ Phẩm','Làm đẹp'),(7,'Học Tập','Học hành');
+INSERT INTO `type_product` VALUES (1,'Thực Phẩm','Sức khoẻ'),(2,'Điện Tử','Thông minh'),(3,'Thú Cưng','Các loại động vật '),(4,'Y Tế','Dụng cụ và thuốc '),(5,'Trang Sức','Làm đẹp'),(6,'Mỹ Phẩm','Làm đẹp'),(7,'Học Tập','Học hành'),(8,'Thời Trang','Làm đẹp');
 /*!40000 ALTER TABLE `type_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-20 22:17:34
+-- Dump completed on 2022-08-28  2:03:14

@@ -21,139 +21,166 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark header">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/thuongmaidientu">THUONG MAI DIEN TU</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mynavbar">
-            <%--            DANH MUC             --%>
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/thuongmaidientu">&#9969; Trang chu</a>
-                </li>
-                <c:forEach items="${type_products}" var="c">
-                    <c:url value="/" var="cUrl">
-                        <c:param name="type_Id" value="${c.idTypeProduct}"/>
-                    </c:url>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${cUrl}">${c.typeName}</a>
-                    </li>
-                </c:forEach>
-            </ul>
-            <%--            GIO HANG            --%>
-            <ul class="nav nav-pills navTask">
-                <%--        <c:url value="/user/customer-orders" var="cus_bag"/>--%>
-                <li class="nav-item dropdown">
-                    <div class="dropdown">
-                        <a type="submit" class="dropbtn" href="#"><i
-                                class='fas fa-shopping-cart'></i> My Shop
-                            <i class="badge badge-danger" id="cartCounter"></i>0
-                            <i class="fa fa-caret-down"></i>
-                        </a>
-                        <%--            <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>--%>
-                        <div class="dropdown-content">
-                            <a href="#">Cửa Hàng Của Tôi</a>
-                            <a href="#">Đơn Hàng Của Tôi</a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <%--            LOGIN             --%>
-            <ul class="nav nav-pills navTask">
-                <c:url value="/login" var="log"/>
-                <li class="nav-item dropdown">
-                    <div class="dropdown">
-                        <a type="submit" class="dropbtn" href="${log}"> <span
-                                class="fas fa-user-circle"></span> Đăng Nhập</a>
-                        <div class="dropdown-content">
-                            <a href="#">Thông Tin Tài Khoản</a>
-                            <a href="#">Đăng Xuất</a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
 
-            <%--            TIM KIEM             --%>
-            <c:url value="/" var="action"/>
-            <form class="d-flex">
-                <input class="form-control me-2" type="text" name="kw" placeholder="Nhap tu khoa...">
-                <button type="submit" class="btn btn-primary" type="button">Tim</button>
-            </form>
-        </div>
-    </div>
-</nav>
+<c:url value="/shop-manager/amount/" var="updateAm"/>
 
 <div class="container shop">
-    <ul class="nav nav-pills navTask">
-        <%--        QUẢNG CÁO  --%>
-        <div id="mySidenav" class="sidenav" style="background-image: linear-gradient(#7C0D0D, #DC0404);">
-            <div class="dropdown">
-                <button class="dropbtn"
-                        [ngStyle]="{'color': 'white','font-style': 'bold', 'font-size': '20.01px', 'font-family':'sans-serif'}">
-                    Screening
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+    <div>
+        <ul class="nav nav-pills navTask">
+            <%--        QUẢNG CÁO  --%>
+            <div id="mySidenav" class="sidenav" style="background-image: linear-gradient(#7C0D0D, #DC0404);">
+                <div class="dropdown">
+                    <button class="dropbtn"
+                            [ngStyle]="{'color': 'white','font-style': 'bold', 'font-size': '20.01px', 'font-family':'sans-serif'}">
+                        Screening
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#">Link 1</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                    </div>
+                </div>
+            </div>
+            <%--     ------------       --%>
+            <%--     NAV HEADER PAGE INDEX      --%>
+            <li class="nav-item dropdown">
+                <div class="dropdown-right">
+                    <a type="submit"
+                       class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
+                       href="#"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
+                            class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
+                    <div class="dropdown-content-right">
+                        <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ?</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <c:forEach items="${shopAcc}" var="shop">
+        <%------------------  HEADER CONTENT  ----------------------%>
+        <div class="col-md-3 col-xs-12" style="padding: 5px;">
+            <div style="display: inline-flex">
+                <div style="width: 30%" class="card">
+                    <img
+                            src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                            alt="Card image">
+                </div>
+                <div style="margin-left: 30px">
+                    <h1 class="card-title">Mã shop: ${shop.idShopStore}</h1>
+                    <p class="card-text">Tên shop: ${shop.nameStore}</p>
+
+                    <p class="card-text">Ngày tham gia: ${shop.dateBegin}</p>
+                    <p class="card-text">Buôn bán sản phẩm chính: ${shop.mainType.typeName}</p>
+                    <p class="card-text">Sản phẩm phụ: ${shop.ortherType1.typeName}
+                        , ${shop.ortherType2.typeName}</p>
+
+                    <button class="btn btn-primary"
+                            type="submit"> ---------
+                    </button>
+                </div>
+                <div style="margin-left: 30%;">
+                        <%--            GIO HANG            --%>
+                    <ul class="nav nav-pills navTask">
+                            <%--        <c:url value="/user/customer-orders" var="cus_bag"/>--%>
+                        <li class="nav-item dropdown">
+                            <div class="dropdown" style="width: 110%">
+                                <a type="submit" class="dropbtn" href="#"><i
+                                        class='fas fa-shopping-cart'></i> My Shop
+                                    <i class="badge badge-danger" id="cartCounter"></i>0
+                                    <i class="fa fa-caret-down"></i>
+                                </a>
+                                    <%--            <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>--%>
+                                <c:url value="/shop-manager/orders" var="orders"></c:url>
+                                <div class="dropdown-content">
+                                    <a href="${orders}">Đơn Hàng Của Tôi</a>
+                                    <a href="#">Phản Hồi Của Tôi</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <%--     ------------       --%>
-        <%--     NAV HEADER PAGE INDEX      --%>
-        <li class="nav-item dropdown">
-            <div class="dropdown-right">
-                <a type="submit"
-                   class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
-                   href="#"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
-                        class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
-                <div class="dropdown-content-right">
-                    <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ?</div>
-                </div>
-            </div>
-        </li>
-    </ul>
+    </c:forEach>
+    <%--------------------------------------------%>
+    <div class="shop-items" style="display: inline-flex">
+        <%--        LIST PRODUCT     --%>
+        <c:forEach items="${listProduct}" var="p">
+            <c:url value="/shop-manager/edit/" var="cUrl">
+                <c:param name="ID_Product" value="${p.shopProductsPK.idProduct}"/>
+            </c:url>
+            <div class="col-md-3 col-xs-12" style="padding: 5px;">
+                <form action="#">
+                    <div class="card">
+                        <img class="card-img-top" class="img-fluid"
+                             src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                             alt="Card image">
+                        <div class="card-body">
+                            <h4 class="card-title id_pro">Mã sản phẩm: ${p.product.idProduct}</h4>
+                            <h5 class="card-text">Tên sản phẩm: ${p.product.nameProduct}</h5>
+                            <p class="card-text">Số lượng:
+                                <input min="1" style="width: 50%" type="number" class="card-text amount" id="amount_pro" value="${p.amount}">
+                                <a onclick="clickSave()" type="button" class="btn btn-primary btn-save-amount">Lưu</a>
+                            </p>
+                            <p class="card-text">Thời gian bắt đầu bán: ${p.timeBegin}</p>
+                            <p class="card-text">Thời gian kết thúc bán: ${p.timeFinish}</p>
+                            <p class="card-text">Mã Discount: ${p.idDiscount.nameDiscount} - Active</p>
 
-    <div class="row">
-        <%--    PHAN TRANG   --%>
-<%--        <ul class="pagination">--%>
-<%--            <c:forEach begin="1" end="${Math.ceil(productCounter/8)}" var="i">--%>
-<%--                <c:url value="/" var="c">--%>
-<%--                    <c:param value="${i}" name="page"/>--%>
-<%--                </c:url>--%>
-<%--                <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>--%>
-<%--            </c:forEach>--%>
-<%--        </ul>--%>
-        <%--    SAN PHAM    --%>
-<%--        <c:forEach items="${products}" var="p">--%>
-<%--            <c:url value="/products/" var="cUrl">--%>
-<%--                <c:param name="ID_Product" value="${p.idProduct}"/>--%>
-<%--            </c:url>--%>
-<%--            <div class="col-md-3 col-xs-12" style="padding: 5px;">--%>
-<%--                <form action="${book_pro}">--%>
-<%--                    <div class="card">--%>
-<%--                        <img class="card-img-top" class="img-fluid"--%>
-<%--                             src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"--%>
-<%--                             alt="Card image">--%>
-<%--                        <div class="card-body">--%>
-<%--                            <h4 class="card-title">${p.nameProduct}</h4>--%>
-<%--                            <p class="card-text">--%>
-<%--                                <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.unitPrice}"/> VND--%>
-<%--                            </p>--%>
-<%--                            <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>--%>
-<%--                            <button name="idPro" value="${p.idProduct}" class="btn btn-primary"--%>
-<%--                                    type="submit">Đặt Hàng--%>
-<%--                            </button>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </form>--%>
-<%--            </div>--%>
-<%--        </c:forEach>--%>
+                            <p class="card-text" style="display: flex">Chọn mã mới:
+                                <select style="width: 50%" class="form-select">
+                                    <c:forEach items="${lst_discount}" var="dis">
+                                        <option value="${dis.idDiscount}">${dis.nameDiscount}</option>
+                                    </c:forEach>
+                                </select>
+                                <a type="button" class="btn btn-primary">Lưu</a>
+                            </p>
+
+                            <a href="${cUrl}" class="btn btn-primary">Chỉnh sửa thông tin chi tiết</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </c:forEach>
+    </div>
+    <div>
+        <%--        PHÂN TRANG     --%>
+        <ul class="pagination" style="align-items: center">
+            <c:forEach begin="1" end="${Math.ceil(countPro/8)}" var="i">
+                <c:url value="/shop-manager/" var="c">
+                    <c:param value="${i}" name="page"/>
+                </c:url>
+                <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
+            </c:forEach>
+        </ul>
     </div>
 </div>
+
+<script>
+    var luu_cart = document.getElementsByClassName("btn-save-amount");
+    var input_amount = document.getElementsByClassName("amount");
+    var id_prod = document.getElementsByClassName("id_pro");
+
+    function clickSave(){
+        var answer = window.confirm("Save data?");
+        if (answer) {
+            for (var i = 0; i < luu_cart.length; i++) {
+                var button = luu_cart[i]
+                var amount = input_amount[i].value;
+                var id = id_prod[i].innerHTML.substring(13,id_prod[i].innerHTML.length);
+
+                button.setAttribute("href", "${updateAm}" + id + "/" + amount)
+            }
+        }
+        else {
+            //some code
+        }
+    }
+
+</script>
+
+
+
 
 <style>
     .header {

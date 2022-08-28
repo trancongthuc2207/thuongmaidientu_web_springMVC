@@ -63,6 +63,8 @@ public class Customers implements Serializable {
     private String address;
     @Column(name = "id_acc")
     private Integer idAcc;
+    @OneToMany(mappedBy = "idCus")
+    private Set<Report> reportSet;
     @OneToMany(mappedBy = "customer")
     private Set<Orders> ordersSet;
     @JoinColumn(name = "vip_pos", referencedColumnName = "id_position")
@@ -130,6 +132,15 @@ public class Customers implements Serializable {
 
     public void setIdAcc(Integer idAcc) {
         this.idAcc = idAcc;
+    }
+
+    @XmlTransient
+    public Set<Report> getReportSet() {
+        return reportSet;
+    }
+
+    public void setReportSet(Set<Report> reportSet) {
+        this.reportSet = reportSet;
     }
 
     @XmlTransient

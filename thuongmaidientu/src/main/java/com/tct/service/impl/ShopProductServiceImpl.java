@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShopProductServiceImpl implements ShopProductService {
@@ -26,5 +27,20 @@ public class ShopProductServiceImpl implements ShopProductService {
     @Override
     public List<ShopProducts> getShopProductByPK(String idShop, int idProduct) {
         return this.shopProductRepository.getShopProductByPK(idShop,idProduct);
+    }
+
+    @Override
+    public List<ShopProducts> getShopProductByID_Shop(Map<String, String> params, int page, String idShop) {
+        return this.shopProductRepository.getShopProductByID_Shop(params,page,idShop);
+    }
+
+    @Override
+    public int countProduct_ShopByID_Shop(String idShop) {
+        return this.shopProductRepository.countProduct_ShopByID_Shop(idShop);
+    }
+
+    @Override
+    public boolean updateAmountPro_Shop(String idShop, int idProduct, int sl) {
+        return this.shopProductRepository.updateAmountPro_Shop(idShop,idProduct,sl);
     }
 }

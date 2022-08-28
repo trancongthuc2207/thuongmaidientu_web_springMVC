@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <div class="container">
@@ -26,18 +27,48 @@
         </div>
         <%--     ------------       --%>
         <%--     NAV HEADER PAGE INDEX      --%>
-        <li class="nav-item dropdown">
-            <div class="dropdown-right">
-                <c:url value="/shop-manager" var="urlShop"></c:url>
-                <a type="submit" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
-                   href="${urlShop}"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
-                        class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
-                <div class="dropdown-content-right">
-                    <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ?</div>
-                </div>
-            </div>
-        </li>
+            <sec:authorize access="!isAuthenticated()">
+                <li class="nav-item dropdown">
+                    <div class="dropdown-right">
+                        <c:url value="#" var="urlShop"></c:url> <%-- Chuyển đến form đăng ký Shop --%>
+                        <a type="submit" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
+                           href="${urlShop}"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
+                                class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
+                        <div class="dropdown-content-right">
+                            <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ? Đăng ký ngay!</div>
+                        </div>
+                    </div>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_SHOP')">
+                <li class="nav-item dropdown">
+                    <div class="dropdown-right">
+                        <c:url value="/shop-manager" var="urlShop"></c:url>
+                        <a type="submit" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
+                           href="${urlShop}"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
+                                class="fas fa-user-circle"></span> Quản Lý Cửa Hàng </a>
+                        <div class="dropdown-content-right">
+
+                        </div>
+                    </div>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_USER')">
+                <li class="nav-item dropdown">
+                    <div class="dropdown-right">
+                        <c:url value="#" var="urlShop"></c:url>
+                        <a type="submit" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
+                           href="${urlShop}"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
+                                class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
+                        <div class="dropdown-content-right">
+                            <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ?</div>
+                        </div>
+                    </div>
+                </li>
+            </sec:authorize>
     </ul>
 
     <div class="row">

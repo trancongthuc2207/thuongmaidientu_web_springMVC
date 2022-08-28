@@ -5,9 +5,15 @@
 package com.tct.configs;
 
 import com.tct.formatter.ProductFormatter;
+//import com.tct.validator.ShopProductValidator;
+//import com.tct.validator.WebAppValidator;
+import com.tct.validator.ShopProductValidator;
+import com.tct.validator.WebAppValidator;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
@@ -22,18 +28,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- *
  * @author admin
  */
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
-    "com.tct.controllers",
-    "com.tct.repository",
-    "com.tct.service",
-    "com.tct.handlers"
+        "com.tct.controllers",
+        "com.tct.repository",
+        "com.tct.service",
+        "com.tct.handlers",
+        "com.tct.validator"
 })
 public class WebAppContextConfig implements WebMvcConfigurer {
 
@@ -49,17 +58,35 @@ public class WebAppContextConfig implements WebMvcConfigurer {
     }
 
 
-//    @Override
-//    public Validator getValidator() {
-//        return validator();
-//    }
-//
-//    @Bean
-//    public LocalValidatorFactoryBean validator(){
-//        LocalValidatorFactoryBean v = new LocalValidatorFactoryBean();
-//        return v;
-//    }
-//    
+    @Override
+    public Validator getValidator() {
+        return validator();
+    }
+
+    @Bean
+    public WebAppValidator shopstoreValidator(){
+        Set<Validator> springValidator = new HashSet<>();
+        springValidator.add(new ShopProductValidator());
+
+        WebAppValidator v = new WebAppValidator();
+        v.setSpringValidator(springValidator);
+        return v;
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean validator() {
+        LocalValidatorFactoryBean v = new LocalValidatorFactoryBean();
+        v.setValidationMessageSource(messageSource());
+        return v;
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+        source.setBasename("messages");
+        return source;
+    }
+
     @Bean
     public InternalResourceViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();

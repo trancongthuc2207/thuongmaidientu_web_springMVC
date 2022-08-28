@@ -40,7 +40,6 @@ public class Cus_Orders_ManagerController {
     @GetMapping("/user/cus-orders-manager")
     public String Cus_Orders_Manager(Model model, @RequestParam Map<String, String> params, Authentication authentication) {
         if (authentication != null) {
-            model.addAttribute("currentUser", this.accountService.getByUsername(authentication.getName()));
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
             Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());

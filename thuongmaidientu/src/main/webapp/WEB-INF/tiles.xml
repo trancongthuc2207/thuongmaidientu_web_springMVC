@@ -39,10 +39,20 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
                        value="/WEB-INF/jsp/cus-orders-manager.jsp" />
     </definition>
     <!--  SHOP  -->
-    <definition name="/shop-manager" extends="baseLayout">
+    <definition name="shop-manager" extends="baseLayout">
         <put-attribute name="title" value="Quản Lý Cửa Hàng" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/shop-manager.jsp" />
+    </definition>
+    <definition name="shop-manager/edit" extends="baseLayout">
+        <put-attribute name="title" value="Edit Sản Phẩm" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/edit-product.jsp" />
+    </definition>
+    <definition name="shop-manager/orders" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý đơn" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/orders-shop.jsp" />
     </definition>
 
 </tiles-definitions>

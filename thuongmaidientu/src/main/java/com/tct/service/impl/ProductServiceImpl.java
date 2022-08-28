@@ -40,4 +40,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductByID(Map<String, String> map, int i) {
         return this.productRepository.getProductByID(map, i);
     }
+
+    @Override
+    public boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip, int typePro, String manufac, String image) {
+        return this.productRepository.updateProductByID_Product(idPro,name,unitPrice,decrip,typePro,manufac,image);
+    }
 }

@@ -5,8 +5,10 @@
 package com.tct.repository.impl;
 
 import com.tct.pojo.Product;
+import com.tct.pojo.TypeProduct;
 import com.tct.repository.ProductRepository;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
@@ -146,6 +148,29 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         Query query = session.createQuery(q);
         return query.getResultList();
+    }
+
+    @Override
+    public boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip,int typePro,String manufac, String image) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        TypeProduct type = session.get(TypeProduct.class,typePro);
+
+        Product pro = session.get(Product.class,idPro);
+        pro.setNameProduct(name);
+        pro.setUnitPrice(unitPrice);
+        pro.setProductDescription(decrip);
+        pro.setTypeOfProduct(type);
+        pro.setManufacturer(manufac);
+        pro.setImage(image);
+        pro.setDateCreated(new Date());
+        try{
+            session.update(pro);
+            return true;
+        }catch (Exception ex){
+            session.getTransaction().rollback();
+        }
+        return false;
     }
 
 }

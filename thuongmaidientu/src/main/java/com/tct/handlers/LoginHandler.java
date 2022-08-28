@@ -59,7 +59,7 @@ public class LoginHandler implements AuthenticationSuccessHandler {
         }
 
         if (hasUserRole) {
-            redirectStrategy.sendRedirect(request, response, "/user/customer-products");
+            redirectStrategy.sendRedirect(request, response, "/");
         } else if (hasAdminRole) {
             redirectStrategy.sendRedirect(request, response, "/user/customer-products");
         } else if (hasShopRole) {
