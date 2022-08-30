@@ -67,13 +67,12 @@ public class OrdersRepositoryImpl implements OrdersRepository {
         CriteriaQuery<Object[]> query = b.createQuery(Object[].class);
         Root rootOder = query.from(Orders.class);
         Root rootCus = query.from(Customers.class);
-        String ID_Status = params.get("idStatus");
 
         List<Predicate> predicates = new ArrayList<>();
         ///Dieu kien
         Predicate p = b.equal(rootOder.get("customer"), rootCus.get("idCustomer"));
         Predicate p1 = b.equal(rootCus.get("idCustomer"), idCus);
-        Predicate p2 = b.equal(rootOder.get("status"), ID_Status);
+        Predicate p2 = b.equal(rootOder.get("status"), status);
 
         predicates.add(p);
         predicates.add(p1);

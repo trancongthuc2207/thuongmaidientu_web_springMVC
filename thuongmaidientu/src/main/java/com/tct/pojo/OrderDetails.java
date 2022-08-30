@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrderDetails.findByAmount", query = "SELECT o FROM OrderDetails o WHERE o.amount = :amount"),
     @NamedQuery(name = "OrderDetails.findByUnitPrice", query = "SELECT o FROM OrderDetails o WHERE o.unitPrice = :unitPrice"),
     @NamedQuery(name = "OrderDetails.findByDateCreated", query = "SELECT o FROM OrderDetails o WHERE o.dateCreated = :dateCreated"),
+    @NamedQuery(name = "OrderDetails.findByDateShopaccept", query = "SELECT o FROM OrderDetails o WHERE o.dateShopaccept = :dateShopaccept"),
+    @NamedQuery(name = "OrderDetails.findByDateEmployaccept", query = "SELECT o FROM OrderDetails o WHERE o.dateEmployaccept = :dateEmployaccept"),
     @NamedQuery(name = "OrderDetails.findByStt", query = "SELECT o FROM OrderDetails o WHERE o.stt = :stt")})
 public class OrderDetails implements Serializable {
 
@@ -46,6 +48,12 @@ public class OrderDetails implements Serializable {
     @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
+    @Column(name = "date_shopaccept")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateShopaccept;
+    @Column(name = "date_employaccept")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateEmployaccept;
     @Size(max = 45)
     @Column(name = "stt")
     private String stt;
@@ -100,6 +108,22 @@ public class OrderDetails implements Serializable {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public Date getDateShopaccept() {
+        return dateShopaccept;
+    }
+
+    public void setDateShopaccept(Date dateShopaccept) {
+        this.dateShopaccept = dateShopaccept;
+    }
+
+    public Date getDateEmployaccept() {
+        return dateEmployaccept;
+    }
+
+    public void setDateEmployaccept(Date dateEmployaccept) {
+        this.dateEmployaccept = dateEmployaccept;
     }
 
     public String getStt() {

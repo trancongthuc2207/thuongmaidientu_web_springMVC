@@ -43,12 +43,22 @@ public class Cus_Orders_ManagerController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
             Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
-            String idStatus = params.getOrDefault("idStatus", "1");
             int page = Integer.parseInt(params.getOrDefault("pageOrder", "1"));
             model.addAttribute("orders_count", this.ordersService.countOrdersByID_Cus(customers.getIdCustomer()));
-            model.addAttribute("orders_cus", this.ordersService.getOrdersByID_Cus_Status(params, page, customers.getIdCustomer(), idStatus));
+            model.addAttribute("orders_cus", this.ordersService.getOrdersByID_Cus_Status(params, page, customers.getIdCustomer(), "1"));
+        }
+        return "user/cus-orders-manager";
+    }
 
-
+    @GetMapping("/user/cus-orders-manager/wait")
+    public String Cus_Orders_Wait_Manager(Model model, @RequestParam Map<String, String> params, Authentication authentication) {
+        if (authentication != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+            Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
+            int page = Integer.parseInt(params.getOrDefault("pageOrder", "1"));
+            model.addAttribute("orders_count", this.ordersService.countOrdersByID_Cus(customers.getIdCustomer()));
+            model.addAttribute("orders_cus", this.ordersService.getOrdersByID_Cus_Status(params, page, customers.getIdCustomer(), "2"));
         }
         return "user/cus-orders-manager";
     }

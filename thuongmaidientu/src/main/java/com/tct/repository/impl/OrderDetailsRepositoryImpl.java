@@ -159,9 +159,9 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                             return true;
                         }
                     } else if (amount < sl_stamp) {
-                            q.executeUpdate();
-                            this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), -(sl_stamp - amount));
-                            return true;
+                        q.executeUpdate();
+                        this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), -(sl_stamp - amount));
+                        return true;
                     }
                 }
                 return false;
@@ -228,7 +228,7 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     @Override
     public List<OrderDetails> getOrderDetailsForShopByID_Shop(Map<String, String> params, int page, String idShop) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        Query q = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '1' order by o.dateCreated desc ");
+        Query q = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '1' and s.product.status = 1 order by o.orderDetailsPK.idOrderDetails , o.dateCreated ");
         q.setParameter("idS", idShop);
 
         if (page > 0) {
@@ -244,7 +244,7 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     @Override
     public int countOrderDetailsForShopById_Order(String idShop) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        Query q = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '1'");
+        Query q = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '1' and s.product.status = 1");
         q.setParameter("idS", idShop);
 
         return q.getResultList().size();
@@ -253,67 +253,167 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     @Override
     public List<OrderDetails> getOrderDetailsForShopByID_ShopKW(Map<String, String> params, int page, String idShop) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        CriteriaBuilder b = session.getCriteriaBuilder();
-        CriteriaQuery<OrderDetails> q = b.createQuery(OrderDetails.class);
-        Root rootOrd = q.from(OrderDetails.class);
-        Root rootShopPro = q.from(ShopProducts.class);
-        Root rootShopStore= q.from(ShopStore.class);
-        q.select(rootOrd);
+        Query q = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '1' and s.product.status = 1 order by o.orderDetailsPK.idOrderDetails , o.dateCreated ");
+        q.setParameter("idS", idShop);
 
         if (params != null) {
-            List<Predicate> predicates = new ArrayList<>();
             String kw = params.get("kw");
-
-            Predicate main = b.equal(rootOrd.get("product"), rootShopPro.get("product"));
-            Predicate main1 = b.equal(rootShopPro.get("shopStore"), rootShopStore.get("idShopStore"));
-            Predicate main2 = b.equal(rootShopStore.get("idShopStore"), idShop);
-            Predicate main3 = b.equal(rootOrd.get("stt"), "1");
-            predicates.add(main);
-            predicates.add(main1);
-            predicates.add(main2);
-            predicates.add(main3);
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String filter = params.get("filter"); ///today, yesterday, moreday
             if (filter != null && !filter.isEmpty() && filter.equals("today")) {
-                Path<Date> dateCreatedPath = rootOrd.get("dateCreated");
-                formatter.format(dateCreatedPath);
-                Predicate p = b.equal(dateCreatedPath, formatter.format(new Date()));
-                predicates.add(p);
+                Query query = session.createSQLQuery("CALL GetOrderToday(:ngay,:idS)")
+                        .addEntity(OrderDetails.class)
+                        .setParameter("ngay", new Date())
+                        .setParameter("idS", idShop);
+                return query.getResultList();
             }
 
             //YESTERDAY
             if (filter != null && !filter.isEmpty() && filter.equals("yesterday")) {
-                LocalDate d = LocalDate.now().minusDays(1);
-                Predicate p = b.like(rootOrd.get("dateCreated").as(String.class), String.valueOf(d));
-                predicates.add(p);
+                Query query = session.createSQLQuery("CALL GetOrderYesterday(:idS)")
+                        .addEntity(OrderDetails.class)
+                        .setParameter("idS", idShop);
+                return query.getResultList();
             }
 
             //Moreday
             if (filter != null && !filter.isEmpty() && filter.equals("moreday")) {
-                LocalDate d = LocalDate.now().minusDays(1);
-                Predicate p = b.lessThan(rootOrd.get("dateCreated").as(Date.class), d);
-                predicates.add(p);
+                Query query = session.createSQLQuery("CALL GetOrderMoreDay(:idS)")
+                        .addEntity(OrderDetails.class)
+                        .setParameter("idS", idShop);
+                return query.getResultList();
             }
-
-            q.where(predicates.toArray(new Predicate[predicates.size()]));
         }
 
-        Query query = session.createQuery(q);
 
         if (page > 0) {
             int size = Integer.parseInt(env.getProperty("pageOrderShop.size").toString());
             int start = (page - 1) * size;
-            query.setFirstResult(start);
-            query.setMaxResults(size);
+            q.setFirstResult(start);
+            q.setMaxResults(size);
         }
 
-        return query.getResultList();
+        return q.getResultList();
     }
 
     @Override
     public int countOrderDetailsForShopById_OrderToday(String idShop) {
         return 0;
+    }
+
+    @Override
+    public boolean updateSTTAccept_OrderDetailsShopByID_Ord_ID_Pro(long idDetail, int idPro) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        OrderDetailsPK pk = new OrderDetailsPK();
+        pk.setIdOrderDetails(idDetail);
+        pk.setIdProduct(idPro);
+
+        OrderDetails orderDetails = session.get(OrderDetails.class, pk);
+        orderDetails.setStt("2");
+        orderDetails.setDateShopaccept(new Date());
+        try {
+            session.update(orderDetails);
+            return true;
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query q = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '2' and s.product.status = 1 order by o.orderDetailsPK.idOrderDetails, o.dateShopaccept desc ");
+        q.setParameter("idS", idShop);
+
+        if (params != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String filter = params.get("filter"); ///today, yesterday, moreday
+            if (filter != null && !filter.isEmpty() && filter.equals("today")) {
+                Query query = session.createSQLQuery("CALL GetOrderAcceptedToDay(:idS)")
+                        .addEntity(OrderDetails.class)
+                        .setParameter("idS", idShop);
+                return query.getResultList();
+            }
+
+            //YESTERDAY
+            if (filter != null && !filter.isEmpty() && filter.equals("yesterday")) {
+                Query query = session.createSQLQuery("CALL GetOrderAcceptedYesterday(:idS)")
+                        .addEntity(OrderDetails.class)
+                        .setParameter("idS", idShop);
+                return query.getResultList();
+            }
+
+            //Moreday
+            if (filter != null && !filter.isEmpty() && filter.equals("moreday")) {
+                Query query = session.createSQLQuery("CALL GetOrderAcceptedMoreDay(:idS)")
+                        .addEntity(OrderDetails.class)
+                        .setParameter("idS", idShop);
+                return query.getResultList();
+            }
+        }
+
+        if (page > 0) {
+            int size = Integer.parseInt(env.getProperty("pageOrderShop.size").toString());
+            int start = (page - 1) * size;
+            q.setFirstResult(start);
+            q.setMaxResults(size);
+        }
+
+        return q.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_Today(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderAcceptedToDay_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_Yesterday(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderAcceptedYesterday_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_MoreDay(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderAcceptedMoreDay_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_All(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderAcceptedAll_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
     }
 
 

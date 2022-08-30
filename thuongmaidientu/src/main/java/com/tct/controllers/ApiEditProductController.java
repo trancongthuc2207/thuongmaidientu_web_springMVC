@@ -19,8 +19,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-
-
 public class ApiEditProductController {
     @Autowired
     private ProductService productService;
@@ -38,9 +36,17 @@ public class ApiEditProductController {
         String image = params.get("img");
 
         int idPro = Integer.parseInt(params.get("idPro"));
-
-        System.out.println("MMMMMMM" + idPro);
         if(this.productService.updateProductByID_Product(idPro,nameProduct,unitPrice,productDescription,type_pro,manufacturer,image))
+            return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(path = "/update-delete-pro" , produces = {
+            MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<Product> updateDeletePro(@RequestBody Map<String,String> params){
+        int idPro = Integer.parseInt(params.get("idPro"));
+        if(this.productService.updateStatusDelete_ProductByID_Product(idPro))
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

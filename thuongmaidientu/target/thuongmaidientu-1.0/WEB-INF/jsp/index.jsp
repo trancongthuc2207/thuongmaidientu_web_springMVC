@@ -99,9 +99,11 @@
                                 <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.unitPrice}"/> VND
                             </p>
                             <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>
-                            <button class="btn btn-primary"
-                                    type="submit">Đặt Hàng
-                            </button>
+                            <sec:authorize access="hasAnyRole('ROLE_USER')">
+                                <button class="btn btn-primary"
+                                        type="submit">Đặt Hàng
+                                </button>
+                            </sec:authorize>
                         </div>
                     </div>
                 </form>

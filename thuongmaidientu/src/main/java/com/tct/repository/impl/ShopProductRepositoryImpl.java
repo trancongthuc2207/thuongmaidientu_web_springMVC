@@ -78,7 +78,7 @@ public class ShopProductRepositoryImpl implements ShopProductRepository {
     public List<ShopProducts> getShopProductByID_Shop(Map<String, String> params, int page, String idShop) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
 
-        Query q = session.createQuery("from ShopProducts where shopProductsPK.idShop=:idPK");
+        Query q = session.createQuery("from ShopProducts s where shopProductsPK.idShop=:idPK and product.status=1");
         q.setParameter("idPK", idShop);
 
         if (page > 0) {

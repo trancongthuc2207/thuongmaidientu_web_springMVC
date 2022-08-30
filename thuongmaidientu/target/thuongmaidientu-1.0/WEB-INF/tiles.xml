@@ -54,5 +54,10 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content"
                        value="/WEB-INF/jsp/orders-shop.jsp" />
     </definition>
+    <definition name="shop-manager/orders-accepted" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý đơn đã kiểm duyệt" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/orders-accepted.jsp" />
+    </definition>
 
 </tiles-definitions>

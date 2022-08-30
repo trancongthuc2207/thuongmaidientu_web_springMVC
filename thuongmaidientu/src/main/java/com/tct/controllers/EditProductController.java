@@ -1,6 +1,7 @@
 package com.tct.controllers;
 
 import com.tct.pojo.Account;
+import com.tct.pojo.Product;
 import com.tct.pojo.ShopProducts;
 import com.tct.pojo.ShopStore;
 import com.tct.service.*;
@@ -43,7 +44,6 @@ public class EditProductController {
     public String index(Model model, @RequestParam Map<String, String> params,Authentication authentication) {
         int id = Integer.parseInt(params.getOrDefault("ID_Product", "1"));
         model.addAttribute("productByID", this.productService.getProductByID(params,id));
-
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());

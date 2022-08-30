@@ -45,4 +45,9 @@ public class ProductServiceImpl implements ProductService {
     public boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip, int typePro, String manufac, String image) {
         return this.productRepository.updateProductByID_Product(idPro,name,unitPrice,decrip,typePro,manufac,image);
     }
+
+    @Override
+    public boolean updateStatusDelete_ProductByID_Product(int idPro) {
+        return this.productRepository.updateStatusDelete_ProductByID_Product(idPro);
+    }
 }

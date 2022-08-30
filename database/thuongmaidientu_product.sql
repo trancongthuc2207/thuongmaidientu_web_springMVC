@@ -48,7 +48,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Cơm',10000,'Dẻo thơm','Út nghiệp','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1,NULL),(2,'Điện thoại',2000000,'Điên nghe','Apple','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',1,NULL),(3,'Cá mập',5000000,'Ko giòn','Bình Thuỷ','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1,NULL),(4,'Thịt Heo',10000,'Hôi','Chợ','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1,NULL),(5,'Laptop',2000000,'Chơi game','JJ','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',1,NULL),(6,'Vở Trắng',40000,'Học Tập','BM','/images/uploads/samsung-galaxy-tab-s6.png',7,'TT',1,NULL),(7,'Dây Chuyền',2000000,'Làm đẹp','SJC','/images/uploads/samsung-galaxy-tab-s6.png',5,'TK',1,NULL),(8,'Quân Tây',500000,'Thời trang','Châu Âu','/images/uploads/samsung-galaxy-tab-s6.png',8,'TT',1,NULL),(9,'Áo',150000,'Làm đẹp','Mỹ','/images/uploads/samsung-galaxy-tab-s6.png',8,'TT',1,NULL);
+INSERT INTO `product` VALUES (1,'Cơm',100000,'Dẻo thơm c','Út nghiệp','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',999,'2022-08-28 14:57:43'),(2,'Điện thoại',2000000,'Điên nghe','Apple','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',1,NULL),(3,'Cá mập',5000000,'Ko giòn','Bình Thuỷ','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1,NULL),(4,'Thịt Heo Hư',100000,'Hôi','Chợ BT','/images/uploads/samsung-galaxy-tab-s6.png',1,'TT',1,'2022-08-28 23:33:30'),(5,'Laptop',2000000,'Chơi game','JJ','/images/uploads/samsung-galaxy-tab-s6.png',2,'TK',1,NULL),(6,'Vở Trắng',40000,'Học Tập','BM','/images/uploads/samsung-galaxy-tab-s6.png',7,'TT',1,NULL),(7,'Dây Chuyền',2000000,'Làm đẹp bình thường','SJC','/images/uploads/samsung-galaxy-tab-s6.png',5,'TK',1,'2022-08-28 16:25:51'),(8,'Quân Tây',500000,'Thời trang học sinh','Châu Âu','/images/uploads/samsung-galaxy-tab-s6.png',2,'TT',1,'2022-08-28 23:35:13'),(9,'Áo',150000,'Làm đẹp','Mỹ','/images/uploads/samsung-galaxy-tab-s6.png',8,'TT',999,NULL);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -61,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-28  2:03:14
+-- Dump completed on 2022-08-30 13:51:13

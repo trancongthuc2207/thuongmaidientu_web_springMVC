@@ -21,4 +21,6 @@ public interface ProductRepository {
 
 
     boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip,int typePro,String manufac, String image);
+
+    boolean updateStatusDelete_ProductByID_Product(int idPro);
 }

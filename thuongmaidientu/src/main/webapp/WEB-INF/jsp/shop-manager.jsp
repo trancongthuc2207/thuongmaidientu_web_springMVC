@@ -23,7 +23,7 @@
 
 
 <c:url value="/shop-manager/amount/" var="updateAm"/>
-
+<c:url value="/shop-manager/add-product" var="addProduct"/>
 <div class="container shop">
     <div>
         <ul class="nav nav-pills navTask">
@@ -75,12 +75,12 @@
                     <p class="card-text">Sản phẩm phụ: ${shop.ortherType1.typeName}
                         , ${shop.ortherType2.typeName}</p>
 
-                    <button class="btn btn-primary"
-                            type="submit"> ---------
-                    </button>
+                    <a href="${addProduct}" class="btn btn-primary"
+                            type="submit"> Thêm sản phẩm
+                    </a>
                 </div>
                 <div style="margin-left: 30%;">
-                        <%--            GIO HANG            --%>
+                        <%--            MY SHOP            --%>
                     <ul class="nav nav-pills navTask">
                             <%--        <c:url value="/user/customer-orders" var="cus_bag"/>--%>
                         <li class="nav-item dropdown">
@@ -92,8 +92,10 @@
                                 </a>
                                     <%--            <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>--%>
                                 <c:url value="/shop-manager/orders" var="orders"></c:url>
+                                <c:url value="/shop-manager/orders-accepted" var="ordersAcc"></c:url>
                                 <div class="dropdown-content">
                                     <a href="${orders}">Đơn Hàng Của Tôi</a>
+                                    <a href="${ordersAcc}">Đơn Hàng Đã Kiểm Duyệt</a>
                                     <a href="#">Phản Hồi Của Tôi</a>
                                 </div>
                             </div>
@@ -183,6 +185,7 @@
 
 
 <style>
+
     .header {
         overflow: hidden;
         background-color: #333;

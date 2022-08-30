@@ -68,4 +68,34 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     public int countOrderDetailsForShopById_OrderToday(String idShop) {
         return 0;
     }
+
+    @Override
+    public boolean updateSTTAccept_OrderDetailsShopByID_Ord_ID_Pro(long idDetail, int idPro) {
+        return this.orderDetailsRepository.updateSTTAccept_OrderDetailsShopByID_Ord_ID_Pro(idDetail,idPro);
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getIs_Accepted_OrderDetailsForShopByID_ShopKW(params,page,idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_Today(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getIs_Accepted_OrderDetailsForShopByID_ShopKW_Today(params,page,idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_Yesterday(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getIs_Accepted_OrderDetailsForShopByID_ShopKW_Yesterday(params,page,idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_MoreDay(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getIs_Accepted_OrderDetailsForShopByID_ShopKW_MoreDay(params,page,idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_All(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getIs_Accepted_OrderDetailsForShopByID_ShopKW_All(params,page,idShop);
+    }
 }

@@ -11,6 +11,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <c:url value="/user/cus-orders-manager" var="url"/>
 <div class="container">
+    <nav class="nav nav-pills nav-justified">
+        <div class="nav-item">
+            <form action="${url}">
+                <button type="submit" class="btn btn-outline-success me-2">Đơn Hàng Đã Đặt</button>
+            </form>
+        </div>
+        <div class="nav-item">
+            <c:url value="/user/cus-orders-manager/wait" var="stt2"/>
+            <form action="${stt2}">
+                <button type="submit" class="btn btn-outline-success me-2">Đơn Hàng Đang Xử Lý</button>
+            </form>
+        </div>
+    </nav>
     <ul class="pagination">
         <c:forEach begin="1" end="${Math.ceil(orders_count/8)}" var="i">
             <c:url value="/user/cus-orders-manager/" var="c">
@@ -19,22 +32,10 @@
             <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
         </c:forEach>
     </ul>
-    <nav class="nav nav-pills nav-justified">
-        <div class="nav-item">
-            <form action="${url}">
-                <button name="idStatus" value="1" type="submit" class="btn btn-outline-success me-2">Đơn Hàng Đã Đặt</button>
-            </form>
-        </div>
-        <div class="nav-item">
-            <form action="${url}">
-                <button name="idStatus" value="2" type="submit" class="btn btn-outline-success me-2">Đơn Hàng Đang Xử Lý</button>
-            </form>
-        </div>
-    </nav>
-    <div class="container-fluid" style="margin-top: 10px">
+    <div class="container-fluid row" style="margin-top: 10px">
         <c:forEach items="${orders_cus}" var="order" begin="0" >
             <div class="col-md-3 col-xs-12" style="padding: 5px;">
-                <div class="card">
+                <div class="card" <c:if test="${order[3] == 1}"> style="background-color: goldenrod" </c:if>>
                     <img class="card-img-top" class="img-fluid"
                          src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
                          alt="Card image">
@@ -52,3 +53,7 @@
         </c:forEach>
     </div>
 </div>
+
+<script>
+
+</script>

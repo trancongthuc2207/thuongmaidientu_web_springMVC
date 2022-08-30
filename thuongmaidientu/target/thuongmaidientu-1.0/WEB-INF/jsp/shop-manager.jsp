@@ -92,8 +92,10 @@
                                 </a>
                                     <%--            <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>--%>
                                 <c:url value="/shop-manager/orders" var="orders"></c:url>
+                                <c:url value="/shop-manager/orders-accepted" var="ordersAcc"></c:url>
                                 <div class="dropdown-content">
                                     <a href="${orders}">Đơn Hàng Của Tôi</a>
+                                    <a href="${ordersAcc}">Đơn Hàng Đã Kiểm Duyệt</a>
                                     <a href="#">Phản Hồi Của Tôi</a>
                                 </div>
                             </div>

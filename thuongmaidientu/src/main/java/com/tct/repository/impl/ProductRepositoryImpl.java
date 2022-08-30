@@ -50,7 +50,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         if (params != null) {
             List<Predicate> predicates = new ArrayList<>();
             String kw = params.get("kw");
-            
+
+            Predicate stt = b.equal(root.get("status"), 1);
+            predicates.add(stt);
+
             String type_Id = params.get("type_Id");
             if (type_Id != null) {
                 Predicate p = b.equal(root.get("idTypeProduct"), Integer.parseInt(type_Id));
@@ -82,6 +85,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         if (params != null) {
             List<Predicate> predicates = new ArrayList<>();
             String kw = params.get("kw");
+
+            Predicate stt = b.equal(root.get("status"), 1);
+            predicates.add(stt);
+
             if (kw != null && !kw.isEmpty()) {
                 Predicate p = b.like(root.get("nameProduct").as(String.class), String.format("%%%s%%", kw));
                 predicates.add(p);
@@ -164,6 +171,21 @@ public class ProductRepositoryImpl implements ProductRepository {
         pro.setManufacturer(manufac);
         pro.setImage(image);
         pro.setDateCreated(new Date());
+        try{
+            session.update(pro);
+            return true;
+        }catch (Exception ex){
+            session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateStatusDelete_ProductByID_Product(int idPro) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        Product pro = session.get(Product.class,idPro);
+        pro.setStatus(999);
         try{
             session.update(pro);
             return true;

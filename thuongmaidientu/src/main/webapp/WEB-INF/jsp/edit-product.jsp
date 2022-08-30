@@ -61,10 +61,10 @@
                 </div>
 
                 <div>
-                    <button style="margin-top: 10px; width: 60%" class="btn btn-primary">Reset</button>
+                    <a href="#" onclick="clickReset()" style="margin-top: 10px; width: 60%" type="button" class="btn btn-primary">Reset</a>
                     <a href="#" onclick="clickSave(${idPro})" type="button" style="margin-top: 25px; width: 60%"
                        class="btn btn-primary btn-save">Lưu</a>
-                    <a href="#" type="button" style="margin-top: 25px; width: 60%"
+                    <a href="#" onclick="clickDelete(${idPro})" type="button" style="margin-top: 25px; width: 60%"
                        class="btn btn-primary btn-delete">Xoá</a>
                 </div>
             </c:forEach>
@@ -114,6 +114,34 @@
         }
     }
 
+    function clickDelete(id){
+        var answer = window.confirm("Delete data?");
+        if (answer) {
+            fetch('http://localhost:8080/thuongmaidientu/api/update-delete-pro',{
+                method: 'post',
+                body: JSON.stringify({
+                    "idPro":id.toString()
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(function (res) {
+                if (res.status === 200) {
+                    alert('Xoá thành công');
+                    window.location.href = "${back}";
+                }
+                else
+                    alert('Xoá không thành công');
+            })
+        } else {
+            //some code
+        }
+    }
+
+    function clickReset(){
+        window.location.reload()
+    }
+
 
     window.onload = function (){
         var type = document.getElementById("type");
@@ -123,7 +151,6 @@
             if(ty == pro)
                 type.options[i].setAttribute("selected","selected");
         }
-
     }
 </script>
 

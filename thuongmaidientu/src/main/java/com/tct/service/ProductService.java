@@ -20,4 +20,6 @@ public interface ProductService {
     List<Product> getProductByID(Map<String, String> params, int id);
 
     boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip,int typePro,String manufac, String image);
+
+    boolean updateStatusDelete_ProductByID_Product(int idPro);
 }
