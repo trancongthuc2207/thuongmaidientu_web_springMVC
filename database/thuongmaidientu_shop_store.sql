@@ -50,7 +50,7 @@ CREATE TABLE `shop_store` (
 
 LOCK TABLES `shop_store` WRITE;
 /*!40000 ALTER TABLE `shop_store` DISABLE KEYS */;
-INSERT INTO `shop_store` VALUES ('NULL','NULL',NULL,NULL,NULL,NULL,NULL,1),('TK','Thiên Khuyển','/images/uploads/samsung-galaxy-tab-s6.png',NULL,2,5,3,5),('TT','Tống Tiền','/images/uploads/samsung-galaxy-tab-s6.png',NULL,1,8,2,3);
+INSERT INTO `shop_store` VALUES ('qcjxd','SHOP BÁN HÀNG',NULL,'2022-09-03 00:01:05',NULL,NULL,NULL,10),('TK','Thiên Khuyển','https://res.cloudinary.com/thuongmaidientu-tct-vvh/image/upload/v1662097651/d3gyeklxspmmzp48cxfr.png',NULL,2,5,3,5),('TT','Tống Tiền','https://res.cloudinary.com/thuongmaidientu-tct-vvh/image/upload/v1662097651/d3gyeklxspmmzp48cxfr.png',NULL,1,8,2,3);
 /*!40000 ALTER TABLE `shop_store` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -63,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-31 15:30:30
+-- Dump completed on 2022-09-03  2:18:34

@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `type_report`;
 CREATE TABLE `type_report` (
   `id_type_rp` int NOT NULL,
   `name_rp` varchar(100) DEFAULT NULL,
+  `pos` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_type_rp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -35,7 +36,7 @@ CREATE TABLE `type_report` (
 
 LOCK TABLES `type_report` WRITE;
 /*!40000 ALTER TABLE `type_report` DISABLE KEYS */;
-INSERT INTO `type_report` VALUES (1,'Other'),(2,'Gian Lận'),(3,'Sai mô tả'),(4,'Thái độ kém');
+INSERT INTO `type_report` VALUES (1,'Other',NULL),(2,'Gian Lận','customer'),(3,'Sai mô tả','customer'),(4,'Thái độ kém','customer'),(5,'Báo cáo SHOP duyệt sản phẩm','app');
 /*!40000 ALTER TABLE `type_report` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-31 15:30:30
+-- Dump completed on 2022-09-03  2:18:33

@@ -30,8 +30,8 @@ CREATE TABLE `report` (
   `id_cus` varchar(10) DEFAULT NULL,
   `description_rp` varchar(200) DEFAULT NULL,
   `stt` varchar(45) DEFAULT NULL,
-  `date_rp` varchar(45) DEFAULT NULL,
-  `date_solve` varchar(45) DEFAULT NULL,
+  `date_rp` datetime DEFAULT NULL,
+  `date_solve` datetime DEFAULT NULL,
   `id_empl_solve` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_rp`),
   KEY `id_type_report_fk_idx` (`id_type_report`),
@@ -51,6 +51,7 @@ CREATE TABLE `report` (
 
 LOCK TABLES `report` WRITE;
 /*!40000 ALTER TABLE `report` DISABLE KEYS */;
+INSERT INTO `report` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,5,'TK',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 3','1','2022-09-02 15:44:37',NULL,NULL),(3,5,'TT',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 3','2','2022-09-02 15:44:42','2022-09-02 21:01:31',NULL),(4,5,'TT',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm: 3','2','2022-09-02 15:45:16','2022-09-02 21:01:31',NULL),(5,5,'TT',4,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 4','2','2022-09-02 15:47:08','2022-09-02 20:59:03',NULL),(6,5,'TK',1,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 1','2','2022-09-02 15:47:42','2022-09-02 22:45:49',NULL),(7,5,'TK',2,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 2','2','2022-09-02 15:47:56','2022-09-02 22:44:59',NULL),(8,5,'TK',2,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 2','2','2022-09-02 15:58:18','2022-09-02 22:44:59',NULL),(9,5,'TK',2,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 2','2','2022-09-02 15:58:30','2022-09-02 22:44:59',NULL),(10,5,'TT',8,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 8','2','2022-09-02 15:58:37','2022-09-02 21:01:56',NULL),(11,5,'TK',5,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 5','2','2022-09-02 15:58:45','2022-09-02 22:45:18',NULL),(12,5,'TT',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 3','2','2022-09-02 16:13:54','2022-09-02 21:01:31',NULL),(13,5,'TT',8,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 8','2','2022-09-02 16:14:01','2022-09-02 21:01:56',NULL),(14,5,'TT',4,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 4','2','2022-09-02 16:14:19','2022-09-02 20:59:03',NULL),(15,5,'TT',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 3','2','2022-09-02 16:14:23','2022-09-02 21:01:31',NULL),(16,5,'TK',5,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 5','2','2022-09-02 16:14:28','2022-09-02 22:45:18',NULL),(17,5,'TT',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 3','2','2022-09-02 20:04:30','2022-09-02 21:01:31',NULL),(18,5,'TT',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 3','2','2022-09-02 21:01:05','2022-09-02 21:01:31',NULL),(19,5,'TT',3,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 3','2','2022-09-02 21:01:07','2022-09-02 21:01:31',NULL),(20,5,'TT',6,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 6','2','2022-09-02 21:01:09','2022-09-02 21:02:10',NULL),(21,5,'TT',8,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 8','2','2022-09-02 21:01:11','2022-09-02 21:01:56',NULL),(22,5,'TK',2,NULL,'Yêu cầu shop duyệt đối với Sản phẩm 2','2','2022-09-02 22:44:36','2022-09-02 22:44:59',NULL);
 /*!40000 ALTER TABLE `report` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -63,4 +64,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-31 15:30:30
+-- Dump completed on 2022-09-03  2:18:33
