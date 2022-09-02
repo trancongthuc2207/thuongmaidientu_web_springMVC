@@ -44,6 +44,7 @@ public class LoginHandler implements AuthenticationSuccessHandler {
         boolean hasUserRole = false;
         boolean hasAdminRole = false;
         boolean hasShopRole = false;
+        boolean hasEmpployeeRole = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
@@ -55,15 +56,20 @@ public class LoginHandler implements AuthenticationSuccessHandler {
             } else if (grantedAuthority.getAuthority().equals("ROLE_SHOP")) {
                 hasShopRole = true;
                 break;
+            } else if (grantedAuthority.getAuthority().equals("ROLE_EMPLOYEE")) {
+                hasEmpployeeRole = true;
+                break;
             }
         }
 
         if (hasUserRole) {
             redirectStrategy.sendRedirect(request, response, "/");
         } else if (hasAdminRole) {
-            redirectStrategy.sendRedirect(request, response, "/user/customer-products");
+            redirectStrategy.sendRedirect(request, response, "/");
         } else if (hasShopRole) {
             redirectStrategy.sendRedirect(request, response, "/shop-manager");
+        } else if (hasEmpployeeRole) {
+            redirectStrategy.sendRedirect(request, response, "/employee");
         } else {
             throw new IllegalStateException();
         }

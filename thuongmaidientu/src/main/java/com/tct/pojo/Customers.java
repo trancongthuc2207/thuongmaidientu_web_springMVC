@@ -4,18 +4,11 @@
  */
 package com.tct.pojo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customers.findBySerialNumberC", query = "SELECT c FROM Customers c WHERE c.serialNumberC = :serialNumberC"),
     @NamedQuery(name = "Customers.findByPhoneNumber", query = "SELECT c FROM Customers c WHERE c.phoneNumber = :phoneNumber"),
     @NamedQuery(name = "Customers.findByAddress", query = "SELECT c FROM Customers c WHERE c.address = :address"),
+    @NamedQuery(name = "Customers.findByVipPos", query = "SELECT c FROM Customers c WHERE c.vipPos = :vipPos"),
     @NamedQuery(name = "Customers.findByIdAcc", query = "SELECT c FROM Customers c WHERE c.idAcc = :idAcc")})
 public class Customers implements Serializable {
 
@@ -61,15 +55,16 @@ public class Customers implements Serializable {
     @Size(max = 200)
     @Column(name = "address")
     private String address;
+    @Column(name = "vip_pos")
+    private Integer vipPos;
     @Column(name = "id_acc")
     private Integer idAcc;
     @OneToMany(mappedBy = "idCus")
     private Set<Report> reportSet;
     @OneToMany(mappedBy = "customer")
     private Set<Orders> ordersSet;
-    @JoinColumn(name = "vip_pos", referencedColumnName = "id_position")
-    @ManyToOne
-    private PositionStaff vipPos;
+    @Transient
+    private MultipartFile file;
 
     public Customers() {
     }
@@ -126,6 +121,14 @@ public class Customers implements Serializable {
         this.address = address;
     }
 
+    public Integer getVipPos() {
+        return vipPos;
+    }
+
+    public void setVipPos(Integer vipPos) {
+        this.vipPos = vipPos;
+    }
+
     public Integer getIdAcc() {
         return idAcc;
     }
@@ -150,14 +153,6 @@ public class Customers implements Serializable {
 
     public void setOrdersSet(Set<Orders> ordersSet) {
         this.ordersSet = ordersSet;
-    }
-
-    public PositionStaff getVipPos() {
-        return vipPos;
-    }
-
-    public void setVipPos(PositionStaff vipPos) {
-        this.vipPos = vipPos;
     }
 
     @Override

@@ -25,7 +25,6 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id_orders` decimal(10,0) NOT NULL,
   `id_customer` varchar(10) DEFAULT NULL,
-  `id_shop_store` varchar(10) DEFAULT NULL,
   `total_money` decimal(10,0) DEFAULT NULL,
   `time_booked` datetime DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
@@ -42,7 +41,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,'abc','TT',5000000,'2022-07-23 00:00:00','1'),(2,'abd','TK',2000000,'2022-07-24 00:00:00','1'),(3,'abc','NULL',5000000,'2022-07-23 00:00:00','WAITTING'),(4,'abd','NULL',NULL,'2022-08-23 22:01:54','1'),(5,'abd','NULL',0,'2022-08-23 23:00:59','1'),(6,'abd','NULL',0,'2022-08-23 23:01:07','1'),(7,'abd','NULL',0,'2022-08-24 00:56:01','1'),(8,'abd','NULL',0,'2022-08-24 16:30:06','1'),(9,'abd','NULL',31600000,'2022-08-24 16:46:54','1'),(10,'abd','NULL',20000,'2022-08-24 16:54:37','1'),(11,'abd','NULL',21600000,'2022-08-24 17:16:14','1'),(12,'abd','NULL',28120000,'2022-08-27 01:05:30','1'),(13,'abd','NULL',5800000,'2022-08-27 18:55:21','1'),(14,'abd','NULL',37140000,'2022-08-28 11:50:51','1'),(15,'abd','NULL',11650000,'2022-08-28 16:42:57','1'),(16,'abd','NULL',12580000,'2022-08-29 15:01:59','1'),(17,'abd','NULL',0,NULL,'WAITTING');
+INSERT INTO `orders` VALUES (1,'abc',5000000,'2022-07-23 00:00:00','1'),(2,'abd',2000000,'2022-07-24 00:00:00','1'),(3,'abc',24340000,'2022-08-30 21:24:11','1'),(4,'abd',NULL,'2022-08-23 22:01:54','1'),(5,'abd',0,'2022-08-23 23:00:59','1'),(6,'abd',0,'2022-08-23 23:01:07','1'),(7,'abd',0,'2022-08-24 00:56:01','1'),(8,'abd',0,'2022-08-24 16:30:06','1'),(9,'abd',31600000,'2022-08-24 16:46:54','1'),(10,'abd',20000,'2022-08-24 16:54:37','1'),(11,'abd',21600000,'2022-08-24 17:16:14','1'),(12,'abd',28120000,'2022-08-27 01:05:30','1'),(13,'abd',5800000,'2022-08-27 18:55:21','1'),(14,'abd',37140000,'2022-08-28 11:50:51','1'),(15,'abd',11650000,'2022-08-28 16:42:57','1'),(16,'abd',12580000,'2022-08-29 15:01:59','1'),(17,'abd',0,NULL,'WAITTING'),(18,'abc',9140000,'2022-08-30 21:24:25','1'),(19,'abc',0,NULL,'WAITTING');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-30 13:51:12
+-- Dump completed on 2022-08-31 15:30:30

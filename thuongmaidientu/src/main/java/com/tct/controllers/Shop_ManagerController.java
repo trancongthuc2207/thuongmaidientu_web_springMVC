@@ -38,6 +38,9 @@ public class Shop_ManagerController {
     @Autowired
     private DiscountCodeService discountCodeService;
 
+    @Autowired
+    private ReportService reportService;
+
     @ModelAttribute
     public void addAttributes(Model model, Authentication authentication) {
         if (authentication != null) {
@@ -48,6 +51,7 @@ public class Shop_ManagerController {
     @GetMapping("/shop-manager")
     public String customer_prodAttr(Model model, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {
         model.addAttribute("type_products", this.type_ProductService.getTypeProducts());
+
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
 
         if (authentication != null) {
@@ -56,6 +60,9 @@ public class Shop_ManagerController {
 
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
             int slPro = this.shopProductService.countProduct_ShopByID_Shop(shopStore.getIdShopStore());
+            model.addAttribute("amountReport",this.reportService.countReportShop(shopStore.getIdShopStore()));
+            model.addAttribute("amountOrder",this.orderDetailsService.countNotConfirmOrderDetailsForShopById_Order(shopStore.getIdShopStore()));
+
 
             model.addAttribute("shopAcc", this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()));
             model.addAttribute("countPro", slPro);

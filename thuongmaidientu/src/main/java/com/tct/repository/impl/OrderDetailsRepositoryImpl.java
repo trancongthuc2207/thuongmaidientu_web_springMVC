@@ -416,5 +416,83 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
         return query.getResultList();
     }
 
+    @Override
+    public List<OrderDetails> getOrderDetails(Map<String, String> params, int page) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from OrderDetails order by dateCreated");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_Today(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderToDay_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_Yesterday(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderYesterday_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_MoreDay(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderMoreDay_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_All(Map<String, String> params, int page, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        String kw = params.getOrDefault("kw", "");
+
+        Query query = session.createSQLQuery("CALL GetOrderAll_Kw(:idS,:keyword)")
+                .addEntity(OrderDetails.class)
+                .setParameter("idS", idShop)
+                .setParameter("keyword", kw);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public int countNotConfirmOrderDetailsForShopById_Order(String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '1' and s.product.status = 1");
+        query.setParameter("idS", idShop);
+
+        return query.getResultList().size();
+    }
+
+    @Override
+    public int countProductInOrderWaitting(long idDetail) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        long count = session
+                .createQuery("select sum(o.amount) From OrderDetails o WHERE o.orderDetailsPK.idOrderDetails=:idO and o.stt = '1'", Long.class)
+                .setParameter("idO", idDetail)
+                .getSingleResult();
+        return Integer.parseInt(String.valueOf(count));
+    }
+
 
 }

@@ -4,22 +4,29 @@
  */
 package com.tct.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.tct.pojo.Product;
 import com.tct.repository.ProductRepository;
 import com.tct.service.ProductService;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author admin
  */
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Override
     public List<Product> getProducts(Map<String, String> params, int page) {
@@ -28,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductsByType(Map<String, String> map, int i, int i1) {
-        return this.productRepository.getProductsByType(map, i,i1);
+        return this.productRepository.getProductsByType(map, i, i1);
     }
 
     @Override
@@ -43,11 +50,69 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip, int typePro, String manufac, String image) {
-        return this.productRepository.updateProductByID_Product(idPro,name,unitPrice,decrip,typePro,manufac,image);
+        return this.productRepository.updateProductByID_Product(idPro, name, unitPrice, decrip, typePro, manufac, image);
     }
 
     @Override
     public boolean updateStatusDelete_ProductByID_Product(int idPro) {
         return this.productRepository.updateStatusDelete_ProductByID_Product(idPro);
+    }
+
+    @Override
+    public boolean addNewProduct(String name, Long unitPrice, String decrip, int typePro, String manufac, String image, String idShop) {
+        return this.productRepository.addNewProduct(name, unitPrice, decrip, typePro, manufac, image, idShop);
+    }
+
+    @Override
+    public List<Product> getProductsWaittingByID_Shop(String idShop) {
+        return this.productRepository.getProductsWaittingByID_Shop(idShop);
+    }
+
+    @Override
+    public List<Product> getProductsDeletedByID_Shop(String idShop) {
+        return this.productRepository.getProductsDeletedByID_Shop(idShop);
+    }
+
+    @Override
+    public boolean updateStatusRestore_ProductByID_Product(int idPro) {
+        return this.productRepository.updateStatusRestore_ProductByID_Product(idPro);
+    }
+
+    @Override
+    public boolean addNewProduct(Product pro, String idShop) {
+        try {
+            Map r = this.cloudinary.uploader().upload(pro.getFile().getBytes(),
+                    ObjectUtils.asMap("resource_type", "auto"));
+            String img = (String) r.get("secure_url");
+            pro.setImage(img);
+            return this.productRepository.addNewProduct(pro, idShop);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateProductByID_Product(Product proD, String idShop) {
+        try {
+            Map r = this.cloudinary.uploader().upload(proD.getFile().getBytes(),
+                    ObjectUtils.asMap("resource_type", "auto"));
+            String img = (String) r.get("secure_url");
+            proD.setImage(img);
+            return this.productRepository.updateProductByID_Product(proD, idShop);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public List<Product> getProductsWaittingComfirm() {
+        return this.productRepository.getProductsWaittingComfirm();
+    }
+
+    @Override
+    public boolean addProduct2Shop(int idPro) {
+        return this.productRepository.addProduct2Shop(idPro);
     }
 }

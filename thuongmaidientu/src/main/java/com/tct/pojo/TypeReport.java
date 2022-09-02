@@ -5,19 +5,16 @@
 package com.tct.pojo;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,7 +26,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TypeReport.findAll", query = "SELECT t FROM TypeReport t"),
     @NamedQuery(name = "TypeReport.findByIdTypeRp", query = "SELECT t FROM TypeReport t WHERE t.idTypeRp = :idTypeRp"),
-    @NamedQuery(name = "TypeReport.findByNameRp", query = "SELECT t FROM TypeReport t WHERE t.nameRp = :nameRp")})
+    @NamedQuery(name = "TypeReport.findByNameRp", query = "SELECT t FROM TypeReport t WHERE t.nameRp = :nameRp"),
+    @NamedQuery(name = "TypeReport.findByPos", query = "SELECT t FROM TypeReport t WHERE t.pos = :pos")})
 public class TypeReport implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +39,9 @@ public class TypeReport implements Serializable {
     @Size(max = 100)
     @Column(name = "name_rp")
     private String nameRp;
-    @OneToMany(mappedBy = "idTypeReport")
-    private Set<Report> reportSet;
+    @Size(max = 45)
+    @Column(name = "pos")
+    private String pos;
 
     public TypeReport() {
     }
@@ -67,13 +66,12 @@ public class TypeReport implements Serializable {
         this.nameRp = nameRp;
     }
 
-    @XmlTransient
-    public Set<Report> getReportSet() {
-        return reportSet;
+    public String getPos() {
+        return pos;
     }
 
-    public void setReportSet(Set<Report> reportSet) {
-        this.reportSet = reportSet;
+    public void setPos(String pos) {
+        this.pos = pos;
     }
 
     @Override

@@ -32,9 +32,7 @@ CREATE TABLE `customers` (
   `vip_pos` int DEFAULT NULL,
   `id_acc` int DEFAULT NULL,
   PRIMARY KEY (`id_customer`),
-  UNIQUE KEY `id_customer_UNIQUE` (`id_customer`),
-  KEY `vip_pos_idx` (`vip_pos`),
-  CONSTRAINT `vip_pos` FOREIGN KEY (`vip_pos`) REFERENCES `position_staff` (`id_position`)
+  UNIQUE KEY `id_customer_UNIQUE` (`id_customer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -44,7 +42,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES ('abc','Trần Công Thức','Nam','072201000002','0792767777','Tây Ninh',1,2),('abd','Võ Văn Hưng','Nam','072239112312','0899009023','An Giang',2,6);
+INSERT INTO `customers` VALUES ('abc','Trần Công Thức','Nam','072201000002','0792767777','Tây Ninh',2,2),('abd','Võ Văn Hưng','Nam','072239112312','0899009023','An Giang',2,6),('nv1','Cường','Nam','072239112312','0899009023','TP.HCM',99,7);
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-30 13:51:13
+-- Dump completed on 2022-08-31 15:30:30

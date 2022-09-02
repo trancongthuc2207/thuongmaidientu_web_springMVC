@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Controller
 @ControllerAdvice
-public class OrdersAcceptedController {
+public class Shop_OrdersAcceptedController {
     @Autowired
     private Type_ProductService type_ProductService;
     @Autowired

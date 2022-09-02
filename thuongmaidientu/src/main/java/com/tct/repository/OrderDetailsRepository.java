@@ -40,4 +40,18 @@ public interface OrderDetailsRepository {
     List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_MoreDay(Map<String, String> params, int page, String idShop);
 
     List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_All(Map<String, String> params, int page, String idShop);
+
+    List<OrderDetails> getOrderDetails(Map<String, String> params, int page);
+
+    List<OrderDetails> getOrderDetailsForShopByID_ShopKW_Today(Map<String, String> params, int page, String idShop);
+
+    List<OrderDetails> getOrderDetailsForShopByID_ShopKW_Yesterday(Map<String, String> params, int page, String idShop);
+
+    List<OrderDetails> getOrderDetailsForShopByID_ShopKW_MoreDay(Map<String, String> params, int page, String idShop);
+
+    List<OrderDetails> getOrderDetailsForShopByID_ShopKW_All(Map<String, String> params, int page, String idShop);
+
+    int countNotConfirmOrderDetailsForShopById_Order(String idShop);
+
+    int countProductInOrderWaitting(long idDetail);
 }

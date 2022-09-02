@@ -22,4 +22,21 @@ public interface ProductService {
     boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip,int typePro,String manufac, String image);
 
     boolean updateStatusDelete_ProductByID_Product(int idPro);
+
+    boolean addNewProduct(String name, Long unitPrice, String decrip,int typePro,String manufac, String image, String idShop);
+
+    List<Product> getProductsWaittingByID_Shop(String idShop);
+
+    List<Product> getProductsDeletedByID_Shop(String idShop);
+
+    boolean updateStatusRestore_ProductByID_Product(int idPro);
+
+    boolean addNewProduct(Product pro,String idShop);
+
+    boolean updateProductByID_Product(Product proD,String idShop);
+
+    List<Product> getProductsWaittingComfirm();
+
+    boolean addProduct2Shop(int idPro);
+
 }

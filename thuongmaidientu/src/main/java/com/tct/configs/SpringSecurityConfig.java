@@ -41,7 +41,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAccessDenied accessDenied;
 
-    //
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary
+                = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "thuongmaidientu-tct-vvh",
+                "api_key", "136659559425222",
+                "api_secret", "-x-xMyh3C8Oaejw8elmQEimSPsY",
+                "secure", true));
+        return cloudinary;
+    }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -68,12 +77,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().accessDeniedHandler(this.accessDenied);
 
         http.authorizeRequests().antMatchers("/").permitAll()
-                .antMatchers("/").hasAnyRole("USER", "ADMIN","SHOP")
+                .antMatchers("/").hasAnyRole("USER", "ADMIN","SHOP","EMPLOYEE")
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/shop-manager/**").hasAnyRole("SHOP", "ADMIN")
                 .antMatchers("/add_pro/**").hasAnyRole("USER")
-                .antMatchers("/api/**").hasAnyRole("USER", "ADMIN","SHOP")
-                .anyRequest().authenticated()
+                .antMatchers("/api/**").hasAnyRole("USER", "ADMIN","SHOP","EMPLOYEE")
+                .antMatchers("/employeee/**").hasAnyRole("EMPLOYEE","ADMIN")
+//                .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/login").permitAll().and().logout().permitAll();
         http.csrf().disable();

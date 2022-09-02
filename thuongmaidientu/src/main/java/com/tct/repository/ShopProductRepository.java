@@ -18,5 +18,5 @@ public interface ShopProductRepository {
     int countProduct_ShopByID_Shop(String idShop);
 
     boolean updateAmountPro_Shop(String idShop, int idProduct, int sl);
-
 }
+

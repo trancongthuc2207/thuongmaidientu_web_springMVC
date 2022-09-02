@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Controller
 @ControllerAdvice
-public class Cus_Orders_ManagerController {
+public class Customer_Orders_ManagerController {
     @Autowired
     private UserService_Cus accountService;
     @Autowired

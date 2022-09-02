@@ -83,7 +83,7 @@
 
         <div>
             <%--        PHÂN TRANG     --%>
-            <ul class="pagination" style="align-items: center">
+            <ul class="pagination defa" style="align-items: center">
                 <c:forEach begin="1" end="${Math.ceil(countOrd/8)}" var="i">
                     <c:url value="/shop-manager/orders-accepted/" var="c">
                         <c:param value="${i}" name="page"/>
@@ -91,6 +91,34 @@
                     <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
                 </c:forEach>
             </ul>
+
+            <ul class="pagination pageToday" style="align-items: center">
+                <c:forEach begin="1" end="${Math.ceil(countOrd/8)}" var="i">
+                    <c:url value="/shop-manager/orders-accepted/today" var="c">
+                        <c:param value="${i}" name="page"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
+                </c:forEach>
+            </ul>
+
+            <ul class="pagination pageYesterday" style="align-items: center">
+                <c:forEach begin="1" end="${Math.ceil(countOrd/8)}" var="i">
+                    <c:url value="/shop-manager/orders-accepted/yesterday" var="c">
+                        <c:param value="${i}" name="page"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
+                </c:forEach>
+            </ul>
+
+            <ul class="pagination pageMoreDay" style="align-items: center">
+                <c:forEach begin="1" end="${Math.ceil(countOrd/8)}" var="i">
+                    <c:url value="/shop-manager/orders-accepted/moreday" var="c">
+                        <c:param value="${i}" name="page"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
+                </c:forEach>
+            </ul>
+
         </div>
     </div>
 </div>
@@ -99,6 +127,10 @@
     var day = "";
     var search = document.getElementById("search");
     var inputKW = document.getElementById("searchKW");
+    var pageToday = document.getElementsByClassName("pageToday");
+    var pageYesterday = document.getElementsByClassName("pageYesterday");
+    var pageMoreday = document.getElementsByClassName("pageMoreDay");
+    var pageDefa = document.getElementsByClassName("defa");
 
     window.onload = function () {
         event.preventDefault();
@@ -111,26 +143,46 @@
         head.innerText = 'Tất cả đơn hàng.';
 
         if (window.location == "http://localhost:8080/thuongmaidientu/shop-manager/orders-accepted?filter=today"
-            || window.location.href.includes("orders-accepted/today") == true)
-        {
+            || window.location.href.includes("orders-accepted/today") == true) {
             document.getElementById("flexRadioDefault1").checked = true;
             head.innerText = 'Đơn hàng duyệt ngày hôm nay.';
             day = 1;
         }
         if (window.location == "http://localhost:8080/thuongmaidientu/shop-manager/orders-accepted?filter=yesterday"
-            || window.location.href.includes("orders-accepted/yesterday") == true)
-        {
+            || window.location.href.includes("orders-accepted/yesterday") == true) {
             document.getElementById("flexRadioDefault2").checked = true;
             head.innerText = 'Đơn hàng duyệt ngày hôm qua.';
             day = 2;
         }
         if (window.location == "http://localhost:8080/thuongmaidientu/shop-manager/orders-accepted?filter=moreday"
-            || window.location.href.includes("orders-accepted/moreday") == true)
-        {
+            || window.location.href.includes("orders-accepted/moreday") == true) {
             document.getElementById("flexRadioDefault3").checked = true;
             head.innerText = 'Đơn hàng duyệt quá 2 ngày.';
             day = 3;
         }
+
+        if (day == "") {
+            pageToday[0].style.display = "none";
+            pageYesterday[0].style.display = "none";
+            pageMoreday[0].style.display = "none";
+        }
+
+        if (day == 1) {
+            pageYesterday[0].style.display = "none";
+            pageMoreday[0].style.display = "none";
+            pageDefa[0].style.display = "none";
+        }
+        if (day == 2) {
+            pageToday[0].style.display = "none";
+            pageMoreday[0].style.display = "none";
+            pageDefa[0].style.display = "none";
+        }
+        if (day == 3) {
+            pageToday[0].style.display = "none";
+            pageYesterday[0].style.display = "none";
+            pageDefa[0].style.display = "none";
+        }
+
     }
 
     function clickSearch() {
@@ -144,7 +196,7 @@
         if (day == 1) {
             var kw = inputKW.value
             <c:url value="/shop-manager/orders-accepted/today" var="todayKW">
-                <c:param name="kw"></c:param>
+            <c:param name="kw"></c:param>
             </c:url>
             search.setAttribute("href", "${todayKW}" + kw);
         }

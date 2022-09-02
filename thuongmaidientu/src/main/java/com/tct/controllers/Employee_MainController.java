@@ -1,8 +1,7 @@
 package com.tct.controllers;
 
 import com.tct.pojo.Account;
-import com.tct.pojo.ShopProducts;
-import com.tct.pojo.ShopStore;
+import com.tct.pojo.Customers;
 import com.tct.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
@@ -19,7 +17,7 @@ import java.util.Map;
 
 @Controller
 @ControllerAdvice
-public class AddProductController {
+public class Employee_MainController {
     @Autowired
     private Type_ProductService type_ProductService;
     @Autowired
@@ -42,15 +40,20 @@ public class AddProductController {
     @Autowired
     private DiscountCodeService discountCodeService;
 
-    @RequestMapping("/shop-manager/add-product")
-    public String index(Model model, @RequestParam Map<String, String> params, Authentication authentication) {
-        model.addAttribute("type_products", this.type_ProductService.getTypeProducts());
-        return "shop-manager/add-product";
-    }
+    @GetMapping("/employee")
+    public String employee_main(Model model, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {
+        int page = Integer.parseInt(params.getOrDefault("pageOrder","1"));
+        if (authentication != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+            Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
+            session.setAttribute("listOrder", this.ordersService.getOrderByEmployee(params, page));
+            session.setAttribute("listOrderDetails", this.orderDetailsService.getOrderDetails(params, page));
+            session.setAttribute("idEmployee",customers.getIdCustomer());
 
-//    @GetMapping("/shop-manager/edit/back")
-//    public String back(@RequestParam Map<String, String> params, HttpSession session, Authentication authentication){
-//
-//        return "redirect:/user/customer-orders";
-//    }
+            session.setAttribute("listTypeProduct",this.type_ProductService.getTypeProducts());
+            session.setAttribute("listProduct",this.productService.getProductsWaittingComfirm());
+        }
+        return "employee";
+    }
 }

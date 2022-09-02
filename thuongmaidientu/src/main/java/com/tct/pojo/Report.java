@@ -5,6 +5,7 @@
 package com.tct.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,12 +50,12 @@ public class Report implements Serializable {
     @Size(max = 45)
     @Column(name = "stt")
     private String stt;
-    @Size(max = 45)
     @Column(name = "date_rp")
-    private String dateRp;
-    @Size(max = 45)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateRp;
     @Column(name = "date_solve")
-    private String dateSolve;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateSolve;
     @Size(max = 45)
     @Column(name = "id_empl_solve")
     private String idEmplSolve;
@@ -100,19 +103,19 @@ public class Report implements Serializable {
         this.stt = stt;
     }
 
-    public String getDateRp() {
+    public Date getDateRp() {
         return dateRp;
     }
 
-    public void setDateRp(String dateRp) {
+    public void setDateRp(Date dateRp) {
         this.dateRp = dateRp;
     }
 
-    public String getDateSolve() {
+    public Date getDateSolve() {
         return dateSolve;
     }
 
-    public void setDateSolve(String dateSolve) {
+    public void setDateSolve(Date dateSolve) {
         this.dateSolve = dateSolve;
     }
 

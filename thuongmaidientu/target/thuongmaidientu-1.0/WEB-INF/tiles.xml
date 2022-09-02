@@ -22,6 +22,13 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content"
                        value="/WEB-INF/jsp/login.jsp" />
     </definition>
+
+    <definition name="register" extends="baseLayout">
+        <put-attribute name="title" value="Dăng ký" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/register.jsp" />
+    </definition>
+
     <definition name="products" extends="baseLayout">
         <put-attribute name="title" value="Quan ly san pham" />
         <put-attribute name="content"
@@ -58,6 +65,24 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="title" value="Quản lý đơn đã kiểm duyệt" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/orders-accepted.jsp" />
+    </definition>
+
+    <definition name="shop-manager/reports" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý các phản hồi" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/report-shop.jsp" />
+    </definition>
+
+    <definition name="shop-manager/add-product" extends="baseLayout">
+        <put-attribute name="title" value="Thêm sản phẩm" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/add-product-shop.jsp" />
+    </definition>
+
+    <definition name="employee" extends="baseLayout">
+        <put-attribute name="title" value="Trang nhân viên" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/employee-main.jsp" />
     </definition>
 
 </tiles-definitions>

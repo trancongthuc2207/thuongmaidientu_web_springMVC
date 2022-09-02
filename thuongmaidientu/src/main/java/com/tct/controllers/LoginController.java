@@ -38,4 +38,5 @@ public class LoginController {
         if (authentication != null)
             model.addAttribute("currentUser", this.userService.getByUsername(authentication.getName()));
     }
+
 }

@@ -39,7 +39,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'NULL','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(2,'thuc','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(3,'tt','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(4,'ad','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(5,'tk','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(6,'hung','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',2);
+INSERT INTO `account` VALUES (1,'NULL','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(2,'thuc','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',2),(3,'tt','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(4,'ad','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(5,'tk','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(6,'hung','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',2),(7,'nhanvien','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',4);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-30 13:51:12
+-- Dump completed on 2022-08-31 15:30:30

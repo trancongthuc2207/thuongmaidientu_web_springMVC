@@ -4,8 +4,7 @@
  */
 package com.tct.repository.impl;
 
-import com.tct.pojo.Product;
-import com.tct.pojo.TypeProduct;
+import com.tct.pojo.*;
 import com.tct.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +44,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         CriteriaBuilder b = session.getCriteriaBuilder();
         CriteriaQuery<Product> q = b.createQuery(Product.class);
         Root root = q.from(Product.class);
+        Root rootShopProduct = q.from(ShopProducts.class);
         q.select(root);
+
 
         if (params != null) {
             List<Predicate> predicates = new ArrayList<>();
@@ -53,6 +54,12 @@ public class ProductRepositoryImpl implements ProductRepository {
 
             Predicate stt = b.equal(root.get("status"), 1);
             predicates.add(stt);
+
+            Predicate main = b.equal(root.get("idProduct"), rootShopProduct.get("product"));
+            predicates.add(main);
+
+            Predicate main2 = b.greaterThan(rootShopProduct.get("amount").as(Integer.class), 1);
+            predicates.add(main2);
 
             String type_Id = params.get("type_Id");
             if (type_Id != null) {
@@ -80,6 +87,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         CriteriaBuilder b = session.getCriteriaBuilder();
         CriteriaQuery<Product> q = b.createQuery(Product.class);
         Root root = q.from(Product.class);
+        Root rootShopProduct = q.from(ShopProducts.class);
         q.select(root);
         
         if (params != null) {
@@ -88,6 +96,12 @@ public class ProductRepositoryImpl implements ProductRepository {
 
             Predicate stt = b.equal(root.get("status"), 1);
             predicates.add(stt);
+
+            Predicate main = b.equal(root.get("idProduct"), rootShopProduct.get("product"));
+            predicates.add(main);
+
+            Predicate main2 = b.greaterThan(rootShopProduct.get("amount").as(Integer.class), 1);
+            predicates.add(main2);
 
             if (kw != null && !kw.isEmpty()) {
                 Predicate p = b.like(root.get("nameProduct").as(String.class), String.format("%%%s%%", kw));
@@ -129,7 +143,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public int countProduct() {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        org.hibernate.query.Query q = session.createQuery("SELECT COUNT(*) FROM Product");
+        org.hibernate.query.Query q = session.createQuery("SELECT COUNT(o) FROM Product o,ShopProducts s where o.idProduct=s.shopProductsPK.idProduct and o.status = 1 and s.amount > 1");
         
         return Integer.parseInt(q.getSingleResult().toString());
     }
@@ -191,6 +205,143 @@ public class ProductRepositoryImpl implements ProductRepository {
             return true;
         }catch (Exception ex){
             session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addNewProduct(String name, Long unitPrice, String decrip, int typePro, String manufac, String image, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        ShopStore shopStore = session.get(ShopStore.class,idShop);
+        TypeProduct type = session.get(TypeProduct.class,typePro);
+
+        Product pro = new Product();
+        pro.setIdProduct(getID_max()+1);
+        pro.setNameProduct(name);
+        pro.setUnitPrice(unitPrice);
+        pro.setProductDescription(decrip);
+        pro.setTypeOfProduct(type);
+        pro.setManufacturer(manufac);
+        pro.setImage(image);
+        pro.setIdShop(shopStore);
+        pro.setStatus(100);
+        pro.setDateCreated(new Date());
+        try{
+            session.save(pro);
+            return true;
+        }catch (Exception ex){
+            session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public int getID_max() {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from Product o ORDER BY o.idProduct DESC");
+        Product pro = (Product) query.getResultList().get(0);
+        return pro.getIdProduct();
+    }
+
+    @Override
+    public List<Product> getProductsWaittingByID_Shop(String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("select o from Product o,ShopStore s where o.idShop.idShopStore = s.idShopStore and s.idShopStore=:ids and o.status = 100 ORDER BY o.dateCreated DESC");
+        query.setParameter("ids",idShop);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Product> getProductsDeletedByID_Shop(String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("select o from Product o,ShopStore s where o.idShop.idShopStore = s.idShopStore and s.idShopStore=:ids and o.status = 999 ORDER BY o.dateCreated DESC");
+        query.setParameter("ids",idShop);
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean updateStatusRestore_ProductByID_Product(int idPro) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        Product pro = session.get(Product.class,idPro);
+        pro.setStatus(100);
+        try{
+            session.update(pro);
+            return true;
+        }catch (Exception ex){
+            session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addNewProduct(Product pro,String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        ShopStore shopStore = session.get(ShopStore.class,idShop);
+        pro.setIdProduct(getID_max()+1);
+        pro.setIdShop(shopStore);
+        pro.setStatus(100);
+        pro.setDateCreated(new Date());
+        try{
+            session.save(pro);
+            return true;
+        }catch (Exception ex){
+            session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateProductByID_Product(Product proD, String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        TypeProduct type = session.get(TypeProduct.class,proD.getTypeOfProduct());
+
+        Product pro = session.get(Product.class,proD.getIdProduct());
+        pro.setNameProduct(proD.getNameProduct());
+        pro.setUnitPrice(proD.getUnitPrice());
+        pro.setProductDescription(proD.getProductDescription());
+        pro.setTypeOfProduct(type);
+        pro.setManufacturer(proD.getManufacturer());
+        pro.setImage(proD.getImage());
+        pro.setDateCreated(new Date());
+        try{
+            session.update(pro);
+            return true;
+        }catch (Exception ex){
+            session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public List<Product> getProductsWaittingComfirm() {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("select o from Product o where o.status = 100 ORDER BY o.dateCreated");
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean addProduct2Shop(int idPro) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Product product = session.get(Product.class,idPro);
+        product.setStatus(1);
+
+        ShopProductsPK pk = new ShopProductsPK();
+        pk.setIdProduct(product.getIdProduct());
+        pk.setIdShop(product.getIdShop().getIdShopStore());
+
+        ShopProducts shopProducts = new ShopProducts();
+        shopProducts.setShopProductsPK(pk);
+        shopProducts.setAmount(0);
+        shopProducts.setTimeBegin(new Date());
+        try{
+            session.save(shopProducts);
+            session.update(product);
+            return true;
+        }catch (Exception exception){
+
         }
         return false;
     }

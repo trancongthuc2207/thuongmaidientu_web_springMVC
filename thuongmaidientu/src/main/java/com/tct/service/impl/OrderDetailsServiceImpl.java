@@ -98,4 +98,39 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     public List<OrderDetails> getIs_Accepted_OrderDetailsForShopByID_ShopKW_All(Map<String, String> params, int page, String idShop) {
         return this.orderDetailsRepository.getIs_Accepted_OrderDetailsForShopByID_ShopKW_All(params,page,idShop);
     }
+
+    @Override
+    public List<OrderDetails> getOrderDetails(Map<String, String> params, int page) {
+        return this.orderDetailsRepository.getOrderDetails(params,page);
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_Today(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getOrderDetailsForShopByID_ShopKW_Today(params,page,idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_Yesterday(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getOrderDetailsForShopByID_ShopKW_Yesterday(params,page,idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_MoreDay(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getOrderDetailsForShopByID_ShopKW_MoreDay(params,page,idShop);
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsForShopByID_ShopKW_All(Map<String, String> params, int page, String idShop) {
+        return this.orderDetailsRepository.getOrderDetailsForShopByID_ShopKW_All(params,page,idShop);
+    }
+
+    @Override
+    public int countNotConfirmOrderDetailsForShopById_Order(String idShop) {
+        return this.orderDetailsRepository.countNotConfirmOrderDetailsForShopById_Order(idShop);
+    }
+
+    @Override
+    public int countProductInOrderWaitting(long idDetail) {
+        return this.orderDetailsRepository.countProductInOrderWaitting(idDetail);
+    }
 }

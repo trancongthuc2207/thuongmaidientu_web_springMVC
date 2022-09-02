@@ -49,8 +49,6 @@ public class PositionStaff implements Serializable {
     private String descriptions;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "positionStaff")
     private Administrator administrator;
-    @OneToMany(mappedBy = "vipPos")
-    private Set<Customers> customersSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPos")
     private Set<Account> accountSet;
 
@@ -91,15 +89,6 @@ public class PositionStaff implements Serializable {
 
     public void setAdministrator(Administrator administrator) {
         this.administrator = administrator;
-    }
-
-    @XmlTransient
-    public Set<Customers> getCustomersSet() {
-        return customersSet;
-    }
-
-    public void setCustomersSet(Set<Customers> customersSet) {
-        this.customersSet = customersSet;
     }
 
     @XmlTransient

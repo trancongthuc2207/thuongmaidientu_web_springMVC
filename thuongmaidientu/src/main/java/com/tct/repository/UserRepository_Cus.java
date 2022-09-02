@@ -13,11 +13,13 @@ import java.util.List;
  * @author ADMIN
  */
 public interface UserRepository_Cus {
-    void addUser(Account user);
+    boolean addUser(Account user);
 
     Account getById(int id);
 
     Account getByUsername(String username);
 
     List<Account> getUsers(String username);
+
+    int getID_max();
 }

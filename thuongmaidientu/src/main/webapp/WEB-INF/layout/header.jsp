@@ -53,10 +53,10 @@
                             <div class="dropdown">
                                 <a type="submit" class="dropbtn" href="${cus_bag}"><i
                                         class="fas fa-shopping-cart"></i> My Bag
-                                    <i class="badge badge-danger" id="cartCounter"></i>0
+                                    <i class="badge badge-danger"></i>${amountPro}
                                     <i class="fa fa-caret-down"></i>
                                 </a>
-                                <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>
+                                <c:url value="/user/cus-orders-manager" var="my_orders"/>
                                 <div class="dropdown-content">
                                     <a href="${my_orders}">Đơn Hàng Của Tôi</a>
                                     <a href="#">Đơn Hàng Đang Giao</a>
@@ -99,6 +99,22 @@
                                 </a>
                                 <div class="dropdown-content">
                                     <a href="#">Thông Tin Tài Khoản</a>
+                                    <a href="<c:url value="/logout"/>">Đăng Xuất</a>
+                                </div>
+                            </div>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ROLE_EMPLOYEE')">
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="fas fa-user-circle dropbtn"/>
+                                    ${pageContext.session.getAttribute("currentUser").idAccount} EMPLOYEE
+                                (<sec:authentication property="principal.username"/>)
+                                </a>
+                                <c:url value="/employee" var="emp"></c:url>
+                                <div class="dropdown-content">
+                                    <a href="#">Thông Tin Tài Khoản</a>
+                                    <a href="${emp}">Trang quản trị chính</a>
                                     <a href="<c:url value="/logout"/>">Đăng Xuất</a>
                                 </div>
                             </div>

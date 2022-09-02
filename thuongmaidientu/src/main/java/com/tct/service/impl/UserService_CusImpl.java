@@ -29,14 +29,16 @@ public class UserService_CusImpl implements UserService_Cus {
     @Autowired
     private UserRepository_Cus userRepository;
 //    @Autowired
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     @Transactional
-    public void addUser(Account user) {
+    public boolean addUser(Account user) {
+        user.setIdAccount(this.userRepository.getID_max()+1);
         String pass = user.getPasswordC();
         user.setPasswordC(this.bCryptPasswordEncoder.encode(pass));
-        this.userRepository.addUser(user);
+        return this.userRepository.addUser(user);
     }
 
     @Override

@@ -30,11 +30,6 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public List<Orders> getProductByID_Shop(Map<String, String> params, int id) {
-        return null;
-    }
-
-    @Override
     public Long getID_OrdersByID_WAITTING(Map<String, String> params, String idCus) {
         return this.ordersRepository.getID_OrdersByID_WAITTING(params,idCus);
     }
@@ -47,5 +42,15 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public long getID_max() {
         return this.ordersRepository.getID_max();
+    }
+
+    @Override
+    public List<Orders> getOrderByEmployee(Map<String, String> params, int page) {
+        return this.ordersRepository.getOrderByEmployee(params,page);
+    }
+
+    @Override
+    public boolean submitOrderFull(long idOrder) {
+        return this.ordersRepository.submitOrderFull(idOrder);
     }
 }

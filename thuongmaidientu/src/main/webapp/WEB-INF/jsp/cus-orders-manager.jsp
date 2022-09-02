@@ -24,9 +24,17 @@
             </form>
         </div>
     </nav>
-    <ul class="pagination">
+    <ul class="pagination page1">
         <c:forEach begin="1" end="${Math.ceil(orders_count/8)}" var="i">
             <c:url value="/user/cus-orders-manager/" var="c">
+                <c:param value="${i}" name="pageOrder"/>
+            </c:url>
+            <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
+        </c:forEach>
+    </ul>
+    <ul class="pagination page2">
+        <c:forEach begin="1" end="${Math.ceil(orders_count/8)}" var="i">
+            <c:url value="/user/cus-orders-manager/wait" var="c">
                 <c:param value="${i}" name="pageOrder"/>
             </c:url>
             <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>
@@ -35,7 +43,8 @@
     <div class="container-fluid row" style="margin-top: 10px">
         <c:forEach items="${orders_cus}" var="order" begin="0" >
             <div class="col-md-3 col-xs-12" style="padding: 5px;">
-                <div class="card" <c:if test="${order[3] == 1}"> style="background-color: goldenrod" </c:if>>
+                <div class="card" <c:if test="${order[3] == 1}"> style="background-color: goldenrod" </c:if>
+                        <c:if test="${order[3] == 2}"> style="background-color: greenyellow" </c:if>>
                     <img class="card-img-top" class="img-fluid"
                          src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
                          alt="Card image">
@@ -55,5 +64,28 @@
 </div>
 
 <script>
+    var type = "";
+    var page1 = document.getElementsByClassName("page1");
+    var page2 = document.getElementsByClassName("page2");
+    window.onload = function (){
+        if (window.location == "http://localhost:8080/thuongmaidientu/user/cus-orders-manager?"
+            || window.location.href.includes("cus-orders-manager") == true)
+        {
+            type = 1;
+        }
+        if (window.location == "http://localhost:8080/thuongmaidientu/user/cus-orders-manager/wait?"
+            || window.location.href.includes("cus-orders-manager/wait") == true)
+        {
+            type = 2;
+        }
+
+        if(type == 1)
+        {
+            page2[0].style.display = "none";
+        }
+        if(type == 2){
+            page1[0].style.display = "none";
+        }
+    }
 
 </script>

@@ -5,6 +5,7 @@
 package com.tct.controllers;
 
 
+import com.cloudinary.Cloudinary;
 import com.tct.pojo.Account;
 import com.tct.pojo.Customers;
 import com.tct.service.*;
@@ -41,6 +42,9 @@ public class IndexController {
     @Autowired
     private OrderDetailsService orderDetailsService;
 
+    @Autowired
+    private Cloudinary cloudinary;
+
     @ModelAttribute
     public void commomAttrs(Model model, HttpSession session) {
         model.addAttribute("currentUser", session.getAttribute("currentUser"));
@@ -53,20 +57,49 @@ public class IndexController {
         int type = Integer.parseInt(params.getOrDefault("type_Id", "1"));
         model.addAttribute("products", this.productService.getProductsByType(params, page, type));
         model.addAttribute("productCounter", this.productService.countProduct());
-        model.addAttribute("cartCounter", session.getAttribute("cart"));
-
+        if(authentication != null){
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+            Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
+            long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
+            model.addAttribute("amountPro", this.orderDetailsService.countProductInOrderWaitting(idOrderWaitting));
+        }
         return "index";
     }
+
     @GetMapping("/add_pro/{idPro}")
-    public String add_product(@PathVariable("idPro") Integer productID, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication){
+    public String add_product(@PathVariable("idPro") Integer productID, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
             Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
             long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
             int id_pro = productID;
-            this.orderDetailsService.addOrUpdateProdToOrderDetails_WAITTING(params,idOrderWaitting,id_pro,customers.getIdCustomer());
+            this.orderDetailsService.addOrUpdateProdToOrderDetails_WAITTING(params, idOrderWaitting, id_pro, customers.getIdCustomer());
         }
         return "redirect:/";
+    }
+
+    @RequestMapping("/register")
+    public String registerView(Model model) {
+        model.addAttribute("account", new Account());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(@ModelAttribute(value = "account") Account account, Model model) {
+
+        if (account.getUsernameC() != null) {
+            if (account.getPasswordC().equals(account.getConfirmPassword())) {
+                if (this.userDetailsService.addUser(account) == true) {
+                    return "redirect:/login";
+                }
+            } else {
+                model.addAttribute("msgEr", "Hai mật khẩu không trùng nhau!!");
+            }
+        } else {
+            model.addAttribute("msgEr", "Chưa nhập tài khoản");
+        }
+        return "register";
     }
 }

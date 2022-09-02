@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-
+<c:url value="/register" var="register"/>
 <c:url value="/login" var="url"/>
 <div class="container">
     <div class="contentLogin">
@@ -31,6 +31,9 @@
             <div class="container-cancle" style="background-color:#f1f1f1">
                 <button type="button" class="cancelbtn">Cancel</button>
                 <span class="psw">Forgot <a href="#">password?</a></span>
+            </div>
+            <div class="container-cancle" style="background-color:#f1f1f1">
+                <span class="psw">Register Noww!! <a href="${register}">Here</a></span>
             </div>
         </form>
     </div>

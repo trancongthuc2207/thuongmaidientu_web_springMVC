@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Controller
 @ControllerAdvice
-public class OrdersShopController {
+public class Shop_ReportController {
     @Autowired
     private Type_ProductService type_ProductService;
     @Autowired
@@ -40,24 +40,20 @@ public class OrdersShopController {
     @Autowired
     private DiscountCodeService discountCodeService;
 
-    @GetMapping("/shop-manager/orders")
-    public String customer_prodAttr(Model model, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {
-        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+    @Autowired
+    private ReportService reportService;
 
+    @GetMapping("/shop-manager/reports")
+    public String reports(Model model, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {
+//        int page = Integer.parseInt(params.getOrDefault("page", "1"));
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
-
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
-            int slOrd = this.orderDetailsService.countOrderDetailsForShopById_Order(shopStore.getIdShopStore());
 
-            model.addAttribute("countOrd", slOrd);
-            model.addAttribute("listOrd", this.orderDetailsService.getOrderDetailsForShopByID_Shop(params, page, shopStore.getIdShopStore()));
 
-            model.addAttribute("listOrdFilter",this.orderDetailsService.getOrderDetailsForShopByID_ShopKW(params,page,shopStore.getIdShopStore()));
-
+            model.addAttribute("listReportApp",this.reportService.getReportByID_Shop(params,shopStore.getIdShopStore(),"app"));
         }
-
-        return "shop-manager/orders";
+        return "shop-manager/reports";
     }
 }

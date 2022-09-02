@@ -5,14 +5,23 @@
 package com.tct.repository.impl;
 
 import com.tct.pojo.Account;
+import com.tct.pojo.Customers;
+import com.tct.pojo.Orders;
+import com.tct.pojo.ShopStore;
+import com.tct.repository.OrdersRepository;
 import com.tct.repository.UserRepository_Cus;
+
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,30 +30,77 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
  * @author ADMIN
  */
 @Repository
 @Transactional
 public class UserRepository_CusImpl implements UserRepository_Cus {
-
+    @Autowired
+    private OrdersRepository ordersRepository;
     @Autowired
     private LocalSessionFactoryBean sessionFactory;
 
     private final int maxItemsInPage = 10;
 
     @Override
-    public void addUser(Account ac) {
+    public boolean addUser(Account ac) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         try {
-            if (ac.getIdAccount() != null) {
-                session.update(ac);
-            } else {
+
+            int leftLimit = 97; // letter 'a'
+            int rightLimit = 122; // letter 'z'
+            int len = 5;
+            Random random = new Random();
+            StringBuilder buffer = new StringBuilder(len);
+            for (int i = 0; i < len; i++) {
+                int randomLimitedInt = leftLimit + (int)
+                        (random.nextFloat() * (rightLimit - leftLimit + 1));
+                buffer.append((char) randomLimitedInt);
+            }
+            String generatedString = buffer.toString();
+
+            if (ac.getIdAccount() != null && ac.getIdPos().getIdPosition() == 2) {
+                Customers cus = new Customers();
+                cus.setNameC("Khách hàng");
+                cus.setIdAcc(ac.getIdAccount());
+                cus.setIdCustomer(generatedString);
+                cus.setVipPos(99);
+
+                Orders ordersNew = new Orders();
+                ordersNew.setStatus("WAITTING");
+                ordersNew.setCustomer(cus);
+                ordersNew.setTotalMoney(Long.parseLong("0"));
+                ordersNew.setIdOrders(this.ordersRepository.getID_max() + 1);
+
+                session.save(ordersNew);
                 session.save(ac);
+                session.save(cus);
+                return true;
+            }
+            if (ac.getIdAccount() != null && ac.getIdPos().getIdPosition() == 3) {
+                ShopStore store = new ShopStore();
+                store.setNameStore("SHOP BÁN HÀNG");
+                store.setIdAcc(ac);
+                store.setIdShopStore(generatedString);
+                store.setDateBegin(new Date());
+                session.save(ac);
+                session.save(store);
+                return true;
+            }
+            if (ac.getIdAccount() != null && ac.getIdPos().getIdPosition() == 4) {
+                Customers cus = new Customers();
+                cus.setNameC("Nhân viên");
+                cus.setIdAcc(ac.getIdAccount());
+                cus.setIdCustomer(generatedString);
+                cus.setVipPos(99);
+                session.save(ac);
+                session.save(cus);
+                return true;
             }
         } catch (HibernateException ex) {
             ex.printStackTrace();
         }
+        return false;
     }
 
     @Override
@@ -78,6 +134,14 @@ public class UserRepository_CusImpl implements UserRepository_Cus {
         Query q = session.createQuery(query);
 
         return q.getResultList();
+    }
+
+    @Override
+    public int getID_max() {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from Account o ORDER BY o.idAccount DESC");
+        Account account = (Account) query.getResultList().get(0);
+        return account.getIdAccount();
     }
 
 

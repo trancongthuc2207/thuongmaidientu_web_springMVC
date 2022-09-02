@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Controller
 @ControllerAdvice
-public class EditProductController {
+public class Shop_EditProductController {
     @Autowired
     private Type_ProductService type_ProductService;
     @Autowired
@@ -62,6 +62,21 @@ public class EditProductController {
     public String back( @RequestParam Map<String, String> params, HttpSession session, Authentication authentication){
 
         return "redirect:/user/customer-orders";
+    }
+
+    @PostMapping("/shop-manager/edit/update")
+    public String upload(@ModelAttribute("product") Product pro,Model model,Authentication authentication) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+        ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
+        if(pro != null)
+        {
+            if(this.productService.updateProductByID_Product(pro,shopStore.getIdShopStore()) == true){
+                model.addAttribute("errMsg","Thành công!!!");
+                return "redirect:/shop-manager";
+            }
+        }
+        return "shop-manager";
     }
 
 }

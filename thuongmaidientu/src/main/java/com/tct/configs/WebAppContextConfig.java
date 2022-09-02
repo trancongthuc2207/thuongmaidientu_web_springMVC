@@ -4,9 +4,11 @@
  */
 package com.tct.configs;
 
+import com.tct.formatter.PositionStaffFormatter;
 import com.tct.formatter.ProductFormatter;
 //import com.tct.validator.ShopProductValidator;
 //import com.tct.validator.WebAppValidator;
+import com.tct.formatter.TypeProductFormatter;
 import com.tct.validator.ShopProductValidator;
 import com.tct.validator.WebAppValidator;
 import org.springframework.context.MessageSource;
@@ -97,16 +99,18 @@ public class WebAppContextConfig implements WebMvcConfigurer {
 
         return resolver;
     }
-//    @Bean
-//    public CommonsMultipartResolver multipartResolver() {
-//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-//        resolver.setDefaultEncoding("UTF-8");
-//
-//        return resolver;
-//    }
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("UTF-8");
+
+        return resolver;
+    }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new ProductFormatter());
+        registry.addFormatter(new TypeProductFormatter());
+        registry.addFormatter(new PositionStaffFormatter());
     }
 }

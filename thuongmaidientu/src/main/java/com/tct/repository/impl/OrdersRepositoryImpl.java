@@ -94,11 +94,6 @@ public class OrdersRepositoryImpl implements OrdersRepository {
     }
 
     @Override
-    public List<Orders> getProductByID_Shop(Map<String, String> params, int id) {
-        return null;
-    }
-
-    @Override
     public Long getID_OrdersByID_WAITTING(Map<String, String> params, String idCus) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         //////
@@ -145,7 +140,6 @@ public class OrdersRepositoryImpl implements OrdersRepository {
                 Orders ordersNew = new Orders();
                 ordersNew.setStatus(st);
                 ordersNew.setCustomer(cus);
-                ordersNew.setIdShopStore("NULL");
                 ordersNew.setOrderDetailsSet(null);
                 ordersNew.setTotalMoney(Long.parseLong("0"));
                 ordersNew.setTimeBooked(null);
@@ -168,5 +162,33 @@ public class OrdersRepositoryImpl implements OrdersRepository {
         Query query = session.createQuery("from Orders o ORDER BY o.idOrders DESC");
         Orders ord = (Orders) query.getResultList().get(0);
         return ord.getIdOrders();
+    }
+
+    @Override
+    public List<Orders> getOrderByEmployee(Map<String, String> params, int page) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from Orders o where o.status=:st ORDER BY o.timeBooked");
+        query.setParameter("st","1");
+        if (page > 0) {
+            int size = Integer.parseInt(env.getProperty("pageOrderShop.size").toString());
+            int start = (page - 1) * size;
+            query.setFirstResult(start);
+            query.setMaxResults(size);
+        }
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean submitOrderFull(long idOrder) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Orders orders = session.get(Orders.class,idOrder);
+        orders.setStatus("2");
+        try {
+            session.update(orders);
+            return true;
+        }catch (Exception exception){
+
+        }
+        return false;
     }
 }

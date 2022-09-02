@@ -59,12 +59,19 @@
     </div>
     <c:forEach items="${shopAcc}" var="shop">
         <%------------------  HEADER CONTENT  ----------------------%>
-        <div class="col-md-3 col-xs-12" style="padding: 5px;">
+        <div class="col-md-3 col-xs-12" style="padding: 5px;width: 100%">
             <div style="display: inline-flex">
-                <div style="width: 30%" class="card">
-                    <img
-                            src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
-                            alt="Card image">
+                <div style="width: 40%;height: 100%" class="card">
+                    <c:if test="${shop.imageS.startsWith('https') == false}">
+                        <img class="card-img-top" class="img-fluid"
+                             src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                             alt="Card image">
+                    </c:if>
+                    <c:if test="${shop.imageS.startsWith('https') == true}">
+                        <img class="card-img-top" class="img-fluid"
+                             src="${shop.imageS}"
+                             alt="Card image">
+                    </c:if>
                 </div>
                 <div style="margin-left: 30px">
                     <h1 class="card-title">Mã shop: ${shop.idShopStore}</h1>
@@ -77,6 +84,9 @@
 
                     <a href="${addProduct}" class="btn btn-primary"
                             type="submit"> Thêm sản phẩm
+                    </a>
+                    <a href="${addProduct}" class="btn btn-primary"
+                       type="submit" style="margin-top: 15px"> Sản phẩm chờ duyệt
                     </a>
                 </div>
                 <div style="margin-left: 30%;">
@@ -93,10 +103,11 @@
                                     <%--            <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>--%>
                                 <c:url value="/shop-manager/orders" var="orders"></c:url>
                                 <c:url value="/shop-manager/orders-accepted" var="ordersAcc"></c:url>
+                                <c:url value="/shop-manager/reports" var="reports"/>
                                 <div class="dropdown-content">
-                                    <a href="${orders}">Đơn Hàng Của Tôi</a>
+                                    <a href="${orders}">Đơn Hàng Của Tôi &nbsp; <c:if test="${amountOrder > 0}"><i class='fas fa-exclamation-circle' style="color: #DC0404;font-size:18px"> ${amountOrder}</i></c:if></a>
                                     <a href="${ordersAcc}">Đơn Hàng Đã Kiểm Duyệt</a>
-                                    <a href="#">Phản Hồi Của Tôi</a>
+                                    <a href="${reports}">Phản Hồi Của Tôi &nbsp; <c:if test="${amountReport > 0}"><i class='fas fa-exclamation-circle' style="color: #DC0404;font-size:18px"> ${amountReport}</i></c:if></a>
                                 </div>
                             </div>
                         </li>
@@ -106,7 +117,7 @@
         </div>
     </c:forEach>
     <%--------------------------------------------%>
-    <div class="shop-items" style="display: inline-flex">
+    <div class="row shop-items" style="display: inline-flex">
         <%--        LIST PRODUCT     --%>
         <c:forEach items="${listProduct}" var="p">
             <c:url value="/shop-manager/edit/" var="cUrl">
@@ -114,7 +125,7 @@
             </c:url>
             <div class="col-md-3 col-xs-12" style="padding: 5px;">
                 <form action="#">
-                    <div class="card">
+                    <div class="card" <c:if test="${p.amount <= 1}"> style="background-color: dimgrey"</c:if>>
                         <img class="card-img-top" class="img-fluid"
                              src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
                              alt="Card image">

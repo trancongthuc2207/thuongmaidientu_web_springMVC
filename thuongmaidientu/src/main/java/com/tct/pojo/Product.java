@@ -4,22 +4,12 @@
  */
 package com.tct.pojo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -81,6 +71,9 @@ public class Product implements Serializable {
     private Set<ShopProducts> shopProductsSet;
     @OneToMany(mappedBy = "idProduct")
     private Set<Report> reportSet;
+
+    @Transient
+    private MultipartFile file;
 
     public Product() {
     }
@@ -220,5 +213,12 @@ public class Product implements Serializable {
     public String toString() {
         return "com.tct.pojo.Product[ idProduct=" + idProduct + " ]";
     }
-    
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 }

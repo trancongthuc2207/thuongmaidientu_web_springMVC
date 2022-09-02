@@ -90,9 +90,16 @@
             <div class="col-md-3 col-xs-12" style="padding: 5px;">
                 <form action="${prodID}${p.idProduct}">
                     <div class="card">
+                        <c:if test="${p.image.startsWith('https') == false}">
                         <img class="card-img-top" class="img-fluid"
                              src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
                              alt="Card image">
+                        </c:if>
+                        <c:if test="${p.image.startsWith('https') == true}">
+                            <img class="card-img-top" class="img-fluid"
+                                 src="${p.image}"
+                                 alt="Card image">
+                        </c:if>
                         <div class="card-body">
                             <h4 class="card-title">${p.nameProduct}</h4>
                             <p class="card-text">

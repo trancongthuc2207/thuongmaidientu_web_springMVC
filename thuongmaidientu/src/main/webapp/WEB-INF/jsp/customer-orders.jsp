@@ -40,6 +40,7 @@
         <tr style="text-align: center">
             <th>Image</th>
             <th>Mã Sản Phẩm</th>
+            <th>Tên</th>
             <th>Số lượng</th>
             <th>Đơn giá</th>
             <th>Phiếu giảm giá</th>
@@ -49,27 +50,41 @@
         <tbody style="text-align: center">
         <c:forEach items="${orderWaitting}" var="p">
             <tr>
-            <td></td>
-            <td class="id_pro">${p.orderDetailsPK.idProduct}</td>
-            <td>
-                <input onchange="clickSave()" style="width: 20%; text-align: center" type="number"
-                       name="quantity" class="sl" value="${p.amount}" min="1">
-                <a onclick="clickSave()" class="btn btn-success btn-save" type="button">Lưu</a>
-            </td>
-            <td class="price" style="text-align: right">${p.unitPrice}</td>
-            <td class="discount">${p.idDiscount}</td>
-            <td style="margin-left: 5px;"><span class="sub-total"><fmt:formatNumber type="number" maxFractionDigits="3"
-                                                                                    value="${p.amount * p.unitPrice}"/></span>
-                <a onclick="clickDelete()" style="float: right" class="btn btn-danger btn-delete" type="button">Xóa</a>
-            </td>
-        </tr>
+                <td>
+                    <c:if test="${p.product.image.startsWith('https') == false}">
+                        <img style="width: 60px;height: 80px" class="card-img-top" class="img-fluid"
+                             src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                             alt="Card image">
+                    </c:if>
+                    <c:if test="${p.product.image.startsWith('https') == true}">
+                        <img style="width: 60px;height: 80px" class="card-img-top" class="img-fluid"
+                             src="${p.product.image}"
+                             alt="Card image">
+                    </c:if>
+                </td>
+                <td class="id_pro">${p.orderDetailsPK.idProduct}</td>
+                <td class="name_pro">${p.product.nameProduct}</td>
+                <td>
+                    <input onchange="clickSave()" style="width: 20%; text-align: center" type="number"
+                           name="quantity" class="sl" value="${p.amount}" min="1">
+                    <a onclick="clickSave()" class="btn btn-success btn-save" type="button">Lưu</a>
+                </td>
+                <td class="price" style="text-align: right">${p.unitPrice}</td>
+                <td class="discount">${p.idDiscount}</td>
+                <td style="margin-left: 5px;"><span class="sub-total"><fmt:formatNumber type="number"
+                                                                                        maxFractionDigits="3"
+                                                                                        value="${p.amount * p.unitPrice}"/></span>
+                    <a onclick="clickDelete()" style="float: right" class="btn btn-danger btn-delete"
+                       type="button">Xóa</a>
+                </td>
+            </tr>
         </c:forEach>
         </tbody>
     </table>
 
     <div class="cart-total">
         <strong class="cart-total-title">Tổng Cộng:</strong>
-        <span class="cart-total-price" ><fmt:formatNumber type="number" maxFractionDigits="3"
+        <span class="cart-total-price"><fmt:formatNumber type="number" maxFractionDigits="3"
                                                          value="${sumOrder}"/> VNĐ</span>
     </div>
     <div style="margin-bottom: 30px;margin-top: 15px">
@@ -174,22 +189,14 @@
     }
 </style>
 <script>
-    // var remove_cart = document.getElementsByClassName("btn-danger");
-    // for (var i = 0; i < remove_cart.length; i++) {
-    //     var button = remove_cart[i]
-    //     button.addEventListener("click", function () {
-    //         var button_remove = event.target
-    //         button_remove.parentElement.parentElement.remove()
-    //     })
-    // }
-
     var luu_cart = document.getElementsByClassName("btn-save");
     var input_amount = document.getElementsByClassName("sl");
     var id_prod = document.getElementsByClassName("id_pro");
     var sub_tol = document.getElementsByClassName("sub-total");
     var price = document.getElementsByClassName("price");
     var total = document.getElementsByClassName("cart-total-price");
-    function clickSave(){
+
+    function clickSave() {
         var sum = 0;
         for (var i = 0; i < luu_cart.length; i++) {
             var button = luu_cart[i]
@@ -198,40 +205,44 @@
             var pric = price[i].innerHTML
             var sub_total = parseInt(amount) * parseFloat(pric)
             button.setAttribute("value", id + "/" + amount)
-            sub_tol[i].setAttribute("value",sub_total)
+            sub_tol[i].setAttribute("value", sub_total)
             sub_tol[i].innerHTML = sub_total
             sum += sub_total
 
             button.setAttribute("href", "${update}" + id_prod[i].innerHTML + "/" + (input_amount[i].value))
         }
-        total[0].setAttribute("value",sum)
+        total[0].setAttribute("value", sum)
         total[0].innerHTML = sum
     }
 
 
     var btn_pay = document.getElementsByClassName("btn-pay");
-    function clickPay(){
+
+    function clickPay() {
         var answer = window.confirm("Save data?");
         if (answer) {
-            btn_pay[0].setAttribute("href", "${payment}" + "/" + "${sumOrder}")
-        }
-        else {
+            if("${countPro_Order}" >= 1){
+                btn_pay[0].setAttribute("href", "${payment}" + "/" + "${sumOrder}");
+            } else {
+                alert("Hiện tại bạn chưa có món đồ nào!")
+            }
+
+        } else {
             //some code
         }
     }
 
     var xoa_cart = document.getElementsByClassName("btn-delete")
-    function clickDelete(){
+
+    function clickDelete() {
         var answer = window.confirm("Delete data?");
         if (answer) {
-            for(var i = 0; i < xoa_cart.length; i++)
-            {
+            for (var i = 0; i < xoa_cart.length; i++) {
                 var btnXoa = xoa_cart[i]
                 var id = id_prod[i].innerHTML;
                 btnXoa.setAttribute("href", "${delete}" + id)
             }
-        }
-        else {
+        } else {
             //some code
         }
     }
