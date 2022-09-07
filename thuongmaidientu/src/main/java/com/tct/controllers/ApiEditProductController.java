@@ -2,6 +2,7 @@ package com.tct.controllers;
 
 import com.cloudinary.Cloudinary;
 import com.tct.pojo.Product;
+import com.tct.service.OrderDetailsService;
 import com.tct.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,10 @@ import java.util.Map;
 public class ApiEditProductController {
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OrderDetailsService orderDetailsService;
+
 
     @PostMapping(path = "/update-pro" , produces = {
             MediaType.APPLICATION_JSON_VALUE
@@ -88,4 +93,19 @@ public class ApiEditProductController {
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+
+    @PostMapping(path = "/add-product2cart" , produces = {
+            MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<Product> addProduct2cart(@RequestBody Map<String,String> params){
+        int idPro = Integer.parseInt(params.get("idPro"));
+        String idCus = params.get("idCus");
+        long idOrderWaitting = Long.parseLong(params.get("idOrd"));
+
+        if(this.orderDetailsService.addOrUpdateProdToOrderDetails_WAITTING(params,idOrderWaitting,idPro,idCus))
+            return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

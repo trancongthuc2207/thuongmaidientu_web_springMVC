@@ -144,5 +144,20 @@ public class UserRepository_CusImpl implements UserRepository_Cus {
         return account.getIdAccount();
     }
 
+    @Override
+    public boolean updateUser(Account user) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Account account = session.get(Account.class,user.getIdAccount());
+        account.setPasswordC(user.getPasswordC());
+
+        try{
+            session.update(account);
+        }
+        catch (Exception e) {
+
+        }
+        return false;
+    }
+
 
 }

@@ -14,16 +14,15 @@
     <class>com.tct.pojo.ShopStore</class>
     <class>com.tct.pojo.OrderDetails_1</class>
     <class>com.tct.pojo.DiscountCode_1</class>
-    <class>com.tct.pojo.Customers_1</class>
     <class>com.tct.pojo.Orders_1</class>
     <class>com.tct.pojo.Account_1</class>
     <class>com.tct.pojo.ShopStore_1</class>
     <class>com.tct.pojo.Product_1</class>
     <class>com.tct.pojo.TypeProduct_1</class>
     <class>com.tct.pojo.Employee</class>
-    <class>com.tct.pojo.Customers</class>
     <class>com.tct.pojo.Report</class>
     <class>com.tct.pojo.TypeReport</class>
+    <class>com.tct.pojo.Customers</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

@@ -28,7 +28,38 @@ public class ShopStoreRepositoryImpl implements ShopStoreRepository {
         Session session = this.sessionFactory.getObject().getCurrentSession();
 
         Query query = session.createQuery("SELECT s from Account o, ShopStore s where o.idAccount=:id and  s.idAcc=:id");
-        query.setParameter("id",idAccS);
+        query.setParameter("id", idAccS);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean updateIn4ShopStore(ShopStore store) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        ShopStore shopStore = session.get(ShopStore.class, store.getIdShopStore());
+        shopStore.setNameStore(store.getNameStore());
+        shopStore.setMainType(store.getMainType());
+        shopStore.setMainType(store.getOrtherType1());
+        shopStore.setMainType(store.getOrtherType2());
+        if (store.getFile() != null) {
+            shopStore.setImageS(store.getImageS());
+        }
+        try {
+            session.update(shopStore);
+            return true;
+        } catch (Exception ex) {
+
+        }
+        return false;
+    }
+
+    @Override
+    public List<ShopStore> getShopstoreByID_Shop(String idShop) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        Query query = session.createQuery("SELECT s from ShopStore s where s.idShopStore=:idS");
+        query.setParameter("idS", idShop);
 
         return query.getResultList();
     }

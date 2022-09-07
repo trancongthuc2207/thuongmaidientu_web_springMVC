@@ -4,4 +4,6 @@ import com.tct.pojo.Customers;
 
 public interface CustomerService {
     Customers getCustomersByID_acc(int id);
+
+    boolean updateCustomer(Customers cus);
 }

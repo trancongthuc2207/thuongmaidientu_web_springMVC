@@ -17,4 +17,9 @@ public interface ReportRepository {
     boolean confirmOrderReportByShop(int idPro);
 
     boolean checkReportByShop_Pro(int idPro);
+
+    List<Report> getReportForCus(Map<String, String> params, String pos);
+
+
+    boolean addReportFromCus2Product(int typeRp,String idShop, String descrip,String idCus, int idPro);
 }

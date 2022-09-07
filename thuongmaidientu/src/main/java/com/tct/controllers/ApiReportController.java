@@ -35,4 +35,18 @@ public class ApiReportController {
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping(path = "/send-rp-pro-customer" , produces = {
+            MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<Report> reportPro(@RequestBody Map<String,String> params){
+        int typeRp = Integer.parseInt(params.get("typeRp"));
+        String idShop = params.get("idShop");
+        String descript = params.get("descrip");
+        String idCus = params.get("idCus");
+        int idPro = Integer.parseInt(params.get("idPro"));
+        if(this.reportService.addReportFromCus2Product(typeRp,idShop,descript,idCus,idPro))
+            return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }

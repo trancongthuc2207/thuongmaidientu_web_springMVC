@@ -5,4 +5,6 @@ import com.tct.pojo.Customers;
 
 public interface CustomerRepository {
     Customers getCustomersByID_acc(int id);
+
+    boolean updateCustomer(Customers cus);
 }

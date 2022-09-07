@@ -70,7 +70,8 @@
                                 (<sec:authentication property="principal.username"/>)
                                 </a>
                                 <div class="dropdown-content">
-                                    <a href="#">Thông Tin Tài Khoản</a>
+                                    <c:url value="/user/infor-customer" var="in4"></c:url>
+                                    <a href="${in4}">Thông Tin Tài Khoản</a>
                                     <a href="<c:url value="/logout"/>">Đăng Xuất</a>
                                 </div>
                             </div>
@@ -83,6 +84,7 @@
                                     ${pageContext.session.getAttribute("currentUser").idAccount} Shopper
                                 (<sec:authentication property="principal.username"/>)
                                 </a>
+
                                 <div class="dropdown-content">
                                     <a href="#">Thông Tin Tài Khoản</a>
                                     <a href="<c:url value="/logout"/>">Đăng Xuất</a>

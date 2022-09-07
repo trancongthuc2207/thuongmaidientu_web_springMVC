@@ -55,7 +55,11 @@
                         </p>
                         <p class="card-text">${order[2]}</p>
                         <p class="card-text">${order[3]}</p>
-                        <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>
+
+                        <c:url value="/order-details" var="details">
+                            <c:param name="idOder" value="${order[0]}"></c:param>
+                        </c:url>
+                        <a href="${details}" class="btn btn-primary">Xem chi tiet</a>
                     </div>
                 </div>
             </div>

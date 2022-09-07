@@ -21,4 +21,6 @@ public interface UserService_Cus extends UserDetailsService {
     Account getByUsername(String username);
 
     List<Account> getUsers(String username);
+
+    boolean updateUser(Account user);
 }

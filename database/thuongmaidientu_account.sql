@@ -39,7 +39,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (2,'thuc','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',2),(3,'tt','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(4,'ad','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(5,'tk','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(6,'hung','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',2),(7,'nhanvien','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',4),(8,'thucc','$2a$10$8ttR25el3HWFH3hbu2uJ2u5bOn86Bm/pdCu7/0nGy8YLItzH8urqC',2),(9,'nhanvien1','$2a$10$ddJQZGu6sDCYW75Mcz9XIeTLc8b/Wy6rcdlgpbCbd.7saxJ828N3m',4),(10,'shop','$2a$10$kbg4hLpElO4NixdtAj0LjOXI3c23q08ejtQaDqNxxn/RpxpLb2L6m',3);
+INSERT INTO `account` VALUES (2,'thuc','$2a$10$9u6nbeEJxA7vCPk9y1O.xOrOgmm9hrPjzEHWmWtvuxg2Bt5X0qieu',2),(3,'tt','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(4,'ad','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',1),(5,'tk','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',3),(6,'hung','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',2),(7,'nhanvien','$2a$12$j1.skyoiK5y.BeBLOtLHteSiUI8reLpbh0NdLdkTIXJYau5gpcjEe',4),(8,'thucc','$2a$10$8ttR25el3HWFH3hbu2uJ2u5bOn86Bm/pdCu7/0nGy8YLItzH8urqC',2),(9,'nhanvien1','$2a$10$ddJQZGu6sDCYW75Mcz9XIeTLc8b/Wy6rcdlgpbCbd.7saxJ828N3m',4),(10,'shop','$2a$10$kbg4hLpElO4NixdtAj0LjOXI3c23q08ejtQaDqNxxn/RpxpLb2L6m',3),(11,'thuc123','$2a$10$FvT/sSU9ycSA35ATj/98f.E0Klsis7NHb7S5tc6h1whpWhj8XfNs.',2);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-03  2:18:33
+-- Dump completed on 2022-09-07 18:35:24

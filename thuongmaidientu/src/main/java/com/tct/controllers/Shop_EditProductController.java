@@ -44,6 +44,9 @@ public class Shop_EditProductController {
     public String index(Model model, @RequestParam Map<String, String> params,Authentication authentication) {
         int id = Integer.parseInt(params.getOrDefault("ID_Product", "1"));
         model.addAttribute("productByID", this.productService.getProductByID(params,id));
+
+        model.addAttribute("product", new Product());
+
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());

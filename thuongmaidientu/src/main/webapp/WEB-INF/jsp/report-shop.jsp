@@ -13,7 +13,7 @@
     <h1> CÁC PHẢN HỒI TỪ CÁC BÊN</h1>
 
     <div>
-        <h1>BÊN ỨNG DỤNG</h1>
+        <h1>* BÊN ỨNG DỤNG</h1>
         <div class="row content-app">
             <c:forEach items="${listReportApp}" var="rpApp">
                 <div class="col-md-3 col-xs-12" style="padding: 5px;">
@@ -33,11 +33,29 @@
                     </form>
                 </div>
             </c:forEach>
-
         </div>
     </div>
     <div>
-        <h1>BÊN KHÁCH HÀNG</h1>
-
+        <h1>* BÊN KHÁCH HÀNG</h1>
+        <div class="row content-customer">
+            <c:forEach items="${listReportCus}" var="rpCus">
+                <div class="col-md-3 col-xs-12" style="padding: 5px;">
+                        <%--            <c:url value="/shop-manager/orders" var="linkPro">--%>
+                        <%--                <c:param name="kw"></c:param>--%>
+                        <%--            </c:url>--%>
+                    <form action="#">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Mã báo cáo: ${rpCus.idRp}</h4>
+                                <h5 class="card-text">Mô tả: ${rpCus.descriptionRp}</h5>
+                                <p class="card-text">Ngày tạo: ${rpCus.dateRp}</p>
+                                <p class="card-text">Loại báo cáo: ${rpCus.idTypeReport.nameRp}</p>
+                                <a class="btn btn-primary"> Xử lý </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </c:forEach>
+        </div>
     </div>
 </div>

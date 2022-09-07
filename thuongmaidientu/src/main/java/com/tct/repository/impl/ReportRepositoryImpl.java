@@ -107,4 +107,40 @@ public class ReportRepositoryImpl implements ReportRepository {
             return true;
         return false;
     }
+
+    @Override
+    public List<Report> getReportForCus(Map<String, String> params, String pos) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from Report o where o.idTypeReport.pos=:posit and o.stt = '1' ");
+        query.setParameter("posit", pos);
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean addReportFromCus2Product(int typeRp, String idShop, String descrip, String idCus, int idPro) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        TypeReport type = session.get(TypeReport.class, typeRp);
+        ShopStore shopStore = session.get(ShopStore.class, idShop);
+        Product product = session.get(Product.class, idPro);
+        Customers customers = session.get(Customers.class,idCus);
+
+
+        Report report = new Report();
+        report.setIdRp(getID_max() + 1);
+        report.setIdTypeReport(type);
+        report.setIdShopStore(shopStore);
+        report.setDescriptionRp(descrip);
+        report.setIdProduct(product);
+        report.setDateRp(new Date());
+        report.setStt("1");
+        report.setIdCus(customers);
+        try {
+            session.save(report);
+            return true;
+        } catch (Exception ex) {
+
+        }
+        return false;
+    }
 }

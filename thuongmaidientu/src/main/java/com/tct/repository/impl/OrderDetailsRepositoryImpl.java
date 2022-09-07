@@ -40,7 +40,7 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
         Session session = this.sessionFactory.getObject().getCurrentSession();
         Query q = session.createQuery("From OrderDetails WHERE orderDetailsPK.idOrderDetails=:idOr");
         q.setParameter("idOr", idOrd);
-        return null;
+        return q.getResultList();
     }
 
     @Override
@@ -81,9 +81,9 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                 orderDetails.setStt("1");
                 //orderDetails.setIdDiscount(dis);
                 try {
-                    if (this.shopProductRepository.checkAmount_book(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount())) {
+                    if (this.shopProductRepository.getShopProductByPK(pr.getIdShop().getIdShopStore(), pr.getIdProduct()).get(0).getAmount() > 0) {
                         session.save(orderDetails);
-                        this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount());
+                        this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), 1);
                         return true;
                     } else
                         return false;
@@ -102,9 +102,9 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                 int tamp = orderDetails.getAmount();
                 orderDetails.setAmount(tamp + 1);
                 try {
-                    if (this.shopProductRepository.checkAmount_book(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount())) {
+                    if (this.shopProductRepository.getShopProductByPK(pr.getIdShop().getIdShopStore(), pr.getIdProduct()).get(0).getAmount() > 0) {
                         session.save(orderDetails);
-                        this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), orderDetails.getAmount());
+                        this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), 1);
                         return true;
                     } else
                         return false;
@@ -147,24 +147,32 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
             OrderDetails orderDetails = session.get(OrderDetails.class, pk);
             int sl_stamp = orderDetails.getAmount();
 
+            int sldM = amount - sl_stamp;
+
             Query q = session.createQuery("UPDATE OrderDetails set amount=:amount WHERE orderDetailsPK=:idPK");
             q.setParameter("idPK", pk);
             q.setParameter("amount", amount);
             try {
-                if (sl_stamp != amount) {
-                    if (amount > sl_stamp) {
-                        if (this.shopProductRepository.checkAmount_book(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), amount)) {
-                            q.executeUpdate();
-                            this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), amount - sl_stamp);
-                            return true;
-                        }
-                    } else if (amount < sl_stamp) {
+                int slRemainS_P = this.shopProductRepository.getShopProductByPK(pr.getIdShop().getIdShopStore(), pr.getIdProduct()).get(0).getAmount();
+                if (slRemainS_P > 0) {
+                    if (sldM > 0) {
+                        if (sldM < slRemainS_P) {
+                            if (this.shopProductRepository.checkAmount_book(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), sldM)) {
+                                q.executeUpdate();
+                                this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), amount - sl_stamp);
+                                return true;
+                            }
+                        } else
+                            return false;
+                    }
+                    else if(sldM < 0){
                         q.executeUpdate();
                         this.shopProductRepository.updateAmountPro_booked(pr.getIdShop().getIdShopStore(), pr.getIdProduct(), -(sl_stamp - amount));
                         return true;
-                    }
-                }
-                return false;
+                    } else
+                        return false;
+                } else
+                    return false;
             } catch (Exception ex) {
                 return false;
             }
@@ -487,10 +495,19 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     @Override
     public int countProductInOrderWaitting(long idDetail) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        long count = session
+        long count = 0;
+        if(session
                 .createQuery("select sum(o.amount) From OrderDetails o WHERE o.orderDetailsPK.idOrderDetails=:idO and o.stt = '1'", Long.class)
                 .setParameter("idO", idDetail)
-                .getSingleResult();
+                .getSingleResult() == null)
+        {
+            return 0;
+        } else {
+            count = session
+                    .createQuery("select sum(o.amount) From OrderDetails o WHERE o.orderDetailsPK.idOrderDetails=:idO and o.stt = '1'", Long.class)
+                    .setParameter("idO", idDetail)
+                    .getSingleResult();
+        }
         return Integer.parseInt(String.valueOf(count));
     }
 

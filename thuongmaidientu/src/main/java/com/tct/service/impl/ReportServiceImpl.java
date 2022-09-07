@@ -40,4 +40,14 @@ public class ReportServiceImpl implements ReportService {
         return this.reportRepository.checkReportByShop_Pro(idPro);
     }
 
+    @Override
+    public List<Report> getReportForCus(Map<String, String> params, String pos) {
+        return this.reportRepository.getReportForCus(params,pos);
+    }
+
+    @Override
+    public boolean addReportFromCus2Product(int typeRp, String idShop, String descrip, String idCus, int idPro) {
+        return this.reportRepository.addReportFromCus2Product(typeRp,idShop,descrip,idCus,idPro);
+    }
+
 }

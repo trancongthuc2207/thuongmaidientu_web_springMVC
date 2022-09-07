@@ -8,8 +8,12 @@ package com.tct.controllers;
 import com.cloudinary.Cloudinary;
 import com.tct.pojo.Account;
 import com.tct.pojo.Customers;
+import com.tct.pojo.OrderDetails;
+import com.tct.pojo.Product;
 import com.tct.service.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,12 +61,20 @@ public class IndexController {
         int type = Integer.parseInt(params.getOrDefault("type_Id", "1"));
         model.addAttribute("products", this.productService.getProductsByType(params, page, type));
         model.addAttribute("productCounter", this.productService.countProduct());
-        if(authentication != null){
+        if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
-            Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
-            long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
-            model.addAttribute("amountPro", this.orderDetailsService.countProductInOrderWaitting(idOrderWaitting));
+            if (accCur.getIdPos().getIdPosition() == 2) {
+                Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
+                long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
+                session.setAttribute("amountPro", this.orderDetailsService.countProductInOrderWaitting(idOrderWaitting));
+
+                List<Product> fvr = this.productService.getProductFavoriteOfCustomers(customers.getIdCustomer());
+                if(fvr != null)
+                {
+                    model.addAttribute("lstProductFavor", fvr);
+                }
+            }
         }
         return "index";
     }
@@ -102,4 +114,37 @@ public class IndexController {
         }
         return "register";
     }
+
+
+    @RequestMapping("/order-details")
+    public String orderDetails(Model model, @RequestParam Map<String, String> params,Authentication authentication) {
+        long idOr = 0;
+        if(params.get("idOder") != null)
+        {
+            idOr = Long.parseLong(params.get("idOder"));
+        }
+
+        long idOrFrom_S = 0;
+        if(params.get("idOderFromShop") != null)
+        {
+            idOrFrom_S = Long.parseLong(params.get("idOderFromShop"));
+        }
+
+        if(idOr != 0){
+            model.addAttribute("listOrder", this.orderDetailsService.getOrdersDetailsByID_Order_Pro(params,idOr));
+        } else if(idOrFrom_S != 0){
+            String idShop = params.get("idShop");
+            List<OrderDetails> lstOrdFromShop = new ArrayList<>();
+            for(OrderDetails s : this.orderDetailsService.getOrdersDetailsByID_Order_Pro(params,idOrFrom_S)){
+                if(s.getProduct().getIdShop().getIdShopStore().equals(idShop))
+                {
+                    lstOrdFromShop.add(s);
+                }
+            }
+            model.addAttribute("listOrderS", lstOrdFromShop);
+        }
+
+        return "order-details";
+    }
+
 }

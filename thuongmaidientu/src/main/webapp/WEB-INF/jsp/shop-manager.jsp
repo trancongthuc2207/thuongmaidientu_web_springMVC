@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script src="https://kit.fontawesome.com/6f26e389c8.js" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -58,56 +59,145 @@
         </ul>
     </div>
     <c:forEach items="${shopAcc}" var="shop">
+        <c:if test="${msgEr != null}">
+            <div class="danger" style="color: #DC0404;background-color: lightslategray">
+                <p style="font-size: 30px;text-align: center">${msgEr}</p>
+            </div>
+        </c:if>
         <%------------------  HEADER CONTENT  ----------------------%>
         <div class="col-md-3 col-xs-12" style="padding: 5px;width: 100%">
             <div style="display: inline-flex">
-                <div style="width: 40%;height: 100%" class="card">
-                    <c:if test="${shop.imageS.startsWith('https') == false}">
-                        <img class="card-img-top" class="img-fluid"
-                             src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
-                             alt="Card image">
-                    </c:if>
-                    <c:if test="${shop.imageS.startsWith('https') == true}">
-                        <img class="card-img-top" class="img-fluid"
-                             src="${shop.imageS}"
-                             alt="Card image">
-                    </c:if>
-                </div>
-                <div style="margin-left: 30px">
-                    <h1 class="card-title">Mã shop: ${shop.idShopStore}</h1>
-                    <p class="card-text">Tên shop: ${shop.nameStore}</p>
+                <c:url value="/shop-manager/update-shopstore" var="action"/>
+                <form:form action="${action}" method="POST" modelAttribute="shopstore" enctype="multipart/form-data"
+                           style="display: flex">
+                    <div style="display: inline-flex;width: 450px;height: 400px" class="card">
+                        <c:if test="${shop.imageS.startsWith('https') == false}">
+                            <img class="card-img-top" class="img-fluid"
+                                 src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                                 alt="Card image">
+                        </c:if>
+                        <c:if test="${shop.imageS.startsWith('https') == true}">
+                            <img class="card-img-top" class="img-fluid"
+                                 src="${shop.imageS}"
+                                 alt="Card image">
+                        </c:if>
+                        <div class="form-group edit image"
+                             style="align-items: center; display: inline-flex; width: 100%; display: none">
+                            <form:input id="file" path="file" type="file" cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 30px; width: 600px">
+                            <%--        TIEU DE                --%>
+                        <h1 class="card-title">Mã shop: ${shop.idShopStore}</h1>
+                        <form:input path="idShopStore" class="form-group card-text editS"
+                                    cssStyle="font-size: 30px;border-color: transparent;display: none"
+                                    value="${shop.idShopStore}"/>
+                            <%--  EDIT BUTTON  --%>
+                        <i onclick="editClick()" style="float: right;margin-left: 30px;font-size: 20px"
+                           class="btn fa-solid fa-pen-to-square"></i>
+                            <%--  /EDIT BUTTON  --%>
+                        <div style="display: flex;font-size: 18px">
+                            <h5 class="card-text">Tên shop:&ensp;&ensp;</h5>
+                            <form:input path="nameStore" class="form-group card-text editS"
+                                        style="font-size: 30px;border-color: transparent"
+                                        value="${shop.nameStore}"/>
+                        </div>
+                        <div class="form-group card-text" style="display: flex; font-size: 20px">
+                            <h5 class="card-text">Ngày tham gia:&ensp;</h5>
+                            <input path="dateBegin" class="form-group card-text editS"
+                                   style="width: 180px;height: 30px;border-color: transparent"
+                                   value="${shop.dateBegin}"/>
+                        </div>
+                        <div style="display: flex; font-size: 20px">
+                            <h5 class="card-text">Buôn bán sản phẩm chính:&ensp;</h5>
+                                <%--                            <form:input path="mainType" class="form-group card-text editS"--%>
+                                <%--                                        style="width: 180px;height: 30px;border-color: transparent"--%>
+                                <%--                                        value="${shop.mainType.typeName}"/>--%>
 
-                    <p class="card-text">Ngày tham gia: ${shop.dateBegin}</p>
-                    <p class="card-text">Buôn bán sản phẩm chính: ${shop.mainType.typeName}</p>
-                    <p class="card-text">Sản phẩm phụ: ${shop.ortherType1.typeName}
-                        , ${shop.ortherType2.typeName}</p>
+                            <form:select
+                                    cssStyle="text-align: center;width: 180px;height: 50px;border-color: transparent"
+                                    path="mainType" class="form-select">
+                                <c:forEach items="${type_products}" var="c">
+                                    <option value="${c.idTypeProduct}"
+                                            <c:if test="${c.idTypeProduct == shop.mainType.idTypeProduct}"> selected</c:if>
+                                    >${c.typeName}</option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+                        <div style="height: 20px;display: flex; font-size: 20px">
+                            <h5 class="card-text" style="margin-top: 10px">Sản phẩm phụ:&ensp;</h5>
+                                <%--                            <form:input path="ortherType1" class="form-group card-text editS"--%>
+                                <%--                                        style="text-align: center;width: 180px;height: 30px;border-color: transparent"--%>
+                                <%--                                        value="${shop.ortherType1.typeName}"/>--%>
 
-                    <a href="${addProduct}" class="btn btn-primary"
-                            type="submit"> Thêm sản phẩm
-                    </a>
-                    <a href="${addProduct}" class="btn btn-primary"
-                       type="submit" style="margin-top: 15px"> Sản phẩm chờ duyệt
-                    </a>
-                </div>
-                <div style="margin-left: 30%;">
+                            <form:select cssStyle="text-align: center;width: 180px;height: 50px;border-color: transparent"
+                                    path="ortherType1" class="form-select">
+                                <c:forEach items="${type_products}" var="c">
+                                    <option <c:if
+                                            test="${c.idTypeProduct == shop.ortherType1.idTypeProduct}"> selected</c:if>
+                                            value="${c.idTypeProduct}">${c.typeName}</option>
+                                </c:forEach>
+                            </form:select>
+
+                            <i>,&ensp;</i>
+                                <%--                            <form:input path="ortherType2" class="form-group card-text editS"--%>
+                                <%--                                        style="text-align: center;width: 180px;height: 30px;border-color: transparent"--%>
+                                <%--                                        value="${shop.ortherType2.typeName}"/>--%>
+
+                            <form:select
+                                    cssStyle="text-align: center;width: 180px;height: 50px;border-color: transparent"
+                                    path="ortherType2" class="form-select">
+                                <c:forEach items="${type_products}" var="c">
+                                    <option <c:if
+                                            test="${c.idTypeProduct == shop.ortherType2.idTypeProduct}"> selected</c:if>
+                                            value="${c.idTypeProduct}">${c.typeName}</option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+                        <div style="margin-top: 50px">
+                                <%--  SAVE BUTTON  --%>
+                            <button type="submit" style="color: red;margin-left: 30px;font-size: 20px;display: none"
+                                    class="btn fa-solid fa-pen-to-square edit save">save
+                            </button>
+                                <%--  SAVE BUTTON  --%>
+                                <%--  CANCLE BUTTON  --%>
+                            <button type="button" onclick="cancleEdit()" style="color: red;margin-left: 30px;font-size: 20px; display: none"
+                               class="btn fa-solid fa-xmark edit cancle"></button>
+                                <%--  CANCLE BUTTON  --%>
+                        </div>
+                        <div style="margin-top: 120px">
+                            <a href="${addProduct}" class="btn btn-primary"
+                               style="margin-top: 15px"> Thêm sản phẩm
+                            </a>
+                            <a href="${addProduct}" class="btn btn-primary"
+                               style="margin-top: 15px"> Sản phẩm chờ duyệt
+                            </a>
+                        </div>
+                    </div>
+                </form:form>
+                <div>
                         <%--            MY SHOP            --%>
                     <ul class="nav nav-pills navTask">
                             <%--        <c:url value="/user/customer-orders" var="cus_bag"/>--%>
                         <li class="nav-item dropdown">
-                            <div class="dropdown" style="width: 110%">
+                            <div class="dropdown" style="width: 130px">
                                 <a type="submit" class="dropbtn" href="#"><i
                                         class='fas fa-shopping-cart'></i> My Shop
-                                    <i class="badge badge-danger" id="cartCounter"></i>0
-                                    <i class="fa fa-caret-down"></i>
                                 </a>
-                                    <%--            <c:url value="/user/cus-orders-manager?idStatus=1" var="my_orders"/>--%>
+
                                 <c:url value="/shop-manager/orders" var="orders"></c:url>
                                 <c:url value="/shop-manager/orders-accepted" var="ordersAcc"></c:url>
                                 <c:url value="/shop-manager/reports" var="reports"/>
+                                <c:url value="/shop-manager/turnover-shop" var="turnover"/>
                                 <div class="dropdown-content">
-                                    <a href="${orders}">Đơn Hàng Của Tôi &nbsp; <c:if test="${amountOrder > 0}"><i class='fas fa-exclamation-circle' style="color: #DC0404;font-size:18px"> ${amountOrder}</i></c:if></a>
+                                    <a href="${orders}">Đơn Hàng Của Tôi &nbsp; <c:if test="${amountOrder > 0}"><i
+                                            class='fas fa-exclamation-circle'
+                                            style="color: #DC0404;font-size:18px"> ${amountOrder}</i></c:if></a>
                                     <a href="${ordersAcc}">Đơn Hàng Đã Kiểm Duyệt</a>
-                                    <a href="${reports}">Phản Hồi Của Tôi &nbsp; <c:if test="${amountReport > 0}"><i class='fas fa-exclamation-circle' style="color: #DC0404;font-size:18px"> ${amountReport}</i></c:if></a>
+                                    <a href="${reports}">Phản Hồi Của Tôi &nbsp; <c:if test="${amountReport > 0}"><i
+                                            class='fas fa-exclamation-circle'
+                                            style="color: #DC0404;font-size:18px"> ${amountReport}</i></c:if></a>
+                                    <a href="${turnover}">Doanh thu</a>
                                 </div>
                             </div>
                         </li>
@@ -117,23 +207,31 @@
         </div>
     </c:forEach>
     <%--------------------------------------------%>
-    <div class="row shop-items" style="display: inline-flex">
+    <div class="row shop-items" style="margin-top: 50px;display: inline-flex">
         <%--        LIST PRODUCT     --%>
         <c:forEach items="${listProduct}" var="p">
             <c:url value="/shop-manager/edit/" var="cUrl">
                 <c:param name="ID_Product" value="${p.shopProductsPK.idProduct}"/>
             </c:url>
-            <div class="col-md-3 col-xs-12" style="padding: 5px;">
+            <div class="row" style="padding: 5px;width: 330px">
                 <form action="#">
                     <div class="card" <c:if test="${p.amount <= 1}"> style="background-color: dimgrey"</c:if>>
-                        <img class="card-img-top" class="img-fluid"
-                             src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
-                             alt="Card image">
+                        <c:if test="${p.product.image.startsWith('https') == false}">
+                            <img style="width: 150px;height: 150px;" class="card-img-top" class="img-fluid"
+                                 src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                                 alt="Card image">
+                        </c:if>
+                        <c:if test="${p.product.image.startsWith('https') == true}">
+                            <img style="width: 150px;height: 150px;" class="card-img-top" class="img-fluid"
+                                 src="${p.product.image}"
+                                 alt="Card image">
+                        </c:if>
                         <div class="card-body">
                             <h4 class="card-title id_pro">Mã sản phẩm: ${p.product.idProduct}</h4>
                             <h5 class="card-text">Tên sản phẩm: ${p.product.nameProduct}</h5>
                             <p class="card-text">Số lượng:
-                                <input min="1" style="width: 50%" type="number" class="card-text amount" id="amount_pro" value="${p.amount}">
+                                <input min="1" style="width: 50%" type="number" class="card-text amount" id="amount_pro"
+                                       value="${p.amount}">
                                 <a onclick="clickSave()" type="button" class="btn btn-primary btn-save-amount">Lưu</a>
                             </p>
                             <p class="card-text">Thời gian bắt đầu bán: ${p.timeBegin}</p>
@@ -173,26 +271,70 @@
     var luu_cart = document.getElementsByClassName("btn-save-amount");
     var input_amount = document.getElementsByClassName("amount");
     var id_prod = document.getElementsByClassName("id_pro");
+    var fSelect = document.getElementsByClassName("form-select");
 
-    function clickSave(){
+    function clickSave() {
         var answer = window.confirm("Save data?");
         if (answer) {
             for (var i = 0; i < luu_cart.length; i++) {
                 var button = luu_cart[i]
                 var amount = input_amount[i].value;
-                var id = id_prod[i].innerHTML.substring(13,id_prod[i].innerHTML.length);
+                var id = id_prod[i].innerHTML.substring(13, id_prod[i].innerHTML.length);
 
                 button.setAttribute("href", "${updateAm}" + id + "/" + amount)
             }
-        }
-        else {
+        } else {
             //some code
         }
     }
 
+    var inputCan = document.getElementsByClassName("editS");
+    var editNone = document.getElementsByClassName("edit");
+    var clickEdit = 0;
+
+    window.onload = function (){
+        for (var i = 0; i < inputCan.length; i++) {
+            var inp = inputCan[i];
+            inp.setAttribute("readonly", true);
+        }
+
+        for (var i = 0; i < fSelect.length;i++){
+            var f = fSelect[i];
+            f.setAttribute("disabled", true);
+            f.style.backgroundColor = "transparent";
+        }
+    }
+
+    function editClick() {
+        for (var i = 0; i < inputCan.length; i++) {
+            var inp = inputCan[i];
+            inp.removeAttribute("readonly");
+        }
+
+        for (var i = 0; i < editNone.length; i++) {
+            var ed = editNone[i];
+            ed.style.display = "block";
+        }
+
+        for (var i = 0; i < fSelect.length;i++){
+            var f = fSelect[i];
+            f.removeAttribute("disabled");
+            f.style.backgroundColor = "transparent";
+        }
+    }
+
+    function cancleEdit() {
+        for (var i = 0; i < inputCan.length; i++) {
+            var inp = inputCan[i];
+            inp.setAttribute("readonly", true);
+        }
+
+        for (var i = 0; i < editNone.length; i++) {
+            var ed = editNone[i];
+            ed.style.display = "none";
+        }
+    }
 </script>
-
-
 
 
 <style>

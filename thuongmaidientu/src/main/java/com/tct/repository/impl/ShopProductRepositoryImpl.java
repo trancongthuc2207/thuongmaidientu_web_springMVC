@@ -53,7 +53,7 @@ public class ShopProductRepositoryImpl implements ShopProductRepository {
             pk.setIdProduct(idProduct);
 
             ShopProducts shopPro = session.get(ShopProducts.class, pk);
-            if (sld > 0 && sld < shopPro.getAmount())
+            if (sld > 0 && sld <= shopPro.getAmount())
                 return true;
         } catch (Exception ex) {
             session.getTransaction().rollback();

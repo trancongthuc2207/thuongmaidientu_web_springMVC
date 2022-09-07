@@ -22,4 +22,6 @@ public interface UserRepository_Cus {
     List<Account> getUsers(String username);
 
     int getID_max();
+
+    boolean updateUser(Account user);
 }

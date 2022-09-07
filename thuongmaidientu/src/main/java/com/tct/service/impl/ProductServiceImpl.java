@@ -95,10 +95,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean updateProductByID_Product(Product proD, String idShop) {
         try {
-            Map r = this.cloudinary.uploader().upload(proD.getFile().getBytes(),
-                    ObjectUtils.asMap("resource_type", "auto"));
-            String img = (String) r.get("secure_url");
-            proD.setImage(img);
+            if(proD.getFile() != null){
+                Map r = this.cloudinary.uploader().upload(proD.getFile().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                String img = (String) r.get("secure_url");
+                proD.setImage(img);
+            }
             return this.productRepository.updateProductByID_Product(proD, idShop);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -114,5 +116,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean addProduct2Shop(int idPro) {
         return this.productRepository.addProduct2Shop(idPro);
+    }
+
+    @Override
+    public List<Product> getProductFavoriteOfCustomers(String idCus) {
+        return this.productRepository.getProductFavoriteOfCustomers(idCus);
     }
 }

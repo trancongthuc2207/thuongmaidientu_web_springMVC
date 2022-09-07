@@ -57,6 +57,13 @@ public class UserService_CusImpl implements UserService_Cus {
     }
 
     @Override
+    public boolean updateUser(Account user) {
+        String pass = user.getPasswordC();
+        user.setPasswordC(this.bCryptPasswordEncoder.encode(pass));
+        return this.userRepository.updateUser(user);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<Account> accounts = this.userRepository.getUsers(username);
         if (accounts.isEmpty())

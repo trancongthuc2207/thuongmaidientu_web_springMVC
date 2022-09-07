@@ -30,20 +30,38 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
     </definition>
 
     <definition name="products" extends="baseLayout">
-        <put-attribute name="title" value="Quan ly san pham" />
+        <put-attribute name="title" value="San pham" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/products.jsp" />
     </definition>
+
+    <definition name="shop-view" extends="baseLayout">
+        <put-attribute name="title" value="View Shop" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/shop-view.jsp" />
+    </definition>
+
+    <definition name="order-details" extends="baseLayout">
+        <put-attribute name="title" value="Chi tiết đơn hàng" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/order-details.jsp" />
+    </definition>
+
     <!--  USER  -->
     <definition name="user/customer-orders" extends="baseLayout">
-        <put-attribute name="title" value="Quan ly san pham khach hang" />
+        <put-attribute name="title" value="Quản lý giỏ hàng" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/customer-orders.jsp" />
     </definition>
     <definition name="user/cus-orders-manager" extends="baseLayout">
-        <put-attribute name="title" value="Quan Ly Don Hang" />
+        <put-attribute name="title" value="Quản lý các đơn hàng" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/cus-orders-manager.jsp" />
+    </definition>
+    <definition name="user/infor-customer" extends="baseLayout">
+        <put-attribute name="title" value="Trang cá nhân" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/info-customer.jsp" />
     </definition>
     <!--  SHOP  -->
     <definition name="shop-manager" extends="baseLayout">
@@ -77,6 +95,12 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="title" value="Thêm sản phẩm" />
         <put-attribute name="content"
                        value="/WEB-INF/jsp/add-product-shop.jsp" />
+    </definition>
+
+    <definition name="shop-manager/turnover-shop" extends="baseLayout">
+        <put-attribute name="title" value="Kiểm tra doanh thu" />
+        <put-attribute name="content"
+                       value="/WEB-INF/jsp/turnover-shop.jsp" />
     </definition>
 
     <definition name="employee" extends="baseLayout">

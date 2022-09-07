@@ -7,12 +7,10 @@ package com.tct.pojo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customers.findByPhoneNumber", query = "SELECT c FROM Customers c WHERE c.phoneNumber = :phoneNumber"),
     @NamedQuery(name = "Customers.findByAddress", query = "SELECT c FROM Customers c WHERE c.address = :address"),
     @NamedQuery(name = "Customers.findByVipPos", query = "SELECT c FROM Customers c WHERE c.vipPos = :vipPos"),
-    @NamedQuery(name = "Customers.findByIdAcc", query = "SELECT c FROM Customers c WHERE c.idAcc = :idAcc")})
+    @NamedQuery(name = "Customers.findByIdAcc", query = "SELECT c FROM Customers c WHERE c.idAcc = :idAcc"),
+    @NamedQuery(name = "Customers.findByImage", query = "SELECT c FROM Customers c WHERE c.image = :image")})
 public class Customers implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,10 +58,10 @@ public class Customers implements Serializable {
     private Integer vipPos;
     @Column(name = "id_acc")
     private Integer idAcc;
-    @OneToMany(mappedBy = "idCus")
-    private Set<Report> reportSet;
-    @OneToMany(mappedBy = "customer")
-    private Set<Orders> ordersSet;
+    @Size(max = 200)
+    @Column(name = "image")
+    private String image;
+
     @Transient
     private MultipartFile file;
 
@@ -137,22 +136,12 @@ public class Customers implements Serializable {
         this.idAcc = idAcc;
     }
 
-    @XmlTransient
-    public Set<Report> getReportSet() {
-        return reportSet;
+    public String getImage() {
+        return image;
     }
 
-    public void setReportSet(Set<Report> reportSet) {
-        this.reportSet = reportSet;
-    }
-
-    @XmlTransient
-    public Set<Orders> getOrdersSet() {
-        return ordersSet;
-    }
-
-    public void setOrdersSet(Set<Orders> ordersSet) {
-        this.ordersSet = ordersSet;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
@@ -179,5 +168,12 @@ public class Customers implements Serializable {
     public String toString() {
         return "com.tct.pojo.Customers[ idCustomer=" + idCustomer + " ]";
     }
-    
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 }

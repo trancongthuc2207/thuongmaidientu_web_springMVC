@@ -6,8 +6,6 @@ package com.tct.configs;
 
 import com.tct.formatter.PositionStaffFormatter;
 import com.tct.formatter.ProductFormatter;
-//import com.tct.validator.ShopProductValidator;
-//import com.tct.validator.WebAppValidator;
 import com.tct.formatter.TypeProductFormatter;
 import com.tct.validator.ShopProductValidator;
 import com.tct.validator.WebAppValidator;

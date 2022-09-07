@@ -1,6 +1,7 @@
 package com.tct.controllers;
 
 import com.tct.pojo.Account;
+import com.tct.pojo.Product;
 import com.tct.pojo.ShopStore;
 import com.tct.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,14 +55,16 @@ public class Shop_ManagerController {
 
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
 
+        model.addAttribute("shopstore", new ShopStore());
+        model.addAttribute("type_products", this.type_ProductService.getTypeProducts());
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
 
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
             int slPro = this.shopProductService.countProduct_ShopByID_Shop(shopStore.getIdShopStore());
-            model.addAttribute("amountReport",this.reportService.countReportShop(shopStore.getIdShopStore()));
-            model.addAttribute("amountOrder",this.orderDetailsService.countNotConfirmOrderDetailsForShopById_Order(shopStore.getIdShopStore()));
+            model.addAttribute("amountReport", this.reportService.countReportShop(shopStore.getIdShopStore()));
+            model.addAttribute("amountOrder", this.orderDetailsService.countNotConfirmOrderDetailsForShopById_Order(shopStore.getIdShopStore()));
 
 
             model.addAttribute("shopAcc", this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()));
@@ -73,14 +76,27 @@ public class Shop_ManagerController {
     }
 
     @GetMapping("/shop-manager/amount/{idProduct}/{sl}")
-    public String save_amount(Model model,@PathVariable("idProduct") Integer idPro ,@PathVariable("sl") Integer sl, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {
+    public String save_amount(Model model, @PathVariable("idProduct") Integer idPro, @PathVariable("sl") Integer sl, @RequestParam Map<String, String> params, HttpSession session, Authentication authentication) {
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
 
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
-            this.shopProductService.updateAmountPro_Shop(shopStore.getIdShopStore(),idPro,sl);
+            this.shopProductService.updateAmountPro_Shop(shopStore.getIdShopStore(), idPro, sl);
         }
         return "redirect:/shop-manager";
+    }
+
+    @PostMapping("/shop-manager/update-shopstore")
+    public String updateShopStore(@ModelAttribute("shopstore") ShopStore store, Model model, Authentication authentication) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+        ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
+        store.setIdShopStore(shopStore.getIdShopStore());
+        if (this.shopStoreService.updateIn4ShopStore(store) == true) {
+            model.addAttribute("errMsg", "Thành công!!!");
+            return "redirect:/shop-manager";
+        }
+        return "shop-manager";
     }
 }

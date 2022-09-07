@@ -27,51 +27,56 @@
         </div>
         <%--     ------------       --%>
         <%--     NAV HEADER PAGE INDEX      --%>
-            <sec:authorize access="!isAuthenticated()">
-                <li class="nav-item dropdown">
-                    <div class="dropdown-right">
-                        <c:url value="#" var="urlShop"></c:url> <%-- Chuyển đến form đăng ký Shop --%>
-                        <a type="submit" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
-                           href="${urlShop}"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
-                                class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
-                        <div class="dropdown-content-right">
-                            <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ? Đăng ký ngay!</div>
-                        </div>
+        <sec:authorize access="!isAuthenticated()">
+            <li class="nav-item dropdown">
+                <div class="dropdown-right">
+                    <c:url value="#" var="urlShop"></c:url> <%-- Chuyển đến form đăng ký Shop --%>
+                    <a type="submit"
+                       class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
+                       href="${urlShop}"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
+                            class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
+                    <div class="dropdown-content-right">
+                        <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ? Đăng ký ngay!</div>
                     </div>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="hasRole('ROLE_SHOP')">
-                <li class="nav-item dropdown">
-                    <div class="dropdown-right">
-                        <c:url value="/shop-manager" var="urlShop"></c:url>
-                        <a type="submit" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
-                           href="${urlShop}"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
-                                class="fas fa-user-circle"></span> Quản Lý Cửa Hàng </a>
-                        <div class="dropdown-content-right">
+                </div>
+            </li>
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_SHOP')">
+            <li class="nav-item dropdown">
+                <div class="dropdown-right">
+                    <c:url value="/shop-manager" var="urlShop"></c:url>
+                    <a type="submit"
+                       class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
+                       href="${urlShop}"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
+                            class="fas fa-user-circle"></span> Quản Lý Cửa Hàng </a>
+                    <div class="dropdown-content-right">
 
-                        </div>
                     </div>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="hasRole('ROLE_USER')">
-                <li class="nav-item dropdown">
-                    <div class="dropdown-right">
-                        <c:url value="#" var="urlShop"></c:url>
-                        <a type="submit" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
-                           href="${urlShop}"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
-                                class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
-                        <div class="dropdown-content-right">
-                            <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ?</div>
-                        </div>
+                </div>
+            </li>
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_USER')">
+            <li class="nav-item dropdown">
+                <div class="dropdown-right">
+                    <c:url value="#" var="urlShop"></c:url>
+                    <a type="submit"
+                       class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split dropbtn-right-side"
+                       href="${urlShop}"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
+                            class="fas fa-user-circle"></span> Kênh Buôn Bán </a>
+                    <div class="dropdown-content-right">
+                        <div class="speech-bubble"><i> </i>Bạn muốn trở thành người bán hàng ?</div>
                     </div>
-                </li>
-            </sec:authorize>
+                </div>
+            </li>
+        </sec:authorize>
     </ul>
 
     <div class="row">
+        <h1 style="height: 100px;font-size: 60px;padding: 15px;text-align: center; background-color: #56CCF2">TẤT CẢ CÁC
+            SẢN PHẨM</h1>
         <%--    PHAN TRANG   --%>
         <ul class="pagination">
             <c:forEach begin="1" end="${Math.ceil(productCounter/8)}" var="i">
@@ -86,17 +91,17 @@
             <c:url value="/products/" var="cUrl">
                 <c:param name="ID_Product" value="${p.idProduct}"/>
             </c:url>
-            <c:url value="/add_pro/" var="prodID" ></c:url>
+            <c:url value="/add_pro/" var="prodID"></c:url>
             <div class="col-md-3 col-xs-12" style="padding: 5px;">
                 <form action="${prodID}${p.idProduct}">
-                    <div class="card">
+                    <div class="card" style="height: 430px">
                         <c:if test="${p.image.startsWith('https') == false}">
-                        <img class="card-img-top" class="img-fluid"
-                             src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
-                             alt="Card image">
+                            <img style="width: 300px;height: 250px" class="card-img-top" class="img-fluid"
+                                 src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                                 alt="Card image">
                         </c:if>
                         <c:if test="${p.image.startsWith('https') == true}">
-                            <img class="card-img-top" class="img-fluid"
+                            <img style="width: 300px;height: 250px" class="card-img-top" class="img-fluid"
                                  src="${p.image}"
                                  alt="Card image">
                         </c:if>
@@ -105,8 +110,9 @@
                             <p class="card-text">
                                 <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.unitPrice}"/> VND
                             </p>
-                            <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>
+                                <%--                            <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>--%>
                             <sec:authorize access="hasAnyRole('ROLE_USER')">
+                                <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>
                                 <button class="btn btn-primary"
                                         type="submit">Đặt Hàng
                                 </button>
@@ -116,5 +122,60 @@
                 </form>
             </div>
         </c:forEach>
+    </div>
+
+    <div>
+        <sec:authorize access="hasRole('ROLE_USER')">
+            <div class="row">
+                <h1 style="height: 100px;font-size: 60px;padding: 15px;text-align: center; background-color: #56CCF2">CÓ
+                    THỂ BẠN SẼ THÍCH</h1>
+                    <%--    PHAN TRANG   --%>
+                    <%--            <ul class="pagination">--%>
+                    <%--                <c:forEach begin="1" end="${Math.ceil(productCounter/8)}" var="i">--%>
+                    <%--                    <c:url value="/" var="c">--%>
+                    <%--                        <c:param value="${i}" name="page"/>--%>
+                    <%--                    </c:url>--%>
+                    <%--                    <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>--%>
+                    <%--                </c:forEach>--%>
+                    <%--            </ul>--%>
+                    <%--    SAN PHAM    --%>
+                <c:forEach items="${lstProductFavor}" var="pV">
+                    <c:url value="/products/" var="cUrl">
+                        <c:param name="ID_Product" value="${pV.idProduct}"/>
+                    </c:url>
+                    <c:url value="/add_pro/" var="prodID"></c:url>
+                    <div class="col-md-3 col-xs-12" style="padding: 5px;">
+                        <form action="${prodID}${pV.idProduct}">
+                            <div class="card" style="height: 430px">
+                                <c:if test="${pV.image.startsWith('https') == false}">
+                                    <img style="width: 300px;height: 250px" class="card-img-top" class="img-fluid"
+                                         src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
+                                         alt="Card image">
+                                </c:if>
+                                <c:if test="${pV.image.startsWith('https') == true}">
+                                    <img style="width: 300px;height: 250px" class="card-img-top" class="img-fluid"
+                                         src="${pV.image}"
+                                         alt="Card image">
+                                </c:if>
+                                <div class="card-body">
+                                    <h4 class="card-title">${pV.nameProduct}</h4>
+                                    <p class="card-text">
+                                        <fmt:formatNumber type="number" maxFractionDigits="3" value="${pV.unitPrice}"/>
+                                        VND
+                                    </p>
+                                        <%--                            <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>--%>
+                                    <sec:authorize access="hasAnyRole('ROLE_USER')">
+                                        <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>
+                                        <button class="btn btn-primary"
+                                                type="submit">Đặt Hàng
+                                        </button>
+                                    </sec:authorize>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </c:forEach>
+            </div>
+        </sec:authorize>
     </div>
 </div>

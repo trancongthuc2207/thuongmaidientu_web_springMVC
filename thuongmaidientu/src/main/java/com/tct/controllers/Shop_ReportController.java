@@ -19,27 +19,9 @@ import java.util.Map;
 @ControllerAdvice
 public class Shop_ReportController {
     @Autowired
-    private Type_ProductService type_ProductService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private UserService_Cus accountService;
-    @Autowired
     private ShopStoreService shopStoreService;
     @Autowired
-    private ShopProductService shopProductService;
-
-    @Autowired
-    private OrdersService ordersService;
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
     private UserService_Cus userDetailsService;
-    @Autowired
-    private OrderDetailsService orderDetailsService;
-    @Autowired
-    private DiscountCodeService discountCodeService;
-
     @Autowired
     private ReportService reportService;
 
@@ -53,6 +35,8 @@ public class Shop_ReportController {
 
 
             model.addAttribute("listReportApp",this.reportService.getReportByID_Shop(params,shopStore.getIdShopStore(),"app"));
+
+            model.addAttribute("listReportCus",this.reportService.getReportByID_Shop(params,shopStore.getIdShopStore(),"customer"));
         }
         return "shop-manager/reports";
     }

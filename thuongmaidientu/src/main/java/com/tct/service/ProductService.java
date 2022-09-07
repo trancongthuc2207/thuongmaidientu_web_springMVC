@@ -39,4 +39,6 @@ public interface ProductService {
 
     boolean addProduct2Shop(int idPro);
 
+    List<Product> getProductFavoriteOfCustomers(String idCus);
+
 }

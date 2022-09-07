@@ -295,19 +295,16 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public boolean updateProductByID_Product(Product proD, String idShop) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-
-        TypeProduct type = session.get(TypeProduct.class,proD.getTypeOfProduct());
-
-        Product pro = session.get(Product.class,proD.getIdProduct());
-        pro.setNameProduct(proD.getNameProduct());
-        pro.setUnitPrice(proD.getUnitPrice());
-        pro.setProductDescription(proD.getProductDescription());
-        pro.setTypeOfProduct(type);
-        pro.setManufacturer(proD.getManufacturer());
-        pro.setImage(proD.getImage());
-        pro.setDateCreated(new Date());
+        ShopStore shopStore = session.get(ShopStore.class,idShop);
+        proD.setIdShop(shopStore);
+        proD.setStatus(1);
+        proD.setDateCreated(new Date());
+        if(proD.getFile() == null){
+            Product product = session.get(Product.class, proD.getIdProduct());
+            proD.setImage(product.getImage());
+        }
         try{
-            session.update(pro);
+            session.update(proD);
             return true;
         }catch (Exception ex){
             session.getTransaction().rollback();
@@ -344,6 +341,31 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         }
         return false;
+    }
+
+    @Override
+    public List<Product> getProductFavoriteOfCustomers(String idCus) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        Query query = session.createSQLQuery("CALL getProductFavoriteOfCustomer(:idCus)")
+                .setParameter("idCus", idCus);
+        List<Object[]> lst = query.getResultList();
+        if(lst.size() > 5 && lst != null){
+            List<Integer> typeFavor = new ArrayList<>();
+            for(Object[] t : lst){
+                typeFavor.add(Integer.parseInt(t[1].toString()));
+            }
+            Query getPr = session.createSQLQuery("CALL getProductByFavorite(:fv1,:fv2,:fv3,:fv4,:fv5)")
+                    .addEntity(Product.class)
+                    .setParameter("fv1", typeFavor.get(0))
+                    .setParameter("fv2", typeFavor.get(1))
+                    .setParameter("fv3", typeFavor.get(2))
+                    .setParameter("fv4", typeFavor.get(3))
+                    .setParameter("fv5", typeFavor.get(4));
+            return getPr.getResultList();
+        }
+        else
+            return null;
     }
 
 }

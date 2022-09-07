@@ -39,4 +39,23 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         Query query = session.createQuery(q);
         return (Customers) query.getSingleResult();
     }
+
+    @Override
+    public boolean updateCustomer(Customers cus) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        Customers customers = session.get(Customers.class,cus.getIdCustomer());
+
+        customers.setNameC(cus.getNameC());
+        customers.setSex(cus.getSex());
+        customers.setSerialNumberC(cus.getSerialNumberC());
+        customers.setPhoneNumber(cus.getPhoneNumber());
+        customers.setAddress(cus.getAddress());
+        customers.setImage(cus.getImage());
+        try {
+            session.update(customers);
+        }catch (Exception e){
+
+        }
+        return false;
+    }
 }
