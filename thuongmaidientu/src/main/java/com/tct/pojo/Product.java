@@ -34,6 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByDateCreated", query = "SELECT p FROM Product p WHERE p.dateCreated = :dateCreated")})
 public class Product implements Serializable {
 
+    @OneToMany(mappedBy = "idProCmt")
+    private Set<Comment> commentSet;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -220,5 +223,14 @@ public class Product implements Serializable {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    @XmlTransient
+    public Set<Comment> getCommentSet() {
+        return commentSet;
+    }
+
+    public void setCommentSet(Set<Comment> commentSet) {
+        this.commentSet = commentSet;
     }
 }

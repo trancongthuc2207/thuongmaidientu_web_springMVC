@@ -7,10 +7,12 @@ package com.tct.pojo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,6 +33,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customers.findByIdAcc", query = "SELECT c FROM Customers c WHERE c.idAcc = :idAcc"),
     @NamedQuery(name = "Customers.findByImage", query = "SELECT c FROM Customers c WHERE c.image = :image")})
 public class Customers implements Serializable {
+
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 100)
+    @Column(name = "email")
+    private String email;
+
+    @OneToMany(mappedBy = "idCus")
+    private Set<Report> reportSet;
+    @OneToMany(mappedBy = "idCusCmt")
+    private Set<Comment> commentSet;
+    @OneToMany(mappedBy = "customer")
+    private Set<Orders> ordersSet;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -175,5 +189,40 @@ public class Customers implements Serializable {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    @XmlTransient
+    public Set<Report> getReportSet() {
+        return reportSet;
+    }
+
+    public void setReportSet(Set<Report> reportSet) {
+        this.reportSet = reportSet;
+    }
+
+    @XmlTransient
+    public Set<Comment> getCommentSet() {
+        return commentSet;
+    }
+
+    public void setCommentSet(Set<Comment> commentSet) {
+        this.commentSet = commentSet;
+    }
+
+    @XmlTransient
+    public Set<Orders> getOrdersSet() {
+        return ordersSet;
+    }
+
+    public void setOrdersSet(Set<Orders> ordersSet) {
+        this.ordersSet = ordersSet;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

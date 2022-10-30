@@ -143,4 +143,12 @@ public class ReportRepositoryImpl implements ReportRepository {
         }
         return false;
     }
+
+    @Override
+    public List<Report> getListReportOfCustomerToShopProduct(String kw, String stt, int page) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Query query = session.createQuery("from Report o where o.idTypeReport.pos = 'customer' and o.stt =:st ")
+                .setParameter("st", stt);
+        return query.getResultList();
+    }
 }

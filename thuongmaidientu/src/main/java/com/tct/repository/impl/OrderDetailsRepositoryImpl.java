@@ -3,6 +3,7 @@ package com.tct.repository.impl;
 import com.tct.pojo.*;
 import com.tct.repository.OrderDetailsRepository;
 import com.tct.repository.OrdersRepository;
+import com.tct.repository.ProductRepository;
 import com.tct.repository.ShopProductRepository;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     private OrdersRepository ordersRepository;
     @Autowired
     private ShopProductRepository shopProductRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public List<OrderDetails> getOrdersDetailsByID_Order_Pro(Map<String, String> params, long idOrd) {
@@ -79,6 +83,11 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                 orderDetails.setOrders(ord);
                 orderDetails.setDateCreated(new Date());
                 orderDetails.setStt("1");
+
+                long value_dis = this.productRepository.valueDiscountOfProduct(pr);
+                if(value_dis >= 0){
+                    orderDetails.setValueDiscount(value_dis);
+                }
                 //orderDetails.setIdDiscount(dis);
                 try {
                     if (this.shopProductRepository.getShopProductByPK(pr.getIdShop().getIdShopStore(), pr.getIdProduct()).get(0).getAmount() > 0) {
@@ -99,6 +108,10 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                 OrderDetails orderDetails = session.get(OrderDetails.class, pk);
                 orderDetails.setDateCreated(new Date());
                 orderDetails.setStt("1");
+                long value_dis = this.productRepository.valueDiscountOfProduct(pr);
+                if(value_dis >= 0){
+                    orderDetails.setValueDiscount(value_dis);
+                }
                 int tamp = orderDetails.getAmount();
                 orderDetails.setAmount(tamp + 1);
                 try {
@@ -227,6 +240,7 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
             long sum = 0;
             for (OrderDetails c : lst) {
                 sum += (c.getAmount() * c.getUnitPrice());
+                sum -= (c.getAmount() * c.getValueDiscount());
             }
             return sum;
         }
@@ -250,12 +264,18 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
     }
 
     @Override
-    public int countOrderDetailsForShopById_Order(String idShop) {
+    public int countOrderDetailsForShopById_Order(String idShop, String stt) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        Query q = session.createQuery("select o From OrderDetails o, ShopProducts  s WHERE o.orderDetailsPK.idProduct = s.shopProductsPK.idProduct and s.id.idShop=:idS and o.stt = '1' and s.product.status = 1");
-        q.setParameter("idS", idShop);
+        int sl = 0;
+        Query query = session.createSQLQuery("CALL getFullOrderWaittingByIDShop(:idS,:st,:kw_time,:posData)")
+                .setParameter("idS", idShop)
+                .setParameter("st", stt)
+                .setParameter("kw_time", "full")
+                .setParameter("posData", 0);
+        List<Object[]> lst = query.getResultList();
+        sl = lst.size();
 
-        return q.getResultList().size();
+        return sl;
     }
 
     @Override
@@ -295,12 +315,6 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
         }
 
 
-        if (page > 0) {
-            int size = Integer.parseInt(env.getProperty("pageOrderShop.size").toString());
-            int start = (page - 1) * size;
-            q.setFirstResult(start);
-            q.setMaxResults(size);
-        }
 
         return q.getResultList();
     }
@@ -362,12 +376,6 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
             }
         }
 
-        if (page > 0) {
-            int size = Integer.parseInt(env.getProperty("pageOrderShop.size").toString());
-            int start = (page - 1) * size;
-            q.setFirstResult(start);
-            q.setMaxResults(size);
-        }
 
         return q.getResultList();
     }
@@ -509,6 +517,130 @@ public class OrderDetailsRepositoryImpl implements OrderDetailsRepository {
                     .getSingleResult();
         }
         return Integer.parseInt(String.valueOf(count));
+    }
+
+    @Override
+    public boolean updateOrderIdPaying(long idWait, String idSh, long idOrdN) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        try {
+            Query seperatedOrd = session.createSQLQuery("CALL seperateOrder2Shop(:idW,:idSh,:idN)")
+                    .setParameter("idW", idWait)
+                    .setParameter("idSh", idSh)
+                    .setParameter("idN", idOrdN);
+
+            seperatedOrd.executeUpdate();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public long totalOfOrderPerShop(long idOr, String idS) {
+        if (idOr != 0) {
+            Session session = this.sessionFactory.getObject().getCurrentSession();
+            ////
+            Query query = session.createQuery("from OrderDetails where orderDetailsPK.idOrderDetails=:id and product.idShop.idShopStore =: idSh");
+            query.setParameter("id", idOr);
+            query.setParameter("idSh", idS);
+            List<OrderDetails> lst = query.getResultList();
+            long sum = 0;
+            for (OrderDetails c : lst) {
+                sum += (c.getAmount() * c.getUnitPrice());
+            }
+
+            long minus = 0;
+            List<ShopProducts> lst_sp = new ArrayList<>();
+            lst_sp = this.shopProductRepository.getShopProducts();
+
+            for(OrderDetails c : lst){
+                minus += (c.getAmount() * c.getValueDiscount());
+            }
+
+            return sum - minus;
+        }
+        return 0;
+    }
+
+    @Override
+    public List<String> listIDOrderToStringByIdShop(String idS, String stt, String kw_time, int page) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        int start = 0;
+        if (page > 0) {
+            start = (page - 1) * 20;
+        }
+
+        List<String> nameID = new ArrayList<>();
+        Query query = session.createSQLQuery("CALL getFullOrderWaittingByIDShop(:idS,:st,:time_kw,:posData)")
+                .setParameter("idS", idS)
+                .setParameter("st", stt)
+                .setParameter("time_kw", kw_time)
+                .setParameter("posData", start);
+        List<Object[]> lst = query.getResultList();
+        for(Object[] i : lst){
+            nameID.add(i[0].toString());
+        }
+
+        return nameID;
+    }
+
+    @Override
+    public boolean updateSTTAccept_OrderDetailsShopByID_Ord(long idDetail) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Orders o = session.get(Orders.class,idDetail);
+        o.setStatus("2");
+
+        Query query = session.createQuery("update OrderDetails o set o.stt = '2', o.dateShopaccept =:date where orderDetailsPK.idOrderDetails=:id ");
+        query.setParameter("id", idDetail);
+        query.setParameter("date", new Date());
+
+
+        try {
+            session.update(o);
+            query.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsByIDCustomer_SttOrder(String idCus, String stt) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        Query query = session.createSQLQuery("CALL GetOrderByIDCustomer_SttOrder(:idC,:st)")
+                .setParameter("idC", idCus)
+                .setParameter("st", stt)
+                .addEntity(OrderDetails.class);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean updateSTTCancle_OrderDetailsShopByID_Ord(long idDetail,String reason, String from) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Orders o = session.get(Orders.class,idDetail);
+        o.setStatus("CANCLE");
+        o.setReasonCancle(reason);
+        o.setCancleFrom(from);
+        o.setTimeCancle(new Date());
+
+        Query query = session.createQuery("update OrderDetails o set o.stt = 'CANCLE', o.dateShopaccept =:date where orderDetailsPK.idOrderDetails=:id ");
+        query.setParameter("id", idDetail);
+        query.setParameter("date", new Date());
+
+        try {
+            session.update(o);
+            query.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        }
+        return false;
     }
 
 

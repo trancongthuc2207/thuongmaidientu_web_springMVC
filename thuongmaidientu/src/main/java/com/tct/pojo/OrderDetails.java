@@ -38,6 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrderDetails.findByStt", query = "SELECT o FROM OrderDetails o WHERE o.stt = :stt")})
 public class OrderDetails implements Serializable {
 
+    @Column(name = "value_discount")
+    private Long valueDiscount;
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected OrderDetailsPK orderDetailsPK;
@@ -181,6 +184,14 @@ public class OrderDetails implements Serializable {
     @Override
     public String toString() {
         return "com.tct.pojo.OrderDetails[ orderDetailsPK=" + orderDetailsPK + " ]";
+    }
+
+    public Long getValueDiscount() {
+        return valueDiscount;
+    }
+
+    public void setValueDiscount(Long valueDiscount) {
+        this.valueDiscount = valueDiscount;
     }
     
 }

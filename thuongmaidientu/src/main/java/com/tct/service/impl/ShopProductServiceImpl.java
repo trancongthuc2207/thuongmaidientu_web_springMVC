@@ -43,4 +43,19 @@ public class ShopProductServiceImpl implements ShopProductService {
     public boolean updateAmountPro_Shop(String idShop, int idProduct, int sl) {
         return this.shopProductRepository.updateAmountPro_Shop(idShop,idProduct,sl);
     }
+
+    @Override
+    public boolean updateDiscount_ProductByID_Product(int idPro, String idDis) {
+        return this.shopProductRepository.updateDiscount_ProductByID_Product(idPro,idDis);
+    }
+
+    @Override
+    public List<ShopProducts> getShopProducts() {
+        return this.shopProductRepository.getShopProducts();
+    }
+
+    @Override
+    public List<ShopProducts> getShopProductsByIDShop(String idShop) {
+        return this.shopProductRepository.getShopProductsByIDShop(idShop);
+    }
 }

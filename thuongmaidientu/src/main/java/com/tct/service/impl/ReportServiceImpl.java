@@ -50,4 +50,9 @@ public class ReportServiceImpl implements ReportService {
         return this.reportRepository.addReportFromCus2Product(typeRp,idShop,descrip,idCus,idPro);
     }
 
+    @Override
+    public List<Report> getListReportOfCustomerToShopProduct(String kw, String stt, int page) {
+        return this.reportRepository.getListReportOfCustomerToShopProduct(kw, stt, page);
+    }
+
 }

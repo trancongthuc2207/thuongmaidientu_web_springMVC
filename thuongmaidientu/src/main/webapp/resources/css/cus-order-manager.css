@@ -1,0 +1,40 @@
+.container-orders-customer {
+    width: 100%;
+    position: relative;
+}
+
+.card-per-order {
+    width: 100%;
+    background-color: gray;
+    margin-top: 10px;
+}
+
+.card-per-order-in4 {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+}
+.card-per-order-in4 p {
+    font-size: 20px;
+}
+
+.card-per-order-content {
+    display: none;
+    width: 100%;
+    background-color: gray;
+    position: relative;
+    padding: 20px;
+}
+/*Order Detail*/
+.order-details-per-order {
+    border: 4px solid orange;
+    margin-top: 15px;
+}
+
+.ord-detail {
+    display: flex;
+}
+
+.h1-order {
+    color: red;
+}

@@ -3,10 +3,18 @@
   <component name="WebContextManager">
     <option name="state">
       <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Customer/cus-orders-manager.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Customer" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Employee/employee-main.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Employee" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Index/products.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Index" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Shop/shop-manager.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Shop" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Shop/turnover-shop.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/Shop" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/add-product-shop.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/customer-orders.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/edit-product.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/employee-main.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/index.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/orders-shop.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/products.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/shop-manager.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/layout/header.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/layout" />
       </map>

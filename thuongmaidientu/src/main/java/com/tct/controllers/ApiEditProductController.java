@@ -2,8 +2,10 @@ package com.tct.controllers;
 
 import com.cloudinary.Cloudinary;
 import com.tct.pojo.Product;
+import com.tct.service.DiscountCodeService;
 import com.tct.service.OrderDetailsService;
 import com.tct.service.ProductService;
+import com.tct.service.ShopProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +31,11 @@ public class ApiEditProductController {
     @Autowired
     private OrderDetailsService orderDetailsService;
 
+    @Autowired
+    private ShopProductService shopProductService;
+
+    @Autowired
+    private DiscountCodeService discountCodeService;
 
     @PostMapping(path = "/update-pro" , produces = {
             MediaType.APPLICATION_JSON_VALUE
@@ -98,14 +105,51 @@ public class ApiEditProductController {
     @PostMapping(path = "/add-product2cart" , produces = {
             MediaType.APPLICATION_JSON_VALUE
     })
-    public ResponseEntity<Product> addProduct2cart(@RequestBody Map<String,String> params){
+    public ResponseEntity<Product> addProduct2cart(@RequestBody Map<String,String> params,HttpSession session){
         int idPro = Integer.parseInt(params.get("idPro"));
         String idCus = params.get("idCus");
         long idOrderWaitting = Long.parseLong(params.get("idOrd"));
 
-        if(this.orderDetailsService.addOrUpdateProdToOrderDetails_WAITTING(params,idOrderWaitting,idPro,idCus))
+        if(this.orderDetailsService.addOrUpdateProdToOrderDetails_WAITTING(params,idOrderWaitting,idPro,idCus)){
+            session.setAttribute("amountPro",this.orderDetailsService.countProductInOrderWaitting(idOrderWaitting));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(path = "/add-discount-product" , produces = {
+            MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<Product> addDiscountProduct(@RequestBody Map<String,String> params){
+        int idPro = Integer.parseInt(params.get("idPro"));
+        String idDis = params.get("idDis");
+        if(this.shopProductService.updateDiscount_ProductByID_Product(idPro,idDis))
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(path = "/update-amount-product" , produces = {
+            MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<Product> updateAmountProduct(@RequestBody Map<String,String> params){
+        String idShop = params.get("idShop");
+        int idPro = Integer.parseInt(params.get("idPro"));
+        int amount = Integer.parseInt(params.get("amount"));
+
+        if(this.shopProductService.updateAmountPro_Shop(idShop, idPro, amount))
+            return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(path = "/update-stt-discount" , produces = {
+            MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<Product> updateSttDiscount(@RequestBody Map<String,String> params){
+        String idDis = params.get("idDis");
+        String stt = params.get("sttDis");
+
+        if(this.discountCodeService.updateSttDiscount(idDis,stt))
+            return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }

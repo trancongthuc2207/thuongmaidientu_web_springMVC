@@ -5,16 +5,19 @@
 package com.tct.pojo;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TypeReport.findByNameRp", query = "SELECT t FROM TypeReport t WHERE t.nameRp = :nameRp"),
     @NamedQuery(name = "TypeReport.findByPos", query = "SELECT t FROM TypeReport t WHERE t.pos = :pos")})
 public class TypeReport implements Serializable {
+
+    @OneToMany(mappedBy = "idTypeReport")
+    private Set<Report> reportSet;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -97,6 +103,15 @@ public class TypeReport implements Serializable {
     @Override
     public String toString() {
         return "com.tct.pojo.TypeReport[ idTypeRp=" + idTypeRp + " ]";
+    }
+
+    @XmlTransient
+    public Set<Report> getReportSet() {
+        return reportSet;
+    }
+
+    public void setReportSet(Set<Report> reportSet) {
+        this.reportSet = reportSet;
     }
     
 }

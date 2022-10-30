@@ -55,8 +55,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     }
 
     @Override
-    public int countOrderDetailsForShopById_Order(String idShop) {
-        return this.orderDetailsRepository.countOrderDetailsForShopById_Order(idShop);
+    public int countOrderDetailsForShopById_Order(String idShop,String stt) {
+        return this.orderDetailsRepository.countOrderDetailsForShopById_Order(idShop,stt);
     }
 
     @Override
@@ -132,5 +132,35 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     @Override
     public int countProductInOrderWaitting(long idDetail) {
         return this.orderDetailsRepository.countProductInOrderWaitting(idDetail);
+    }
+
+    @Override
+    public boolean updateOrderIdPaying(long idWait, String idSh, long idOrdN) {
+        return this.orderDetailsRepository.updateOrderIdPaying(idWait,idSh,idOrdN);
+    }
+
+    @Override
+    public long totalOfOrderPerShop(long idOr, String idS) {
+        return this.orderDetailsRepository.totalOfOrderPerShop(idOr,idS);
+    }
+
+    @Override
+    public List<String> listIDOrderToStringByIdShop(String idS, String stt, String kw_time, int page) {
+        return this.orderDetailsRepository.listIDOrderToStringByIdShop(idS,stt,kw_time,page);
+    }
+
+    @Override
+    public boolean updateSTTAccept_OrderDetailsShopByID_Ord(long idDetail) {
+        return this.orderDetailsRepository.updateSTTAccept_OrderDetailsShopByID_Ord(idDetail);
+    }
+
+    @Override
+    public List<OrderDetails> getOrderDetailsByIDCustomer_SttOrder(String idCus, String stt) {
+        return this.orderDetailsRepository.getOrderDetailsByIDCustomer_SttOrder(idCus, stt);
+    }
+
+    @Override
+    public boolean updateSTTCancle_OrderDetailsShopByID_Ord(long idDetail, String reason, String from) {
+        return this.orderDetailsRepository.updateSTTCancle_OrderDetailsShopByID_Ord(idDetail, reason, from);
     }
 }

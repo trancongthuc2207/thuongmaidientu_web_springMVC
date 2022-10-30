@@ -2,6 +2,7 @@ package com.tct.controllers;
 
 import com.tct.pojo.Account;
 import com.tct.pojo.Customers;
+import com.tct.pojo.Product;
 import com.tct.pojo.ShopProducts;
 import com.tct.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,28 +49,36 @@ public class ShopViewController {
     @RequestMapping("/shop-view")
     public String shop_view(Model model, @RequestParam Map<String, String> params, Authentication authentication) {
         String idS = params.getOrDefault("id_Shop", "");
+        String kw = params.getOrDefault("kw","");
+        String incre_des = params.getOrDefault("fil","NO");
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
-        int slPro = this.shopProductService.countProduct_ShopByID_Shop(idS);
+        String isDis = params.getOrDefault("isDis","NO");
 
-        List<ShopProducts> lstP = new ArrayList<>();
-        for (ShopProducts s : this.shopProductService.getShopProductByID_Shop(params, page, idS)){
-            if(s.getProduct().getStatus() == 1 && s.getAmount() > 1)
-                lstP.add(s);
-        }
-
+        model.addAttribute("shop_product",this.shopProductService.getShopProductsByIDShop(idS));
         model.addAttribute("shopAcc", this.shopStoreService.getShopstoreByID_Shop(idS));
-        model.addAttribute("listProduct", lstP);
-        model.addAttribute("countP", slPro);
         model.addAttribute("linkCur", "id_Shop=" + idS);
 
+        int countPro = this.productService.GetProductByIDShop_Kw_Stt_posData_haveDiscount_AmountFull_increDes(idS,kw,1,page,isDis,"FULL",incre_des).size();
+        model.addAttribute("countPro", countPro);
+        List<Product> lstPro = new ArrayList<>();
+        lstPro = this.productService.GetProductByIDShop_Kw_Stt_posData_haveDiscount_AmountFull_increDes(idS,kw,1,page,isDis,"NO",incre_des);
+        model.addAttribute("prods_Shop", lstPro);
+
+        model.addAttribute("shopID",idS);
+        model.addAttribute("page",page);
+        model.addAttribute("isDis",isDis);
+        model.addAttribute("fil",incre_des);
+        model.addAttribute("kw",kw);
         if(authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
-            Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
-            long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
+            if(accCur.getIdPos().getIdPosition() == 2){
+                Customers customers = this.customerService.getCustomersByID_acc(accCur.getIdAccount());
+                long idOrderWaitting = this.ordersService.getID_OrdersByID_WAITTING(params, customers.getIdCustomer());
 
-            model.addAttribute("idOr",idOrderWaitting);
-            model.addAttribute("idCust", customers.getIdCustomer());
+                model.addAttribute("idOr",idOrderWaitting);
+                model.addAttribute("idCust", customers.getIdCustomer());
+            }
         }
         return "shop-view";
     }

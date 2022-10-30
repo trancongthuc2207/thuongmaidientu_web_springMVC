@@ -1,6 +1,7 @@
 package com.tct.controllers;
 
 import com.tct.pojo.Account;
+import com.tct.pojo.OrderDetails;
 import com.tct.pojo.ShopStore;
 import com.tct.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -49,16 +52,21 @@ public class Shop_OrdersShopController {
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
 
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
-            int slOrd = this.orderDetailsService.countOrderDetailsForShopById_Order(shopStore.getIdShopStore());
+            int slOrd = this.orderDetailsService.countOrderDetailsForShopById_Order(shopStore.getIdShopStore(),"1");
 
+            List<String> list_IdOrder = new ArrayList<>();
+            list_IdOrder = this.orderDetailsService.listIDOrderToStringByIdShop(shopStore.getIdShopStore(),"1","",page);
 
             if(kw == null || kw.isEmpty()){
                 model.addAttribute("countOrd", slOrd);
+                model.addAttribute("lst_IDOrder", list_IdOrder);
                 model.addAttribute("listOrdFilter",this.orderDetailsService.getOrderDetailsForShopByID_ShopKW(params,page,shopStore.getIdShopStore()));
             }else {
                 model.addAttribute("countOrd", slOrd);
+                model.addAttribute("lst_IDOrder", list_IdOrder);
                 model.addAttribute("listOrdFilter",this.orderDetailsService.getOrderDetailsForShopByID_ShopKW_All(params,page,shopStore.getIdShopStore()));
             }
+
         }
 
         return "shop-manager/orders";
@@ -71,9 +79,14 @@ public class Shop_OrdersShopController {
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
 
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
-            int slOrd = this.orderDetailsService.getOrderDetailsForShopByID_ShopKW_Today(params,page,shopStore.getIdShopStore()).size();
+            int slOrd = this.orderDetailsService.countOrderDetailsForShopById_Order(shopStore.getIdShopStore(),"1");
+
+            List<String> list_IdOrder = new ArrayList<>();
+            list_IdOrder = this.orderDetailsService.listIDOrderToStringByIdShop(shopStore.getIdShopStore(),"1","today",page);
+
 
             model.addAttribute("countOrd", slOrd);
+            model.addAttribute("lst_IDOrder", list_IdOrder);
             model.addAttribute("listOrdFilter",this.orderDetailsService.getOrderDetailsForShopByID_ShopKW_Today(params,page,shopStore.getIdShopStore()));
         }
         return "shop-manager/orders";
@@ -87,8 +100,12 @@ public class Shop_OrdersShopController {
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
 
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
-            int slOrd = this.orderDetailsService.getOrderDetailsForShopByID_ShopKW_Yesterday(params,page,shopStore.getIdShopStore()).size();
+            int slOrd = this.orderDetailsService.countOrderDetailsForShopById_Order(shopStore.getIdShopStore(),"1");
 
+            List<String> list_IdOrder = new ArrayList<>();
+            list_IdOrder = this.orderDetailsService.listIDOrderToStringByIdShop(shopStore.getIdShopStore(),"1","yesterday",page);
+
+            model.addAttribute("lst_IDOrder", list_IdOrder);
             model.addAttribute("countOrd", slOrd);
             model.addAttribute("listOrdFilter",this.orderDetailsService.getOrderDetailsForShopByID_ShopKW_Yesterday(params,page,shopStore.getIdShopStore()));
         }
@@ -103,8 +120,11 @@ public class Shop_OrdersShopController {
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
 
             ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
-            int slOrd = this.orderDetailsService.getOrderDetailsForShopByID_ShopKW_MoreDay(params,page,shopStore.getIdShopStore()).size();
+            int slOrd = this.orderDetailsService.countOrderDetailsForShopById_Order(shopStore.getIdShopStore(),"1");
 
+            List<String> list_IdOrder = new ArrayList<>();
+            list_IdOrder = this.orderDetailsService.listIDOrderToStringByIdShop(shopStore.getIdShopStore(),"1","moreday",page);
+            model.addAttribute("lst_IDOrder", list_IdOrder);
             model.addAttribute("countOrd", slOrd);
             model.addAttribute("listOrdFilter",this.orderDetailsService.getOrderDetailsForShopByID_ShopKW_MoreDay(params,page,shopStore.getIdShopStore()));
         }

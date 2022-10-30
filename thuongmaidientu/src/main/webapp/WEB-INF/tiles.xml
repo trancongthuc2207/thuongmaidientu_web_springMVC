@@ -15,98 +15,100 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
     <definition name="index" extends="baseLayout">
         <put-attribute name="title" value="Trang chủ" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/index.jsp" />
+                       value="/WEB-INF/jsp/Index/index.jsp" />
     </definition>
     <definition name="login" extends="baseLayout">
         <put-attribute name="title" value="Dang nhap" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/login.jsp" />
+                       value="/WEB-INF/jsp/Index/login.jsp" />
     </definition>
 
     <definition name="register" extends="baseLayout">
         <put-attribute name="title" value="Dăng ký" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/register.jsp" />
+                       value="/WEB-INF/jsp/Index/register.jsp" />
     </definition>
 
     <definition name="products" extends="baseLayout">
         <put-attribute name="title" value="San pham" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/products.jsp" />
+                       value="/WEB-INF/jsp/Index/products.jsp" />
     </definition>
 
     <definition name="shop-view" extends="baseLayout">
         <put-attribute name="title" value="View Shop" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/shop-view.jsp" />
+                       value="/WEB-INF/jsp/Index/shop-view.jsp" />
     </definition>
 
     <definition name="order-details" extends="baseLayout">
         <put-attribute name="title" value="Chi tiết đơn hàng" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/order-details.jsp" />
+                       value="/WEB-INF/jsp/Index/order-details.jsp" />
     </definition>
 
     <!--  USER  -->
     <definition name="user/customer-orders" extends="baseLayout">
         <put-attribute name="title" value="Quản lý giỏ hàng" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/customer-orders.jsp" />
+                       value="/WEB-INF/jsp/Customer/customer-orders.jsp" />
     </definition>
     <definition name="user/cus-orders-manager" extends="baseLayout">
         <put-attribute name="title" value="Quản lý các đơn hàng" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/cus-orders-manager.jsp" />
+                       value="/WEB-INF/jsp/Customer/cus-orders-manager.jsp" />
     </definition>
     <definition name="user/infor-customer" extends="baseLayout">
         <put-attribute name="title" value="Trang cá nhân" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/info-customer.jsp" />
+                       value="/WEB-INF/jsp/Customer/info-customer.jsp" />
     </definition>
     <!--  SHOP  -->
     <definition name="shop-manager" extends="baseLayout">
         <put-attribute name="title" value="Quản Lý Cửa Hàng" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/shop-manager.jsp" />
+                       value="/WEB-INF/jsp/Shop/shop-manager.jsp" />
     </definition>
     <definition name="shop-manager/edit" extends="baseLayout">
         <put-attribute name="title" value="Edit Sản Phẩm" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/edit-product.jsp" />
+                       value="/WEB-INF/jsp/Shop/edit-product.jsp" />
     </definition>
     <definition name="shop-manager/orders" extends="baseLayout">
         <put-attribute name="title" value="Quản lý đơn" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/orders-shop.jsp" />
+                       value="/WEB-INF/jsp/Shop/orders-shop.jsp" />
     </definition>
     <definition name="shop-manager/orders-accepted" extends="baseLayout">
         <put-attribute name="title" value="Quản lý đơn đã kiểm duyệt" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/orders-accepted.jsp" />
+                       value="/WEB-INF/jsp/Shop/orders-accepted.jsp" />
     </definition>
 
     <definition name="shop-manager/reports" extends="baseLayout">
         <put-attribute name="title" value="Quản lý các phản hồi" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/report-shop.jsp" />
+                       value="/WEB-INF/jsp/Shop/report-shop.jsp" />
     </definition>
 
     <definition name="shop-manager/add-product" extends="baseLayout">
         <put-attribute name="title" value="Thêm sản phẩm" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/add-product-shop.jsp" />
+                       value="/WEB-INF/jsp/Shop/add-product-shop.jsp" />
     </definition>
 
     <definition name="shop-manager/turnover-shop" extends="baseLayout">
         <put-attribute name="title" value="Kiểm tra doanh thu" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/turnover-shop.jsp" />
+                       value="/WEB-INF/jsp/Shop/turnover-shop.jsp" />
     </definition>
 
     <definition name="employee" extends="baseLayout">
         <put-attribute name="title" value="Trang nhân viên" />
+        <put-attribute name="header" value="/WEB-INF/layout/Admin_Employee/header-admin.jsp" />
         <put-attribute name="content"
-                       value="/WEB-INF/jsp/employee-main.jsp" />
+                       value="/WEB-INF/jsp/Employee/employee-main.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/layout/Admin_Employee/footer-admin.jsp" />
     </definition>
 
 </tiles-definitions>

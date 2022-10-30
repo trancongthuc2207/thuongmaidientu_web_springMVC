@@ -4,6 +4,8 @@
  */
 package com.tct.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -58,9 +60,11 @@ public class DiscountCode implements Serializable {
     private Long valueDiscount;
     @Column(name = "date_begin_dis")
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateBeginDis;
     @Column(name = "date_finish_dis")
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateFinishDis;
     @Column(name = "status")
     private Integer status;

@@ -20,4 +20,6 @@ public interface ReportService {
     List<Report> getReportForCus(Map<String, String> params, String pos);
 
     boolean addReportFromCus2Product(int typeRp,String idShop, String descrip,String idCus, int idPro);
+
+    List<Report> getListReportOfCustomerToShopProduct(String kw, String stt, int page);
 }

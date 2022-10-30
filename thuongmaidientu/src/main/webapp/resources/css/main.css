@@ -1,0 +1,20 @@
+.bg-nav-header {
+    background-color: orange;
+    color: white;
+    font-size: 20px;
+}
+
+.li-type-product a {
+    color: red;
+}
+
+.price-discount {
+    font-size: 25px;
+    font-style: italic;
+    color: red;
+    font-weight: bold;
+}
+
+.price-discount:before {
+    content: "Chỉ còn:";
+}

@@ -141,11 +141,23 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public int countProduct() {
+    public int countProduct(String full, int type) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        org.hibernate.query.Query q = session.createQuery("SELECT COUNT(o) FROM Product o,ShopProducts s where o.idProduct=s.shopProductsPK.idProduct and o.status = 1 and s.amount > 1");
-        
-        return Integer.parseInt(q.getSingleResult().toString());
+        int sl = 0;
+        if(full == "full"){
+            Query q = session.createQuery("FROM Product o,ShopProducts s " +
+                    "where o.idProduct=s.shopProductsPK.idProduct and o.status = 1 and s.amount > 1" +
+                    "group by o.idProduct");
+            sl = q.getResultList().size();
+        }
+        if(full != "full"){
+            Query q = session.createQuery("FROM Product o,ShopProducts s " +
+                    "where o.idProduct=s.shopProductsPK.idProduct and o.status = 1 and s.amount > 1" +
+                    "and o.typeOfProduct.idTypeProduct =: idTy " +
+                    "group by o.idProduct").setParameter("idTy",type);
+            sl = q.getResultList().size();
+        }
+        return sl;
     }
 
     @Override
@@ -325,6 +337,8 @@ public class ProductRepositoryImpl implements ProductRepository {
         Product product = session.get(Product.class,idPro);
         product.setStatus(1);
 
+        DiscountCode dis = session.get(DiscountCode.class,"1");
+
         ShopProductsPK pk = new ShopProductsPK();
         pk.setIdProduct(product.getIdProduct());
         pk.setIdShop(product.getIdShop().getIdShopStore());
@@ -333,6 +347,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         shopProducts.setShopProductsPK(pk);
         shopProducts.setAmount(0);
         shopProducts.setTimeBegin(new Date());
+        shopProducts.setIdDiscount(dis);
         try{
             session.save(shopProducts);
             session.update(product);
@@ -366,6 +381,94 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
         else
             return null;
+    }
+
+    @Override
+    public long valueDiscountOfProduct(Product p) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        Product product = session.get(Product.class,p.getIdProduct());
+        ShopProductsPK sp_pk = new ShopProductsPK();
+        sp_pk.setIdShop(product.getIdShop().getIdShopStore());
+        sp_pk.setIdProduct(p.getIdProduct());
+
+        ShopProducts sp = session.get(ShopProducts.class,sp_pk);
+        long sum_minus = 0;
+        if(sp.getIdDiscount().getValueDiscount() != null){
+            sum_minus = sp.getIdDiscount().getValueDiscount();
+        }
+        if (sp.getIdDiscount().getPercentDiscount() != null){
+            sum_minus = (sp.getIdDiscount().getPercentDiscount() * product.getUnitPrice())/100;
+        }
+
+        return sum_minus;
+    }
+
+    @Override
+    public List<Product> GetProductByIDShop_Kw_Stt_posData_haveDiscount_AmountFull_increDes(String idShop, String kw, int stt, int page, String isDiscount, String isFull, String incre_des) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        int start = 0;
+        if (page > 0) {
+            start = (page - 1) * 20;
+        }
+
+
+        Query query = session.createSQLQuery("CALL GetProductByIDShop_All_Kw(:idS,:kw,:stt,:posData,:isDis,:isF,:incre_des)")
+                .setParameter("idS", idShop)
+                .setParameter("kw", kw)
+                .setParameter("stt", stt)
+                .setParameter("posData", start)
+                .setParameter("isDis", isDiscount)
+                .setParameter("isF", isFull)
+                .setParameter("incre_des", incre_des).addEntity(Product.class);
+
+        List<Product> lst = query.getResultList();
+
+        return lst;
+    }
+
+    @Override
+    public List<Product> GetProductIndex_All_Kw(String kw, String disCount, String incre_des, int stt, int page, String isFull) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+
+        int start = 0;
+        if (page > 0) {
+            start = (page - 1) * 8;
+        }
+
+
+        Query query = session.createSQLQuery("CALL GetProductIndex_All_Kw(:kw,:isDis,:incre_des,:stt,:posData,:isF)")
+                .setParameter("kw", kw)
+                .setParameter("isDis", disCount)
+                .setParameter("incre_des", incre_des)
+                .setParameter("stt", stt)
+                .setParameter("posData", start)
+                .setParameter("isF", isFull)
+                .addEntity(Product.class);
+
+        List<Product> lst = query.getResultList();
+
+        return lst;
+    }
+
+    @Override
+    public List<Object[]> GetProductHotSaleByIdShop(String idShop, Date dateMonth) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        List<Object[]> lst = new ArrayList<>();
+
+        if(dateMonth == null){
+            Query query = session.createSQLQuery("CALL getProductSaledHotByIDShop_Full(:idS)")
+                    .setParameter("idS", idShop);
+            lst = query.getResultList();
+        }
+        if(dateMonth != null){
+            Query query = session.createSQLQuery("CALL getProductSaledHotByIDShop_Month(:idS,:dateM)")
+                    .setParameter("idS", idShop)
+                    .setParameter("dateM", dateMonth);
+            lst = query.getResultList();
+        }
+
+        return lst;
     }
 
 }

@@ -121,7 +121,7 @@
                                 <div>
                                         <%--  EDIT BUTTON  --%>
                                     <i onclick="editCusClick()" style="float: right;margin-left: 30px;font-size: 20px"
-                                       class="btn fa-solid fa-pen-to-square"></i>
+                                       class="btn fa-solid fa-pen-to-square"> Chỉnh sửa</i>
                                         <%--  /EDOT BUTTON  --%>
                                         <%--  SAVE BUTTON  --%>
                                     <button type="submit"
@@ -132,7 +132,7 @@
                                         <%--  CANCLE BUTTON  --%>
                                     <button type="button" onclick="cancleCusEdit()"
                                             style="color: red;margin-left: 30px;font-size: 20px; display: none"
-                                            class="btn fa-solid fa-xmark edit cancle"></button>
+                                            class="btn fa-solid fa-xmark edit cancle"> Huỷ </button>
                                         <%--  CANCLE BUTTON  --%>
                                 </div>
                             </div>

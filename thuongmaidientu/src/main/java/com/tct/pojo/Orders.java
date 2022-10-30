@@ -40,6 +40,23 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status")})
 public class Orders implements Serializable {
 
+    @Size(max = 100)
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    @Column(name = "time_delivery")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeDelivery;
+    @Size(max = 200)
+    @Column(name = "reason_cancle")
+    private String reasonCancle;
+    @Column(name = "time_cancle")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeCancle;
+    @Size(max = 45)
+    @Column(name = "cancle_from")
+    private String cancleFrom;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -139,6 +156,46 @@ public class Orders implements Serializable {
     @Override
     public String toString() {
         return "com.tct.pojo.Orders[ idOrders=" + idOrders + " ]";
+    }
+
+    public Date getTimeDelivery() {
+        return timeDelivery;
+    }
+
+    public void setTimeDelivery(Date timeDelivery) {
+        this.timeDelivery = timeDelivery;
+    }
+
+    public String getReasonCancle() {
+        return reasonCancle;
+    }
+
+    public void setReasonCancle(String reasonCancle) {
+        this.reasonCancle = reasonCancle;
+    }
+
+    public Date getTimeCancle() {
+        return timeCancle;
+    }
+
+    public void setTimeCancle(Date timeCancle) {
+        this.timeCancle = timeCancle;
+    }
+
+    public String getCancleFrom() {
+        return cancleFrom;
+    }
+
+    public void setCancleFrom(String cancleFrom) {
+        this.cancleFrom = cancleFrom;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
     
 }

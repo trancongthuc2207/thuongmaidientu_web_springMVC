@@ -50,8 +50,18 @@ public class Shop_EditProductController {
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
+            ShopStore shopStore = new ShopStore();
 
-            ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
+            if(accCur.getIdPos().getIdPosition() == 3){
+                shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
+            }
+
+            if(accCur.getIdPos().getIdPosition() == 4 || accCur.getIdPos().getIdPosition() == 1){
+                String idShopFromParams = params.getOrDefault("idShop_FrEpl","");
+                shopStore = this.shopStoreService.getShopstoreByID_Shop(idShopFromParams).get(0);
+                model.addAttribute("idS_FrEmpl",idShopFromParams);
+            }
+
             ShopProducts shopProducts = this.shopProductService.getShopProductByPK(shopStore.getIdShopStore(),id).get(0);
             model.addAttribute("shop_product_detail",this.shopProductService.getShopProductByPK(shopStore.getIdShopStore(),id));
             model.addAttribute("shopAcc", this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()));
@@ -68,14 +78,29 @@ public class Shop_EditProductController {
     }
 
     @PostMapping("/shop-manager/edit/update")
-    public String upload(@ModelAttribute("product") Product pro,Model model,Authentication authentication) {
+    public String upload(@RequestParam Map<String, String> params,@ModelAttribute("product") Product pro,Model model,Authentication authentication) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account accCur = this.userDetailsService.getByUsername(authentication.getName());
-        ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
+        ShopStore shopStore = new ShopStore();
+
+        if(accCur.getIdPos().getIdPosition() == 3){
+            shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
+        }
+
+        if(accCur.getIdPos().getIdPosition() == 4 || accCur.getIdPos().getIdPosition() == 1){
+            String idShopFromParams = params.getOrDefault("idShop_FrEpl","");
+            shopStore = this.shopStoreService.getShopstoreByID_Shop(idShopFromParams).get(0);
+            model.addAttribute("idS_FrEmpl",idShopFromParams);
+        }
         if(pro != null)
         {
             if(this.productService.updateProductByID_Product(pro,shopStore.getIdShopStore()) == true){
                 model.addAttribute("errMsg","Thành công!!!");
+
+                if(accCur.getIdPos().getIdPosition() == 4 || accCur.getIdPos().getIdPosition() == 1){
+                    return "redirect:/shop-manager?idShop_FrEpl=" + params.getOrDefault("idShop_FrEpl","");
+                }
+
                 return "redirect:/shop-manager";
             }
         }

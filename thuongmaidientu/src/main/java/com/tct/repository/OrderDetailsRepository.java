@@ -23,7 +23,7 @@ public interface OrderDetailsRepository {
 
     List<OrderDetails> getOrderDetailsForShopByID_Shop(Map<String, String> params, int page, String idShop);
 
-    int countOrderDetailsForShopById_Order(String idShop);
+    int countOrderDetailsForShopById_Order(String idShop,String stt);
 
     List<OrderDetails> getOrderDetailsForShopByID_ShopKW(Map<String, String> params, int page, String idShop);
 
@@ -54,4 +54,16 @@ public interface OrderDetailsRepository {
     int countNotConfirmOrderDetailsForShopById_Order(String idShop);
 
     int countProductInOrderWaitting(long idDetail);
+
+    boolean updateOrderIdPaying(long idWait,String idSh,long idOrdN);
+
+    long totalOfOrderPerShop(long idOr, String idS);
+
+    List<String> listIDOrderToStringByIdShop(String idS, String stt, String kw_time, int page);
+
+    boolean updateSTTAccept_OrderDetailsShopByID_Ord(long idDetail);
+
+    List<OrderDetails> getOrderDetailsByIDCustomer_SttOrder(String idCus, String stt);
+
+    boolean updateSTTCancle_OrderDetailsShopByID_Ord(long idDetail,String reason, String from);
 }

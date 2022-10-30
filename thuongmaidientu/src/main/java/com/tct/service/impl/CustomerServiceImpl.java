@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,5 +37,30 @@ public class CustomerServiceImpl implements CustomerService {
             System.out.println(ex.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public boolean checkInfor2Order(Customers cus) {
+        return this.customerRepository.checkInfor2Order(cus);
+    }
+
+    @Override
+    public Customers getCustomerByIDCus(String idCus) {
+        return this.customerRepository.getCustomerByIDCus(idCus);
+    }
+
+    @Override
+    public boolean checkCanComment(String idCus, int idPro) {
+        return this.customerRepository.checkCanComment(idCus, idPro);
+    }
+
+    @Override
+    public List<Customers> getCustomersByEmployee(String kw, int page) {
+        return this.customerRepository.getCustomersByEmployee(kw, page);
+    }
+
+    @Override
+    public int countCustomerByEmployee(String kw) {
+        return this.customerRepository.countCustomerByEmployee(kw);
     }
 }

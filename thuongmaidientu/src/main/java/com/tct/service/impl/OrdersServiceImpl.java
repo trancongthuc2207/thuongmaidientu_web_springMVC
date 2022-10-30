@@ -15,13 +15,13 @@ public class OrdersServiceImpl implements OrdersService {
     private OrdersRepository ordersRepository;
 
     @Override
-    public List<Orders> getOrders(Map<String, String> params, int page) {
-        return null;
+    public List<Orders> getOrders(long idOrder) {
+        return this.ordersRepository.getOrders(idOrder);
     }
 
     @Override
-    public int countOrdersByID_Cus(String idCus) {
-        return this.ordersRepository.countOrdersByID_Cus(idCus);
+    public int countOrdersByID_Cus(String idCus, String stt) {
+        return this.ordersRepository.countOrdersByID_Cus(idCus,stt);
     }
 
     @Override
@@ -40,6 +40,11 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public boolean saveOrderShop(Orders ord, long idOrdW, String idS, long totalMoney) {
+        return this.ordersRepository.saveOrderShop(ord,idOrdW,idS,totalMoney);
+    }
+
+    @Override
     public long getID_max() {
         return this.ordersRepository.getID_max();
     }
@@ -52,5 +57,40 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public boolean submitOrderFull(long idOrder) {
         return this.ordersRepository.submitOrderFull(idOrder);
+    }
+
+    @Override
+    public List<Orders> getOrderByIDShop_Kw_Stt_Page_IncreDes(String idShop, String kw, String stt, int page, String Incre_Des) {
+        return this.ordersRepository.getOrderByIDShop_Kw_Stt_Page_IncreDes(idShop, kw, stt, page, Incre_Des);
+    }
+
+    @Override
+    public List<Orders> getOrderByIDCustomer_Kw_Stt_Page_IncreDes(String idCus, String kw, String stt, int page, String Incre_Des) {
+        return this.ordersRepository.getOrderByIDCustomer_Kw_Stt_Page_IncreDes(idCus, kw, stt, page, Incre_Des);
+    }
+
+    @Override
+    public List<String> getEveryNameInOrderWaittingByIDCus(String idCus, String stt, int page, String isFull) {
+        return this.ordersRepository.getEveryNameInOrderWaittingByIDCus(idCus, stt, page, isFull);
+    }
+
+    @Override
+    public List<Object[]> getOrderByTimeActionByIdShop(String idShop) {
+        return this.ordersRepository.getOrderByTimeActionByIdShop(idShop);
+    }
+
+    @Override
+    public int countOrderFullByEmployee() {
+        return this.ordersRepository.countOrderFullByEmployee();
+    }
+
+    @Override
+    public List<Orders> getOrderByEmployee_Kw_SttOfOrder(String kw, String stt, int page) {
+        return this.ordersRepository.getOrderByEmployee_Kw_SttOfOrder(kw, stt, page);
+    }
+
+    @Override
+    public int countOrderFullByEmployee_Kw_SttOfOrder(String kw, String stt) {
+        return this.ordersRepository.countOrderFullByEmployee_Kw_SttOfOrder(kw, stt);
     }
 }

@@ -22,4 +22,6 @@ public interface ReportRepository {
 
 
     boolean addReportFromCus2Product(int typeRp,String idShop, String descrip,String idCus, int idPro);
+
+    List<Report> getListReportOfCustomerToShopProduct(String kw, String stt, int page);
 }

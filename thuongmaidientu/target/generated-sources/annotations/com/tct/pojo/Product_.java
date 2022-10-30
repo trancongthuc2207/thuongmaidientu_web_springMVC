@@ -1,5 +1,6 @@
 package com.tct.pojo;
 
+import com.tct.pojo.Comment;
 import com.tct.pojo.OrderDetails;
 import com.tct.pojo.Report;
 import com.tct.pojo.ShopProducts;
@@ -11,7 +12,7 @@ import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-09-07T11:14:26")
+@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-10-22T18:25:28")
 @StaticMetamodel(Product.class)
 public class Product_ { 
 
@@ -23,6 +24,7 @@ public class Product_ {
     public static volatile SingularAttribute<Product, String> manufacturer;
     public static volatile SetAttribute<Product, OrderDetails> orderDetailsSet;
     public static volatile SingularAttribute<Product, Date> dateCreated;
+    public static volatile SetAttribute<Product, Comment> commentSet;
     public static volatile SingularAttribute<Product, Integer> idProduct;
     public static volatile SingularAttribute<Product, String> nameProduct;
     public static volatile SingularAttribute<Product, String> productDescription;

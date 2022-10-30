@@ -7,7 +7,7 @@
     <div class="row">
         <c:if test="${listOrder!= null}">
             <c:forEach items="${listOrder}" var="ord">
-                <div class="col-md-3 col-xs-12" style="padding: 5px;">
+                <div class="col-md-3 col-xs-12" style="padding: 5px; <c:if test="${ord.dateShopaccept != null}">background-color: #00FF99 </c:if>">
                     <div class="card">
                         <c:if test="${ord.product.image.startsWith('https') == false}">
                             <img style="width: 300px;height: 250px" class="card-img-top" class="img-fluid"
@@ -21,6 +21,7 @@
                         </c:if>
                         <div class="card-body">
                             <h4 class="card-title">Mã sản phẩm: ${ord.product.idProduct}</h4>
+                            <h4>Tên sản phẩm: ${ord.product.nameProduct}</h4>
                             <p class="card-text">Số lượng: ${ord.amount}</p>
                             <p class="card-text">
                                 <fmt:formatNumber type="number" maxFractionDigits="3" value="${ord.product.unitPrice}"/>

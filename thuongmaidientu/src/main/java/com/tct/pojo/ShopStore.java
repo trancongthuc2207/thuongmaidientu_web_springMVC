@@ -30,6 +30,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ShopStore.findByDateBegin", query = "SELECT s FROM ShopStore s WHERE s.dateBegin = :dateBegin")})
 public class ShopStore implements Serializable {
 
+    @Column(name = "rating")
+    private Integer rating;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -208,5 +211,13 @@ public class ShopStore implements Serializable {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 }

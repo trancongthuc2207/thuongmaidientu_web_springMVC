@@ -94,7 +94,7 @@
             <c:url value="/add_pro/" var="prodID"></c:url>
             <div class="col-md-3 col-xs-12" style="padding: 5px;">
                 <form action="${prodID}${p.idProduct}">
-                    <div class="card" style="height: 430px">
+                    <div class="card">
                         <c:if test="${p.image.startsWith('https') == false}">
                             <img style="width: 300px;height: 250px" class="card-img-top" class="img-fluid"
                                  src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
@@ -110,11 +110,29 @@
                             <p class="card-text">
                                 <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.unitPrice}"/> VND
                             </p>
-                                <%--                            <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>--%>
+
+                            <c:forEach items="${shop_product}" var="s_item">
+                                <c:if test="${s_item.product.idProduct == p.idProduct && s_item.idDiscount.idDiscount != 1}">
+                                    <c:if test="${s_item.idDiscount.percentDiscount != null}">
+                                        <p class="card-text" style="background-color: red">${s_item.idDiscount.nameDiscount}</p>
+                                        <p class="card-text">
+                                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.unitPrice - p.unitPrice * (s_item.idDiscount.percentDiscount/100)}"/>
+                                            VND
+                                        </p>
+                                    </c:if>
+                                    <c:if test="${s_item.idDiscount.valueDiscount != null}">
+                                        <p class="card-text" style="background-color: red">${s_item.idDiscount.nameDiscount}</p>
+                                        <p class="card-text">
+                                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${p.unitPrice - s_item.idDiscount.valueDiscount}"/>
+                                            VND
+                                        </p>
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+
                             <sec:authorize access="hasAnyRole('ROLE_USER')">
                                 <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>
-                                <button class="btn btn-primary"
-                                        type="submit">Đặt Hàng
+                                <button class="btn btn-primary" onclick="clickAddCartPro(${idOr},${p.idProduct},'${idCust}')">Đặt Hàng
                                 </button>
                             </sec:authorize>
                         </div>
@@ -129,16 +147,6 @@
             <div class="row">
                 <h1 style="height: 100px;font-size: 60px;padding: 15px;text-align: center; background-color: #56CCF2">CÓ
                     THỂ BẠN SẼ THÍCH</h1>
-                    <%--    PHAN TRANG   --%>
-                    <%--            <ul class="pagination">--%>
-                    <%--                <c:forEach begin="1" end="${Math.ceil(productCounter/8)}" var="i">--%>
-                    <%--                    <c:url value="/" var="c">--%>
-                    <%--                        <c:param value="${i}" name="page"/>--%>
-                    <%--                    </c:url>--%>
-                    <%--                    <li class="page-item"><a class="page-link" href="${c}">${i}</a></li>--%>
-                    <%--                </c:forEach>--%>
-                    <%--            </ul>--%>
-                    <%--    SAN PHAM    --%>
                 <c:forEach items="${lstProductFavor}" var="pV">
                     <c:url value="/products/" var="cUrl">
                         <c:param name="ID_Product" value="${pV.idProduct}"/>
@@ -146,7 +154,7 @@
                     <c:url value="/add_pro/" var="prodID"></c:url>
                     <div class="col-md-3 col-xs-12" style="padding: 5px;">
                         <form action="${prodID}${pV.idProduct}">
-                            <div class="card" style="height: 430px">
+                            <div class="card" >
                                 <c:if test="${pV.image.startsWith('https') == false}">
                                     <img style="width: 300px;height: 250px" class="card-img-top" class="img-fluid"
                                          src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg"
@@ -163,11 +171,29 @@
                                         <fmt:formatNumber type="number" maxFractionDigits="3" value="${pV.unitPrice}"/>
                                         VND
                                     </p>
-                                        <%--                            <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>--%>
+
+                                    <c:forEach items="${shop_product}" var="s_item">
+                                        <c:if test="${s_item.product.idProduct == pV.idProduct && s_item.idDiscount.idDiscount != 1}">
+                                            <c:if test="${s_item.idDiscount.percentDiscount != null}">
+                                                <p class="card-text" style="background-color: red">${s_item.idDiscount.nameDiscount}</p>
+                                                <p class="card-text">
+                                                    <fmt:formatNumber type="number" maxFractionDigits="3" value="${pV.unitPrice - pV.unitPrice * (s_item.idDiscount.percentDiscount/100)}"/>
+                                                    VND
+                                                </p>
+                                            </c:if>
+                                            <c:if test="${s_item.idDiscount.valueDiscount != null}">
+                                                <p class="card-text" style="background-color: red">${s_item.idDiscount.nameDiscount}</p>
+                                                <p class="card-text">
+                                                    <fmt:formatNumber type="number" maxFractionDigits="3" value="${pV.unitPrice - s_item.idDiscount.valueDiscount}"/>
+                                                    VND
+                                                </p>
+                                            </c:if>
+                                        </c:if>
+                                    </c:forEach>
+
                                     <sec:authorize access="hasAnyRole('ROLE_USER')">
                                         <a href="${cUrl}" class="btn btn-primary">Xem chi tiet</a>
-                                        <button class="btn btn-primary"
-                                                type="submit">Đặt Hàng
+                                        <button class="btn btn-primary" onclick="clickAddCartPro(${idOr},${pV.idProduct},'${idCust}')">Đặt Hàng
                                         </button>
                                     </sec:authorize>
                                 </div>
@@ -179,3 +205,26 @@
         </sec:authorize>
     </div>
 </div>
+
+<script>
+    function clickAddCartPro(idOrd, idPro, idCus) {
+        fetch('http://localhost:8080/thuongmaidientu/api/add-product2cart', {
+            method: 'post',
+            body: JSON.stringify({
+                "idPro": idPro.toString(),
+                "idOrd": idOrd.toString(),
+                "idCus": idCus.toString()
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (res) {
+            if (res.status === 200) {
+                alert('Thêm thành công');
+                window.location.reload();
+            } else
+                alert('Thêm không thành công');
+        })
+
+    }
+</script>

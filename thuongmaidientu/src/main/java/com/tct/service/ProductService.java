@@ -6,6 +6,7 @@ package com.tct.service;
 
 import com.tct.pojo.Product;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 public interface ProductService {
     List<Product> getProducts(Map<String, String> params, int page);
     List<Product> getProductsByType(Map<String, String> params, int page, int type);
-    int countProduct();
+    int countProduct(String full, int type);
     List<Product> getProductByID(Map<String, String> params, int id);
 
     boolean updateProductByID_Product(int idPro, String name, Long unitPrice, String decrip,int typePro,String manufac, String image);
@@ -41,4 +42,9 @@ public interface ProductService {
 
     List<Product> getProductFavoriteOfCustomers(String idCus);
 
+    List<Product> GetProductByIDShop_Kw_Stt_posData_haveDiscount_AmountFull_increDes(String idShop,String kw, int stt, int page, String isDiscount, String isFull, String incre_des);
+
+    List<Product> GetProductIndex_All_Kw(String kw, String disCount, String incre_des, int stt, int page, String isFull);
+
+    List<Object[]> GetProductHotSaleByIdShop(String idShop, Date dateMonth);
 }

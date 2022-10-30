@@ -31,11 +31,20 @@ public class Shop_ReportController {
         if (authentication != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Account accCur = this.userDetailsService.getByUsername(authentication.getName());
-            ShopStore shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
 
+            ShopStore shopStore = new ShopStore();
+
+            if(accCur.getIdPos().getIdPosition() == 3){
+                shopStore = this.shopStoreService.getShopstoreByIdAcc(accCur.getIdAccount()).get(0);
+            }
+
+            if(accCur.getIdPos().getIdPosition() == 4 || accCur.getIdPos().getIdPosition() == 1){
+                String idShopFromParams = params.getOrDefault("idShop_FrEpl","");
+                shopStore = this.shopStoreService.getShopstoreByID_Shop(idShopFromParams).get(0);
+                model.addAttribute("idS_FrEmpl",idShopFromParams);
+            }
 
             model.addAttribute("listReportApp",this.reportService.getReportByID_Shop(params,shopStore.getIdShopStore(),"app"));
-
             model.addAttribute("listReportCus",this.reportService.getReportByID_Shop(params,shopStore.getIdShopStore(),"customer"));
         }
         return "shop-manager/reports";

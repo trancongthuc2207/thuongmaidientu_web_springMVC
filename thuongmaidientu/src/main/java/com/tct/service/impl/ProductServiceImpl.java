@@ -11,6 +11,7 @@ import com.tct.repository.ProductRepository;
 import com.tct.service.ProductService;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +40,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int countProduct() {
-        return this.productRepository.countProduct();
+    public int countProduct(String full, int type) {
+        return this.productRepository.countProduct(full,type);
     }
 
     @Override
@@ -121,5 +122,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProductFavoriteOfCustomers(String idCus) {
         return this.productRepository.getProductFavoriteOfCustomers(idCus);
+    }
+
+    @Override
+    public List<Product> GetProductByIDShop_Kw_Stt_posData_haveDiscount_AmountFull_increDes(String idShop, String kw, int stt, int page, String isDiscount, String isFull, String incre_des) {
+        return this.productRepository.GetProductByIDShop_Kw_Stt_posData_haveDiscount_AmountFull_increDes(idShop,kw,stt,page,isDiscount,isFull,incre_des);
+    }
+
+    @Override
+    public List<Product> GetProductIndex_All_Kw(String kw, String disCount, String incre_des, int stt, int page, String isFull) {
+        return this.productRepository.GetProductIndex_All_Kw(kw, disCount, incre_des, stt, page, isFull);
+    }
+
+    @Override
+    public List<Object[]> GetProductHotSaleByIdShop(String idShop, Date dateMonth) {
+        return this.productRepository.GetProductHotSaleByIdShop(idShop,dateMonth);
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.Properties;
 
 @Configuration
 @EnableWebSecurity
@@ -78,8 +82,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/").permitAll()
                 .antMatchers("/").hasAnyRole("USER", "ADMIN","SHOP","EMPLOYEE")
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/shop-manager/**").hasAnyRole("SHOP", "ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN","EMPLOYEE")
+                .antMatchers("/shop-manager/**").hasAnyRole("SHOP", "ADMIN","EMPLOYEE")
                 .antMatchers("/add_pro/**").hasAnyRole("USER")
                 .antMatchers("/api/**").hasAnyRole("USER", "ADMIN","SHOP","EMPLOYEE")
                 .antMatchers("/employeee/**").hasAnyRole("EMPLOYEE","ADMIN")
@@ -88,5 +92,27 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").permitAll().and().logout().permitAll();
         http.csrf().disable();
         http.headers().httpStrictTransportSecurity().disable();
+    }
+
+    @Bean
+    public JavaMailSender getJavaMailSender(){
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("tct.vvh.k19@gmail.com");
+        mailSender.setPassword("vdwoimvlanzvkbfy");
+
+        Properties props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+        props.put("mail.smtp.starttls.required", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+        mailSender.setJavaMailProperties(props);
+
+        return mailSender;
     }
 }

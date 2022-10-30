@@ -9,11 +9,12 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-09-07T11:14:26")
+@Generated(value="EclipseLink-2.7.10.v20211216-rNA", date="2022-10-22T18:25:28")
 @StaticMetamodel(OrderDetails.class)
 public class OrderDetails_ { 
 
     public static volatile SingularAttribute<OrderDetails, Long> unitPrice;
+    public static volatile SingularAttribute<OrderDetails, Long> valueDiscount;
     public static volatile SingularAttribute<OrderDetails, OrderDetailsPK> orderDetailsPK;
     public static volatile SingularAttribute<OrderDetails, DiscountCode> idDiscount;
     public static volatile SingularAttribute<OrderDetails, Integer> amount;

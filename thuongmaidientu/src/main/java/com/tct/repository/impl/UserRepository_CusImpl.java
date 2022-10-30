@@ -49,7 +49,7 @@ public class UserRepository_CusImpl implements UserRepository_Cus {
 
             int leftLimit = 97; // letter 'a'
             int rightLimit = 122; // letter 'z'
-            int len = 5;
+            int len = 15;
             Random random = new Random();
             StringBuilder buffer = new StringBuilder(len);
             for (int i = 0; i < len; i++) {
@@ -63,8 +63,10 @@ public class UserRepository_CusImpl implements UserRepository_Cus {
                 Customers cus = new Customers();
                 cus.setNameC("Khách hàng");
                 cus.setIdAcc(ac.getIdAccount());
-                cus.setIdCustomer(generatedString);
+                cus.setIdCustomer(generatedString.substring(10,generatedString.length()));
                 cus.setVipPos(99);
+
+                ac.setStt("actived");
 
                 Orders ordersNew = new Orders();
                 ordersNew.setStatus("WAITTING");
@@ -83,6 +85,9 @@ public class UserRepository_CusImpl implements UserRepository_Cus {
                 store.setIdAcc(ac);
                 store.setIdShopStore(generatedString);
                 store.setDateBegin(new Date());
+
+                ac.setStt("actived");
+
                 session.save(ac);
                 session.save(store);
                 return true;
@@ -91,8 +96,11 @@ public class UserRepository_CusImpl implements UserRepository_Cus {
                 Customers cus = new Customers();
                 cus.setNameC("Nhân viên");
                 cus.setIdAcc(ac.getIdAccount());
-                cus.setIdCustomer(generatedString);
+                cus.setIdCustomer(generatedString.substring(10,generatedString.length()));
                 cus.setVipPos(99);
+
+                ac.setStt("wait");
+
                 session.save(ac);
                 session.save(cus);
                 return true;

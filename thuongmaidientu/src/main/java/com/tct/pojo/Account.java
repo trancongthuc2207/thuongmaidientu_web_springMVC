@@ -26,6 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByPasswordC", query = "SELECT a FROM Account a WHERE a.passwordC = :passwordC")})
 public class Account implements Serializable {
 
+    @Size(max = 45)
+    @Column(name = "stt")
+    private String stt;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -48,6 +52,7 @@ public class Account implements Serializable {
     @ManyToOne(optional = false)
     private PositionStaff idPos;
     @Transient
+    @Size(min = 1, max = 250)
     private String confirmPassword;
 
     public Account() {
@@ -135,5 +140,13 @@ public class Account implements Serializable {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getStt() {
+        return stt;
+    }
+
+    public void setStt(String stt) {
+        this.stt = stt;
     }
 }
